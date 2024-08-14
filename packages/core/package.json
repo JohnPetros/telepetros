@@ -1,0 +1,14 @@
+{
+  "name": "@telepetros/core",
+  "devDependencies": {
+    "@telepetros/typescript-config": "workspace:*"
+  },
+  "exports": {
+    "./entities": "./src/structs/index.ts",
+    "./structs": "./src/structs/index.ts",
+    "./constants": "./src/constants/index.ts",
+    "./dtos": "./src/dtos/index.ts",
+    "./interfaces": "./src/interfaces/index.ts",
+    "./responses": "./src/responses/index.ts"
+  }
+}
