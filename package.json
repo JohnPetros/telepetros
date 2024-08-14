@@ -7,8 +7,13 @@
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
+  "author": "John Petros",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
   "devDependencies": {
-    "prettier": "^3.2.5",
+    "@biomejs/biome": "1.8.3",
     "turbo": "^2.0.12",
     "typescript": "^5.4.5"
   },
