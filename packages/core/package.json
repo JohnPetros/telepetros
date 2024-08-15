@@ -1,14 +1,17 @@
 {
   "name": "@telepetros/core",
   "devDependencies": {
-    "@telepetros/typescript-config": "workspace:*"
+    "@telepetros/typescript-config": "*"
   },
   "exports": {
-    "./entities": "./src/structs/index.ts",
-    "./structs": "./src/structs/index.ts",
-    "./constants": "./src/constants/index.ts",
-    "./dtos": "./src/dtos/index.ts",
+    "./entities": "./src/domain/entities/index.ts",
     "./interfaces": "./src/interfaces/index.ts",
-    "./responses": "./src/responses/index.ts"
+    "./use-cases": "./src/use-cases/index.ts"
+  },
+  "imports": {
+    "#domain/entities": "./src/domain/entities/index.ts",
+    "#dtos": "./src/dtos/index.ts",
+    "#interfaces/handlers": "./src/interfaces/handlers/index.ts",
+    "#interfaces/repositories": "./src/interfaces/repositories/index.ts"
   }
 }
