@@ -1,4 +1,4 @@
-import type { ChannelDto } from '@/dtos'
+import type { ChannelDto } from '#dtos'
 import { Entity } from '../abstracts'
 
 type ChannelProps = {
@@ -8,7 +8,7 @@ type ChannelProps = {
 
 export class Channel extends Entity<ChannelProps> {
   static create(dto: ChannelDto) {
-    return new Channel({ name: '', hash: '' })
+    return new Channel(dto)
   }
 
   get name() {
