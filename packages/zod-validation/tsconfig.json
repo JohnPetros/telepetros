@@ -1,0 +1,10 @@
+{
+  "extends": "@telepetros/typescript-config/base.json",
+  "compilerOptions": {
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
+  }
+}
