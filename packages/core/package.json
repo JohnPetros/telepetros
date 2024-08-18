@@ -7,12 +7,16 @@
     "./entities": "./src/domain/entities/index.ts",
     "./interfaces": "./src/interfaces/index.ts",
     "./dtos": "./src/dtos/index.ts",
+    "./constants": "./src/constants/index.ts",
+    "./responses": "./src/responses/index.ts",
     "./use-cases": "./src/use-cases/index.ts"
   },
   "imports": {
     "#domain/entities": "./src/domain/entities/index.ts",
     "#dtos": "./src/dtos/index.ts",
+    "#constants": "./src/constants/index.ts",
     "#interfaces/handlers": "./src/interfaces/handlers/index.ts",
-    "#interfaces/repositories": "./src/interfaces/repositories/index.ts"
+    "#interfaces/repositories": "./src/interfaces/repositories/index.ts",
+    "#interfaces/services": "./src/interfaces/services/index.ts"
   }
 }
