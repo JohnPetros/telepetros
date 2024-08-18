@@ -1,12 +1,13 @@
 import Fastify, { type FastifyInstance } from 'fastify'
 import { serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod'
 
-import type { ServerApp } from '../../../../../packages/core/src/interfaces'
+import type { IServerApp } from '@telepetros/core/interfaces'
 
 import { ENV } from '@/constants'
 import { ChannelsRoutes } from './routes'
+import { AuthRoutes } from './routes/auth-routes'
 
-export class FastifyApp implements ServerApp {
+export class FastifyApp implements IServerApp {
   private readonly app: FastifyInstance
 
   constructor() {
@@ -15,7 +16,8 @@ export class FastifyApp implements ServerApp {
     this.app.setSerializerCompiler(serializerCompiler)
     this.app.setValidatorCompiler(validatorCompiler)
 
-    this.app.register(ChannelsRoutes)
+    this.app.register(AuthRoutes, { prefix: '/auth' })
+    this.app.register(ChannelsRoutes, { prefix: '/channels' })
   }
 
   startServer() {

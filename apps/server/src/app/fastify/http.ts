@@ -1,9 +1,10 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
-import type { Http } from '../../../../../packages/core/src/interfaces'
+import type { IHttp } from '@telepetros/core/interfaces'
+
 import { HTTP_STATUS_CODE } from '@/constants'
 
-export class FastifyHttp<Body = void, Query = void> implements Http<Body, Query> {
+export class FastifyHttp<Body = void, Query = void> implements IHttp<Body, Query> {
   constructor(
     private readonly request: FastifyRequest,
     private readonly reply: FastifyReply,
