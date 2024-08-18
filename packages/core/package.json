@@ -6,6 +6,7 @@
   "exports": {
     "./entities": "./src/domain/entities/index.ts",
     "./interfaces": "./src/interfaces/index.ts",
+    "./dtos": "./src/dtos/index.ts",
     "./use-cases": "./src/use-cases/index.ts"
   },
   "imports": {

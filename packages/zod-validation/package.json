@@ -1,8 +1,0 @@
-{
-  "name": "@telepetros/zod-validation",
-  "version": "0.0.0",
-  "license": "MIT",
-  "exports": {
-    "./schemas": "./src/schemas/index.ts"
-  }
-}

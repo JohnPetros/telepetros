@@ -1,0 +1,11 @@
+{
+  "name": "@telepetros/validation",
+  "version": "0.0.0",
+  "license": "MIT",
+  "devDependencies": {
+    "@telepetros/typescript-config": "*"
+  },
+  "exports": {
+    "./schemas": "./src/schemas/index.ts"
+  }
+}

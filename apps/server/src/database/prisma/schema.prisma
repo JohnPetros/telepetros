@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Chatter {
+  id    String @id @default(uuid())
+  name  String
+  email String @unique
+
+  channels Channel[]
+
+  @@map("chatters")
+}
+
+model Channel {
+  id        String  @id @default(uuid())
+  name      String
+  hash      String  @unique
+  is_public Boolean @default(true)
+  owner_id  String
+
+  owner Chatter @relation(fields: [owner_id], references: [id])
+
+  @@map("channels")
+}

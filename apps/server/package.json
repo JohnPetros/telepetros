@@ -1,0 +1,20 @@
+{
+  "name": "@telepetros/server",
+  "scripts": {
+    "dev": "tsx watch --env-file .env src",
+    "database:migrate": "prisma migrate dev --schema=./src/database/prisma/schema.prisma",
+    "database:dashboard": "prisma studio --schema=./src/database/prisma/schema.prisma"
+  },
+  "dependencies": {
+    "@telepetros/core": "*",
+    "@telepetros/validation": "*",
+    "@prisma/client": "^5.18.0",
+    "fastify": "^4.28.1",
+    "fastify-type-provider-zod": "^2.0.0"
+  },
+  "devDependencies": {
+    "@telepetros/typescript-config": "*",
+    "prisma": "^5.18.0",
+    "tsx": "^4.17.0"
+  }
+}
