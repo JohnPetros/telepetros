@@ -1,5 +1,5 @@
-import type { Http } from './http'
+import type { IHttp } from './http'
 
-export interface Controller<Body = void, Query = void> {
-  handle(http: Http<Body, Query>): Promise<unknown>
+export interface IController<Body = void, Query = void> {
+  handle(http: IHttp<Body, Query>): Promise<unknown>
 }
