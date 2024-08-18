@@ -8,9 +8,11 @@ datasource db {
 }
 
 model Chatter {
-  id    String @id @default(uuid())
-  name  String
-  email String @unique
+  id         String @id @default(uuid())
+  name       String
+  email      String @unique
+  avatar_url String
+  banner_url String
 
   channels Channel[]
 
