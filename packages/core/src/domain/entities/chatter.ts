@@ -1,3 +1,4 @@
+import type { ChatterDto } from '#dtos'
 import { Entity } from '../abstracts'
 
 type ChatterProps = {
@@ -8,7 +9,17 @@ type ChatterProps = {
 }
 
 export class Chatter extends Entity<ChatterProps> {
-  static create() {}
+  static create(dto: ChatterDto): Chatter {
+    return new Chatter(
+      {
+        name: dto.name,
+        email: dto.email,
+        avatar: dto.avatar,
+        banner: dto.banner ?? '',
+      },
+      dto.id,
+    )
+  }
 
   get name() {
     return this.props.name
@@ -24,5 +35,15 @@ export class Chatter extends Entity<ChatterProps> {
 
   get banner() {
     return this.props.banner
+  }
+
+  get dto(): ChatterDto {
+    return {
+      id: this.id,
+      name: this.name,
+      email: this.email,
+      avatar: this.avatar,
+      banner: this.banner,
+    }
   }
 }

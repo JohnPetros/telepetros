@@ -19,8 +19,8 @@ export class AxiosApiClient implements IApiClient {
 
   async get<ResponseBody>(url: string) {
     try {
-      const response = await axios.get(url)
-      return new HttpReponse<ResponseBody>({ body: response.data })
+      const response = await this.axios.get(url)
+      return this.sendResponse<ResponseBody>(response)
     } catch (error) {
       return handleAxiosError<ResponseBody>(error)
     }
@@ -31,7 +31,7 @@ export class AxiosApiClient implements IApiClient {
     body: unknown,
   ): Promise<HttpReponse<ResponseBody>> {
     try {
-      const response = await axios.post(url, body)
+      const response = await this.axios.post(url, body)
       return this.sendResponse(response)
     } catch (error) {
       return handleAxiosError<ResponseBody>(error)
@@ -43,7 +43,10 @@ export class AxiosApiClient implements IApiClient {
   }
 
   setParam(key: string, value: string): void {
-    this.axios.defaults.params[key] = value
+    this.axios.defaults.params = {
+      [key]: value,
+      ...this.axios.defaults.params,
+    }
   }
 
   private sendResponse<ResponseBody>(response: AxiosResponse) {

@@ -4,7 +4,7 @@ import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 
 import { channelSchema } from '@telepetros/validation/schemas'
 
-import { FastifyHttp } from '../http'
+import { FastifyHttp } from '../fastify-http'
 import { CreateChannelController } from '@/api/controllers/channels'
 import { ListChatterChannelsController } from '@/api/controllers/channels'
 

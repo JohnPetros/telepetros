@@ -9,7 +9,8 @@
     "./dtos": "./src/dtos/index.ts",
     "./constants": "./src/constants/index.ts",
     "./responses": "./src/responses/index.ts",
-    "./use-cases": "./src/use-cases/index.ts"
+    "./use-cases": "./src/use-cases/index.ts",
+    "./errors": "./src/errors/index.ts"
   },
   "imports": {
     "#domain/entities": "./src/domain/entities/index.ts",

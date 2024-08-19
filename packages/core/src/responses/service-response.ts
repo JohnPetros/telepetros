@@ -1,11 +1,13 @@
+import type { AppError } from '../errors'
+
 type ServiceResponseProps<Data> = {
   data?: Data
-  error?: typeof Error
+  error?: typeof AppError
 }
 
 export class ServiceResponse<Data = null> {
   private readonly _data: Data | null
-  private readonly _error: typeof Error | null
+  private readonly _error: typeof AppError | null
 
   constructor({ data, error }: ServiceResponseProps<Data>) {
     this._data = data ?? null

@@ -5,6 +5,7 @@ const envValidation = serverEnvSchema.safeParse({
   mode: process.env.MODE,
   githubClientId: process.env.GITHUB_CLIENT_ID,
   githubClientSecret: process.env.GITHUB_CLIENT_SECRET,
+  jwtSecret: process.env.JWT_SECRET,
 })
 
 if (!envValidation.success) {

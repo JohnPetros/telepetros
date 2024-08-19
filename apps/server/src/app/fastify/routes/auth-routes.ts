@@ -2,11 +2,11 @@ import { z } from 'zod'
 import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 
-import { LoginUserWithGithubController } from '@/api/controllers/auth'
-import { FastifyHttp } from '../http'
+import { LoginWithGithubController } from '@/api/controllers/auth'
+import { FastifyHttp } from '../fastify-http'
 
 export const AuthRoutes = async (app: FastifyInstance) => {
-  const loginUserWithGithubController = new LoginUserWithGithubController()
+  const loginWithGithubController = new LoginWithGithubController()
   const router = app.withTypeProvider<ZodTypeProvider>()
 
   router.post(
@@ -18,7 +18,7 @@ export const AuthRoutes = async (app: FastifyInstance) => {
     },
     async (request, response) => {
       const http = new FastifyHttp<typeof request.body>(request, response)
-      return loginUserWithGithubController.handle(http)
+      return loginWithGithubController.handle(http)
     },
   )
 }

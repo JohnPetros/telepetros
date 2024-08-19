@@ -1,17 +1,22 @@
 import type { ChatterDto } from '@telepetros/core/dtos'
-import type { IApiClient, IAuthService } from '@telepetros/core/interfaces'
+import type { IApiClient, IGithubService } from '@telepetros/core/interfaces'
+import { GithubAccessTokenNotFoundError } from '@telepetros/core/errors'
 import { ServiceResponse } from '@telepetros/core/responses'
 
-type GithubUser = {
+type AccessTokenResponse = {
+  access_token: string
+}
+
+type GithubUserResponse = {
   email: string
   name: string
   avatar_url: string
 }
 
-export class AuthService implements IAuthService {
+export class GithubService implements IGithubService {
   constructor(private readonly apiClient: IApiClient) {}
 
-  async fetchGithubUser(
+  async fetchUser(
     githubClientId: string,
     githubClientSecret: string,
     githubClientCode: string,
@@ -20,30 +25,28 @@ export class AuthService implements IAuthService {
     this.apiClient.setParam('client_secret', githubClientSecret)
     this.apiClient.setParam('code', githubClientCode)
 
-    const accessTokenResponse = await this.apiClient.post(
-      'https://github.com/login/oatuh/access_token',
+    const accessTokenResponse = await this.apiClient.post<AccessTokenResponse>(
+      'https://github.com/login/oauth/access_token',
     )
 
     if (accessTokenResponse.isError) {
       return new ServiceResponse({ error: Error })
     }
 
-    const accessToken = accessTokenResponse.body
+    const { access_token } = accessTokenResponse.body
 
-    this.apiClient.setHeader('Authorization', `Bearer ${accessToken}`)
+    this.apiClient.setHeader('Authorization', `Bearer ${access_token}`)
 
-    const userResponse = await this.apiClient.get<GithubUser>(
+    const userResponse = await this.apiClient.get<GithubUserResponse>(
       'https://api.github.com/user',
     )
 
     if (userResponse.isError) {
       userResponse.errorMessage
-      return new ServiceResponse({ error: Error })
+      return new ServiceResponse({ error: GithubAccessTokenNotFoundError })
     }
 
     const githubUser = userResponse.body
-
-    console.log(githubUser)
 
     const chatterDto: ChatterDto = {
       name: githubUser.name,
