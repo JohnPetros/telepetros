@@ -1,4 +1,5 @@
 import { HTTP_STATUS_CODE } from '#constants'
+import { AppError } from '../errors'
 
 type HttpResponseProps<Body> = {
   body?: Body
@@ -20,7 +21,7 @@ export class HttpReponse<Body> {
 
   get body(): Body {
     if (this._body === null) {
-      throw new Error('Http response is error')
+      throw new AppError('Http response is error')
     }
 
     return this._body

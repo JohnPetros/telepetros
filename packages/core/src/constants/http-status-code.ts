@@ -7,6 +7,5 @@ export const HTTP_STATUS_CODE = {
   forbidden: 403,
   notFound: 404,
   conflict: 409,
-  preconditionFailed: 412,
   serverError: 500,
 }
