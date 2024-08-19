@@ -5,4 +5,5 @@ export const serverEnvSchema = z.object({
   mode: z.enum(['dev', 'prod']).default('dev'),
   githubClientId: z.string(),
   githubClientSecret: z.string(),
+  jwtSecret: z.string(),
 })
