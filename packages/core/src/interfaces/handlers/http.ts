@@ -1,5 +1,12 @@
-export interface IHttp<Body = void, Query = void> {
+import type { ChatterDto } from '#dtos'
+
+export interface IHttp<Body = void, Params = void> {
   body: Body
-  query: Query
+  params: Params
+  signJwt(chatterDto: ChatterDto): Promise<string>
+  getChatter(): Promise<ChatterDto>
+  getQuery(key: string): string | null
+  setCookie(key: string, value: string, duration: number): void
   send(response: unknown, statusCode?: number): unknown
+  redirect(route: string): unknown
 }

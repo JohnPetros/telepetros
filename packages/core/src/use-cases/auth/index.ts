@@ -1,1 +1,1 @@
-export { LoginUserWithGithubUseCase } from './login-user-with-github-use-case'
+export { LoginWithGithubUseCase } from './login-with-github-use-case'
