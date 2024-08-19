@@ -1,1 +1,1 @@
-export { LoginUserWithGithubController } from './login-user-with-github-controller'
+export { LoginWithGithubController } from './login-with-github-controller'
