@@ -1,10 +1,10 @@
 import type { Channel } from '@telepetros/core/entities'
-import type { ChannelsRepository } from '@telepetros/core/interfaces'
+import type { IChannelsRepository } from '@telepetros/core/interfaces'
 
 import { prisma } from '../client'
 import { PrismaChannelMapper } from '../mappers'
 
-export class PrismaChannelsRepository implements ChannelsRepository {
+export class PrismaChannelsRepository implements IChannelsRepository {
   async add(channel: Channel): Promise<void> {
     await prisma.channel.create({
       data: {

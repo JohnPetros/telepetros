@@ -1,6 +1,6 @@
 import type { Chatter } from '#domain/entities'
 
-export interface ChattersRepository {
+export interface IChattersRepository {
   findById(id: string): Promise<Chatter | null>
   add(chatter: Chatter): Promise<void>
 }

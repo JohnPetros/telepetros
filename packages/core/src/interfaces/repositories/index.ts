@@ -1,2 +1,2 @@
-export type { ChannelsRepository } from './channels-repository'
-export type { ChattersRepository } from './chatters-repository'
+export type { IChannelsRepository } from './channels-repository'
+export type { IChattersRepository } from './chatters-repository'

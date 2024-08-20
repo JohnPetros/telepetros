@@ -1,6 +1,6 @@
 import type { IUseCase } from '#interfaces/handlers'
 import type { IGithubService } from '#interfaces/services'
-import type { ChattersRepository } from '#interfaces/repositories'
+import type { IChattersRepository } from '#interfaces/repositories'
 import type { ChatterDto } from '#dtos'
 import { Chatter } from '#domain/entities'
 
@@ -13,7 +13,7 @@ type Request = {
 export class LoginWithGithubUseCase implements IUseCase<Request, ChatterDto> {
   constructor(
     private readonly githubService: IGithubService,
-    private readonly chattersRepository: ChattersRepository,
+    private readonly chattersRepository: IChattersRepository,
   ) {}
 
   async execute({
