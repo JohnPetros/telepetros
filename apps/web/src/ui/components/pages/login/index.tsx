@@ -23,6 +23,7 @@ export const LoginPage = () => {
             <Button
               href={`https://github.com/login/oauth/authorize?client_id=${ENV.githubClientId}`}
               as={Link}
+              size='lg'
               className='bg-black text-gray-100'
               startContent={<Icon name='github' size={24} />}
             >

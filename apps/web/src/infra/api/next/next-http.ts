@@ -24,11 +24,11 @@ export const NextHttp = <Body = void, Params = void>({
   params,
 }: NextHttpProps<Params>): IHttp<Body, Params> => {
   let cookie: Cookie | null
-  let response: NextResponse | null
 
   return {
     send(data: unknown, statusCode = HTTP_STATUS_CODE.ok) {
       const response = NextResponse.json(data, { status: statusCode })
+
       if (cookie) {
         response.cookies.set(cookie.key, cookie.value, {
           path: '/',

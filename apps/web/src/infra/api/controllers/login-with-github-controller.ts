@@ -1,20 +1,22 @@
 import { COOKIES } from '@/ui/constants'
 import type { IAuthService, IController } from '@telepetros/core/interfaces'
 import { GithubClientCodeNotFoundError } from '@telepetros/core/errors'
+import { HTTP_STATUS_CODE } from '@telepetros/core/constants'
 
 export const LoginWithGithubController = (authService: IAuthService): IController => {
   return {
     async handle(http) {
       const githubClientCode = http.getQuery('code')
-
-      if (!githubClientCode) throw new GithubClientCodeNotFoundError()
+      if (!githubClientCode) throw GithubClientCodeNotFoundError
 
       const response = await authService.loginWithGithub(githubClientCode)
-      if (response.isFailure) response.throwError()
 
-      http.setCookie(COOKIES.jwt.key, response.data, COOKIES.jwt.duration)
+      if (response.isFailure) {
+        return http.send(null, HTTP_STATUS_CODE.serverError)
+      }
 
-      return http.send({ jtw: response.data })
+      http.setCookie(COOKIES.jwt.key, response.data.jwt, COOKIES.jwt.duration)
+      return http.send(response.data)
     },
   }
 }

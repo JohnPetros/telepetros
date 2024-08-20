@@ -10,7 +10,7 @@ export const AuthRoutes = async (app: FastifyInstance) => {
   const router = app.withTypeProvider<ZodTypeProvider>()
 
   router.post(
-    '/register',
+    '/github',
     {
       schema: {
         body: z.object({ githubClientCode: z.string() }),

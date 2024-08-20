@@ -19,8 +19,6 @@ export class LoginWithGithubController implements IController<Body> {
       githubClientSecret: ENV.githubClientSecret,
     })
 
-    // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IiIsIm5hbWUiOiJKb8OjbyBQZWRybyBDYXJ2YWxobyIsImVtYWlsIjoiam9hb3BlZHJvLm5jQG91dGxvb2suY29tIiwiYXZhdGFyIjoiaHR0cHM6Ly9hdmF0YXJzLmdpdGh1YnVzZXJjb250ZW50LmNvbS91LzkzODkzNTMzP3Y9NCIsImJhbm5lciI6IiIsInN1YiI6IiIsImlhdCI6MTcyNDAyNDcyOSwiZXhwIjoxNzI2NjE2NzI5fQ.oFtI3QPaCbUmA8EKdkAFEK-8dYlKg1h3JrDASAuKjNE
-
     const jwt = await http.signJwt(chatterDto)
 
     return http.send({ jwt })

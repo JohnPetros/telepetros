@@ -4,14 +4,17 @@ import { HttpReponse } from '@telepetros/core/responses'
 import { addUrlParams } from './utils'
 
 export const NextApiClient = (): IApiClient => {
-  const headers: Record<string, string> = {}
+  let baseUrl: string
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  }
   const params: Record<string, string> = {}
 
   return {
     async get<ResponseBody>(url: string, body: unknown) {
       let statusCode = 500
       try {
-        const response = await fetch(addUrlParams(url, params), {
+        const response = await fetch(`${baseUrl}/${addUrlParams(url, params)}`, {
           method: 'GET',
           headers,
           body: JSON.stringify(body),
@@ -28,18 +31,24 @@ export const NextApiClient = (): IApiClient => {
     async post<ResponseBody>(url: string, body: unknown) {
       let statusCode = 500
       try {
-        const response = await fetch(addUrlParams(url, params), {
+        console.log('data')
+        const response = await fetch(`${baseUrl}/${addUrlParams(url, params)}`, {
           method: 'POST',
           headers,
           body: JSON.stringify(body),
         })
         statusCode = response.status
+        console.log('data', response)
         const data = await response.json()
 
         return new HttpReponse<ResponseBody>({ body: data, statusCode })
       } catch (error) {
         return handleNextApiError<ResponseBody>(error, statusCode)
       }
+    },
+
+    setBaseUrl(url: string) {
+      baseUrl = url
     },
 
     setHeader(key: string, value: string) {

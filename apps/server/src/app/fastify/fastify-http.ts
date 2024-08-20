@@ -2,8 +2,7 @@ import type { FastifyReply, FastifyRequest } from 'fastify'
 
 import type { IHttp } from '@telepetros/core/interfaces'
 import type { ChatterDto } from '@telepetros/core/dtos'
-
-import { HTTP_STATUS_CODE } from '@/constants'
+import { HTTP_STATUS_CODE } from '@/constants/http-status-code'
 
 export class FastifyHttp<Body = void, Params = void> implements IHttp<Body, Params> {
   constructor(
