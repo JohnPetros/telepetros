@@ -22,6 +22,16 @@ export class FastifyHttp<Body = void, Params = void> implements IHttp<Body, Para
     throw Error('Method not implemented')
   }
 
+  getCookie(key: string): string | null {
+    throw new Error('Method not implemented.')
+  }
+  hasCookie(key: string): boolean {
+    throw new Error('Method not implemented.')
+  }
+  next(): unknown {
+    throw new Error('Method not implemented.')
+  }
+
   async signJwt(chatterDto: ChatterDto): Promise<string> {
     const jwt = await this.reply.jwtSign(chatterDto, {
       sub: chatterDto.id,
