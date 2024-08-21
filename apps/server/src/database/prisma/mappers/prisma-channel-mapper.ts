@@ -2,7 +2,7 @@ import type { Channel as PrismaChannel } from '@prisma/client'
 import { Channel } from '@telepetros/core/entities'
 
 export class PrismaChannelMapper {
-  static toDomain(primasChannel: PrismaChannel): Channel {
+  toDomain(primasChannel: PrismaChannel): Channel {
     return Channel.create({
       id: primasChannel.id,
       hash: primasChannel.hash,
@@ -12,7 +12,7 @@ export class PrismaChannelMapper {
     })
   }
 
-  static toPrisma(channel: Channel): PrismaChannel {
+  toPrisma(channel: Channel): PrismaChannel {
     return {
       id: channel.id,
       hash: channel.hash,

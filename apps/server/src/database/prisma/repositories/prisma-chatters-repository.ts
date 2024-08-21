@@ -25,8 +25,8 @@ export class PrismaChattersRepository implements IChattersRepository {
   async add(chatter: Chatter): Promise<void> {
     const prismaChatter = this.mapper.toPrisma(chatter)
 
-    await prisma.chatter.create({
-      data: prismaChatter,
-    })
+    // await prisma.chatter.create({
+    //   data: prismaChatter,
+    // })
   }
 }
