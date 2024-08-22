@@ -5,7 +5,7 @@ import { ServiceResponse } from '@telepetros/core/responses'
 export const AuthService = (apiClient: IApiClient): IAuthService => {
   return {
     async loginWithGithub(githubClientCode: string) {
-      const response = await apiClient.post<{ jwt: string }>('auth/github', {
+      const response = await apiClient.post<{ jwt: string }>('/auth/github', {
         githubClientCode,
       })
 

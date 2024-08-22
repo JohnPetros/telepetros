@@ -14,7 +14,7 @@ export const NextApiClient = (): IApiClient => {
     async get<ResponseBody>(url: string, body: unknown) {
       let statusCode = 500
       try {
-        const response = await fetch(`${baseUrl}/${addUrlParams(url, params)}`, {
+        const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
           method: 'GET',
           headers,
           body: JSON.stringify(body),
@@ -32,7 +32,7 @@ export const NextApiClient = (): IApiClient => {
       let statusCode = 500
       try {
         console.log('data')
-        const response = await fetch(`${baseUrl}/${addUrlParams(url, params)}`, {
+        const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
           method: 'POST',
           headers,
           body: JSON.stringify(body),
