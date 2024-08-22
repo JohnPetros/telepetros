@@ -1,4 +1,4 @@
-import type { AppError } from '../errors'
+import { AppError } from '../errors'
 
 type ServiceResponseProps<Data> = {
   data?: Data
@@ -15,7 +15,15 @@ export class ServiceResponse<Data = null> {
   }
 
   throwError() {
-    if (this._error) new this._error()
+    if (this._error) throw new this._error()
+  }
+
+  get errorMessage() {
+    if (!this._error) throw new AppError('Service response is not failure')
+
+    const error = new this._error()
+    console.log(error)
+    return error.message
   }
 
   get isSuccess() {
@@ -28,7 +36,7 @@ export class ServiceResponse<Data = null> {
 
   get data(): Data {
     if (this._data === null) {
-      throw new Error('Service response is error')
+      throw new AppError('Service response is failure')
     }
 
     return this._data

@@ -16,7 +16,7 @@ export class HttpReponse<Body> {
   }
 
   get isError() {
-    return this.statusCode >= HTTP_STATUS_CODE.serverError
+    return this.statusCode >= HTTP_STATUS_CODE.badRequest
   }
 
   get body(): Body {
