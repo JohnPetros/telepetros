@@ -1,7 +1,6 @@
 import type { ChatterDto } from '@telepetros/core/dtos'
 import type { IApiClient, IGithubService } from '@telepetros/core/interfaces'
 import {
-  AppError,
   GithubAccessTokenNotFoundError,
   GithubUserNotFoundError,
 } from '@telepetros/core/errors'
@@ -46,11 +45,11 @@ export class GithubService implements IGithubService {
     )
 
     if (userResponse.isError) {
-      userResponse.errorMessage
       return new ServiceResponse({ error: GithubAccessTokenNotFoundError })
     }
 
     const githubUser = userResponse.body
+    console.log({ githubUser })
 
     const chatterDto: ChatterDto = {
       name: githubUser.name,

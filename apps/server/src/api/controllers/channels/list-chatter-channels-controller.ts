@@ -1,17 +1,15 @@
-import type { Http, Controller } from '@telepetros/core/interfaces'
-import { ListChatterChannelsUseCase } from '@telepetros/core/use-cases'
-import { ChannelsRepository } from '@/database'
+import { channelsRepository } from '@/database'
+import type { IController, IHttp } from '@telepetros/core/interfaces'
 
-type Query = {
-  chatter_id: string
+type Params = {
+  chatterId: string
 }
 
-export class ListChatterChannelsController implements Controller<void, Query> {
-  async handle(http: Http<void, Query>) {
-    const repository = new ChannelsRepository()
-    const useCase = new ListChatterChannelsUseCase(repository)
-
-    const channelsDto = await useCase.execute(http.query.chatter_id)
+export class ListChatterChannelsController implements IController<void, Params> {
+  async handle(http: IHttp<void, Params>) {
+    const channelsDto = await channelsRepository.findManyByChatterId(
+      http.params.chatterId,
+    )
 
     return http.send(channelsDto)
   }

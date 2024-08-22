@@ -15,11 +15,11 @@ export const ChannelsRoutes = async (app: FastifyInstance) => {
 
   router
     .get(
-      '/channels/chatter/:chatter_id',
+      '/chatter/:chatterId',
       {
         schema: {
           params: z.object({
-            chatter_id: z.string().uuid(),
+            chatterId: z.string().uuid(),
           }),
         },
       },
@@ -29,10 +29,13 @@ export const ChannelsRoutes = async (app: FastifyInstance) => {
       },
     )
     .post(
-      '/channels',
+      '/',
       {
         schema: {
-          body: channelSchema,
+          body: z.object({
+            ownerId: z.string().uuid(),
+            name: z.string(),
+          }),
         },
       },
       async (request, response) => {

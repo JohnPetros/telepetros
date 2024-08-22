@@ -1,22 +1,30 @@
-import type { Http, Controller } from '@telepetros/core/interfaces'
-import type { ChannelDto } from '@telepetros/core/dtos'
+import type { IHttp, IController } from '@telepetros/core/interfaces'
+import { Channel } from '@telepetros/core/entities'
+
+import { channelsRepository, chattersRepository } from '@/database'
+import { Encryptor } from '@/utils'
+import { HTTP_STATUS_CODE } from '@/constants/http-status-code'
 import { CreateChannelUseCase } from '@telepetros/core/use-cases'
 
-import { ChannelsRepository } from '@/database'
-import { Encryptor } from '@/utils'
+type Body = {
+  ownerId: string
+  name: string
+}
 
-export class CreateChannelController implements Controller<ChannelDto> {
-  async handle(http: Http<ChannelDto>) {
-    const repository = new ChannelsRepository()
-    const useCase = new CreateChannelUseCase(repository)
-
+export class CreateChannelController implements IController<Body> {
+  async handle(http: IHttp<Body>) {
     const encryptor = new Encryptor()
-    await useCase.execute({
+
+    const useCase = new CreateChannelUseCase(channelsRepository, chattersRepository)
+
+    console.log('body', http.body)
+
+    const createdChatterDto = await useCase.execute({
       name: http.body.name,
       ownerId: http.body.ownerId,
       hash: encryptor.generateHash(),
     })
 
-    return http.send(null)
+    return http.send(createdChatterDto, HTTP_STATUS_CODE.created)
   }
 }

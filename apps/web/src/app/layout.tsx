@@ -13,10 +13,12 @@ type LayoutProps = {
   children: ReactNode
 }
 
-export default function Layout({ children }: LayoutProps) {
+const Layout = ({ children }: LayoutProps) => {
   return (
-    <html lang='en' className='light'>
+    <html lang='en' className={`light ${FONT_SANS.className}`}>
       <RootLayout>{children}</RootLayout>
     </html>
   )
 }
+
+export default Layout

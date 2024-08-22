@@ -4,7 +4,7 @@ import type { IHttp } from '@telepetros/core/interfaces'
 import type { ChatterDto } from '@telepetros/core/dtos'
 import { HTTP_STATUS_CODE } from '@telepetros/core/constants'
 import { type NextRequest, NextResponse } from 'next/server'
-import { HttpReponse } from '@telepetros/core/responses'
+import { cookies } from 'next/headers'
 
 type Cookie = {
   key: string
@@ -39,8 +39,13 @@ export const NextHttp = <Body = void, Params = void>({
       return response
     },
 
+    next() {
+      return
+    },
+
     redirect(route) {
-      const response = NextResponse.redirect(route)
+      const url = new URL(route, request.url)
+      const response = NextResponse.redirect(url)
 
       if (cookie) {
         response.cookies.set(cookie.key, cookie.value, {
@@ -49,6 +54,7 @@ export const NextHttp = <Body = void, Params = void>({
           maxAge: cookie.duration,
         })
       }
+
       return response
     },
 
@@ -58,6 +64,14 @@ export const NextHttp = <Body = void, Params = void>({
         value,
         duration,
       }
+    },
+
+    getCookie(key) {
+      return cookies().get(key)?.value ?? null
+    },
+
+    hasCookie(key: string) {
+      return cookies().has(key)
     },
 
     async signJwt(chatterDto: ChatterDto): Promise<string> {

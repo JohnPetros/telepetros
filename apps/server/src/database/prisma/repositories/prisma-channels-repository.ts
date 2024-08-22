@@ -5,8 +5,10 @@ import { prisma } from '../client'
 import { PrismaChannelMapper } from '../mappers'
 
 export class PrismaChannelsRepository implements IChannelsRepository {
-  async add(channel: Channel): Promise<void> {
-    await prisma.channel.create({
+  private readonly mapper: PrismaChannelMapper = new PrismaChannelMapper()
+
+  async add(channel: Channel): Promise<Channel> {
+    const createdChannel = await prisma.channel.create({
       data: {
         name: channel.name,
         hash: channel.hash,
@@ -14,6 +16,8 @@ export class PrismaChannelsRepository implements IChannelsRepository {
         owner_id: channel.ownerId,
       },
     })
+
+    return this.mapper.toDomain(createdChannel)
   }
 
   async findManyByChatterId(ownerId: string): Promise<Channel[]> {
@@ -23,6 +27,6 @@ export class PrismaChannelsRepository implements IChannelsRepository {
       },
     })
 
-    return primasChannel.map(PrismaChannelMapper.toDomain)
+    return primasChannel.map(this.mapper.toDomain)
   }
 }

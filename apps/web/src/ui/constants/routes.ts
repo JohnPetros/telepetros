@@ -1,8 +1,5 @@
 export const ROUTES = {
-  app: {
-    home: '/',
-  },
-  auth: {
-    login: '/login',
-  },
+  home: '/',
+  chat: '/chat',
+  login: '/login',
 }
