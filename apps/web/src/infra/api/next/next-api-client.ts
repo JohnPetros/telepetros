@@ -31,14 +31,12 @@ export const NextApiClient = (): IApiClient => {
     async post<ResponseBody>(url: string, body: unknown) {
       let statusCode = 500
       try {
-        console.log('data')
         const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
           method: 'POST',
           headers,
           body: JSON.stringify(body),
         })
         statusCode = response.status
-        console.log('data', response)
         const data = await response.json()
 
         return new HttpReponse<ResponseBody>({ body: data, statusCode })
