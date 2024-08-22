@@ -7,7 +7,7 @@ export function handleAxiosError<ResponseBody>(axiosError: unknown) {
     console.log(`Axios Error: ${axiosError}`)
     return new HttpReponse({
       body: axiosError.message,
-      statusCode: axiosError.status,
+      statusCode: axiosError.response?.status,
     }) as HttpReponse<ResponseBody>
   }
 
