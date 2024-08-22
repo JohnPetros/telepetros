@@ -49,8 +49,13 @@ export class AxiosApiClient implements IApiClient {
     }
   }
 
+  setBaseUrl(url: string): void {
+    this.axios.defaults.baseURL = url
+  }
+
   private sendResponse<ResponseBody>(response: AxiosResponse) {
     this.clearParams()
+    console.log('AXIOS', response.status)
     return new HttpReponse<ResponseBody>({
       body: response.data,
       statusCode: response.status,
