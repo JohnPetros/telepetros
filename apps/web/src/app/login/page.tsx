@@ -1,5 +1,7 @@
 import { LoginPage } from '@/ui/components/pages/login'
 
-export default function Page() {
+const Page = () => {
   return <LoginPage />
 }
+
+export default Page
