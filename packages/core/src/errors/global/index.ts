@@ -1,2 +1,3 @@
 export { AppError } from './app-error'
-export { NotFoundError } from './not-fourn-error'
+export { AlreadyExistsError } from './already-exists-error'
+export { NotFoundError } from './not-found-error'
