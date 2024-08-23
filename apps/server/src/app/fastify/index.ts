@@ -5,7 +5,9 @@ import Jwt from '@fastify/jwt'
 import { ZodError } from 'zod'
 
 import type { IServerApp } from '@telepetros/core/interfaces'
+
 import { AppError, AuthError, NotFoundError } from '@telepetros/core/errors'
+
 import { HTTP_STATUS_CODE } from '@telepetros/core/constants'
 
 import { ENV } from '@/constants'
@@ -54,6 +56,9 @@ export class FastifyApp implements IServerApp {
 
         if (error instanceof NotFoundError)
           return reply.status(HTTP_STATUS_CODE.notFound).send(response)
+
+        if (error instanceof AlreadyExistsError)
+          return reply.status(HTTP_STATUS_CODE.conflict).send(response)
       }
 
       if (error instanceof ZodError)
