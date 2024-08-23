@@ -1,10 +1,10 @@
-import type { z, ZodSchema } from 'zod'
+import { cookies } from 'next/headers'
+import type { ZodSchema } from 'zod'
 
 import type { IHttp } from '@telepetros/core/interfaces'
 import type { ChatterDto } from '@telepetros/core/dtos'
 import { HTTP_STATUS_CODE } from '@telepetros/core/constants'
 import { type NextRequest, NextResponse } from 'next/server'
-import { cookies } from 'next/headers'
 
 type Cookie = {
   key: string
@@ -50,7 +50,7 @@ export const NextHttp = <Body = void, Params = void>({
       if (cookie) {
         response.cookies.set(cookie.key, cookie.value, {
           path: '/',
-          httpOnly: true,
+          httpOnly: false,
           maxAge: cookie.duration,
         })
       }
@@ -84,6 +84,10 @@ export const NextHttp = <Body = void, Params = void>({
 
     getQuery(key: string): string | null {
       return new URL(request.url).searchParams.get(key)
+    },
+
+    verifyJwt() {
+      throw new Error('Method not implemented')
     },
 
     get body(): Body {

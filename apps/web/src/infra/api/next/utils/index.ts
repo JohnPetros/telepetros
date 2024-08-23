@@ -1,2 +1,3 @@
 export { addUrlParams } from './add-url-params'
-export { handleNextApiError } from './handle-next-api-error'
+export { handleApiError } from './handle-api-error'
+export { handleNetworkError } from './handle-network-error'

@@ -1,11 +1,12 @@
 import { HttpReponse } from '@telepetros/core/responses'
 
-export function handleNextApiError<Body>(error: unknown, statusCode: number) {
-  if (error instanceof Error) {
-    console.error(`Status Code: ${statusCode}`)
-    console.error(`Next Api Error: ${error}`)
+export function handleApiError<Body>(error: object, statusCode: number) {
+  if ('title' in error && 'message' in error) {
+    console.error(`Error title: ${error.title}`)
+    console.error(`Error message: ${error.message}`)
     return new HttpReponse({ body: error.message, statusCode }) as HttpReponse<Body>
   }
+
   return new HttpReponse({
     body: 'Unknown api error',
     statusCode,

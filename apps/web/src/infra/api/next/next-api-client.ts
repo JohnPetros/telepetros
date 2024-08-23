@@ -1,7 +1,8 @@
 import type { IApiClient } from '@telepetros/core/interfaces'
-import { handleNextApiError } from './utils/handle-next-api-error'
+import { handleApiError } from './utils/handle-api-error'
 import { HttpReponse } from '@telepetros/core/responses'
 import { addUrlParams } from './utils'
+import { AppError } from '@telepetros/core/errors'
 
 export const NextApiClient = (): IApiClient => {
   let baseUrl: string
@@ -12,45 +13,51 @@ export const NextApiClient = (): IApiClient => {
 
   return {
     async get<ResponseBody>(url: string, body: unknown) {
-      let statusCode = 500
-      try {
-        const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
-          method: 'GET',
-          headers,
-          body: JSON.stringify(body),
-        })
-        statusCode = response.status
-        const data = await response.json()
+      const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
+        method: 'GET',
+        headers,
+        body: JSON.stringify(body),
+      })
+      const data = await response.json()
 
-        return new HttpReponse<ResponseBody>({ body: data, statusCode })
-      } catch (error) {
-        return handleNextApiError<ResponseBody>(error, statusCode)
+      if (!response.ok) {
+        return handleApiError<ResponseBody>(data, response.status)
       }
+
+      return new HttpReponse<ResponseBody>({
+        body: data,
+        statusCode: response.status,
+      })
     },
 
     async post<ResponseBody>(url: string, body: unknown) {
-      let statusCode = 500
-      try {
-        const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
-          method: 'POST',
-          headers,
-          body: JSON.stringify(body),
-        })
-        statusCode = response.status
-        const data = await response.json()
+      const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(body),
+      })
+      const data = await response.json()
 
-        return new HttpReponse<ResponseBody>({ body: data, statusCode })
-      } catch (error) {
-        return handleNextApiError<ResponseBody>(error, statusCode)
+      if (!response.ok) {
+        return handleApiError<ResponseBody>(data, response.status)
       }
+
+      return new HttpReponse<ResponseBody>({
+        body: data,
+        statusCode: response.status,
+      })
     },
 
     setBaseUrl(url: string) {
       baseUrl = url
     },
 
+    setJwt(jwt: string) {
+      throw new AppError('Method not implemented')
+    },
+
     setHeader(key: string, value: string) {
-      headers[key] = value
+      if (!(key in headers)) headers[key] = value
     },
 
     setParam(key: string, value: string) {
