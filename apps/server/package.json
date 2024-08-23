@@ -3,7 +3,8 @@
   "scripts": {
     "dev": "tsx watch --env-file .env src",
     "db:migrate": "prisma migrate dev --schema=./src/database/prisma/schema.prisma",
-    "db:dashboard": "prisma studio --schema=./src/database/prisma/schema.prisma"
+    "db:dashboard": "prisma studio --schema=./src/database/prisma/schema.prisma",
+    "db:generate": "prisma generate --schema=./src/database/prisma/schema.prisma"
   },
   "dependencies": {
     "@fastify/cors": "^9.0.1",
