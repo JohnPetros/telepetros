@@ -9,6 +9,7 @@ export class PrismaChannelMapper {
       name: primasChannel.name,
       isPublic: primasChannel.is_public,
       ownerId: primasChannel.owner_id,
+      chatId: primasChannel.chat_id,
     })
   }
 
@@ -19,6 +20,7 @@ export class PrismaChannelMapper {
       is_public: channel.isPublic,
       name: channel.name,
       owner_id: channel.ownerId,
+      chat_id: channel.chatId,
     }
   }
 }

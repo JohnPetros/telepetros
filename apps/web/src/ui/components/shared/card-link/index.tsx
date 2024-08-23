@@ -8,6 +8,7 @@ type CardLinkProps = {
   icon?: IconName
   avatar?: string
   isActive?: boolean
+  payload?: unknown
 }
 
 export const CardLink = ({

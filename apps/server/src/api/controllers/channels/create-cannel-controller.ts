@@ -17,8 +17,6 @@ export class CreateChannelController implements IController<Body> {
 
     const useCase = new CreateChannelUseCase(channelsRepository, chattersRepository)
 
-    console.log('body', http.body)
-
     const createdChatterDto = await useCase.execute({
       name: http.body.name,
       ownerId: http.body.ownerId,

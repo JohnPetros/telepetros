@@ -8,7 +8,8 @@ import { Popover } from '@/ui/components/shared/popover'
 import { CreateChannelModal } from './create-channel-modal'
 
 export const ChatTabs = () => {
-  const { channels, selectedTab, handleTabChange, handleCreateChannel } = useChatTabs()
+  const { channels, chatters, selectedTab, handleTabChange, handleCreateChannel } =
+    useChatTabs()
 
   return (
     <div className='flex flex-wrap gap-4 w-full'>
@@ -52,7 +53,7 @@ export const ChatTabs = () => {
           <ul>
             {channels?.map((channel) => (
               <li key={channel.id} className='mt-3'>
-                <CardLink route={''} title='Channel 1' />
+                <CardLink title={channel.name} route={`channel/${channel.id}/chat`} />
               </li>
             ))}
           </ul>
@@ -63,24 +64,21 @@ export const ChatTabs = () => {
             fullWidth
             className='bg-slate-200 text-slate-600'
           >
-            Chatte
+            Chatter
           </Button>
-          <ul className='mt-3'>
-            <li>
-              <CardLink
-                title='Channel 1'
-                avatar='https://avatars.githubusercontent.com/u/86160567?s=200&v=4'
-                route={''}
-              />
-            </li>
-            <li>
-              <CardLink
-                title='Channel 2'
-                avatar='https://avatars.githubusercontent.com/u/86160567?s=200&v=4'
-                route={''}
-              />
-            </li>
-          </ul>
+          {chatters && (
+            <ul className='mt-3'>
+              {chatters?.map((chatter) => (
+                <li key={chatter.id}>
+                  <CardLink
+                    title={chatter.name}
+                    avatar={chatter.avatar}
+                    route={`chatter/${chatter.id}/chat`}
+                  />
+                </li>
+              ))}
+            </ul>
+          )}
         </Tab>
       </Tabs>
     </div>

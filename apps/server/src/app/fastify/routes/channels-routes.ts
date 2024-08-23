@@ -2,18 +2,31 @@ import { z } from 'zod'
 import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 
-import { channelSchema } from '@telepetros/validation/schemas'
-
-import { FastifyHttp } from '../fastify-http'
-import { CreateChannelController } from '@/api/controllers/channels'
+import { CreateChannelController, GetChannelController } from '@/api/controllers/channels'
 import { ListChatterChannelsController } from '@/api/controllers/channels'
+import { FastifyHttp } from '../fastify-http'
 
 export const ChannelsRoutes = async (app: FastifyInstance) => {
+  const getChannelController = new GetChannelController()
   const createChannelController = new CreateChannelController()
   const listChatterChannelsController = new ListChatterChannelsController()
   const router = app.withTypeProvider<ZodTypeProvider>()
 
   router
+    .get(
+      '/:chatterId',
+      {
+        schema: {
+          params: z.object({
+            channelId: z.string().uuid(),
+          }),
+        },
+      },
+      async (request, response) => {
+        const http = new FastifyHttp<void, typeof request.params>(request, response)
+        return getChannelController.handle(http)
+      },
+    )
     .get(
       '/chatter/:chatterId',
       {

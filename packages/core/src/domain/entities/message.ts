@@ -8,6 +8,7 @@ type MessageProps = {
   value: string
   parentMessageId?: string
   createdAt: Date
+  chatId: string
 }
 
 export class Message extends Entity<MessageProps> {
@@ -20,13 +21,18 @@ export class Message extends Entity<MessageProps> {
     return new Message({
       type,
       value: dto.value,
-      createdAt: dto.createdAt,
+      createdAt: dto.createdAt ?? new Date(),
       parentMessageId: dto.parentMessageId,
+      chatId: dto.chatId
     })
   }
 
   static isMessageType(type: string): type is MessageType {
     return ['text', 'image'].includes(type)
+  }
+
+  get type() {
+    return this.props.type
   }
 
   get value() {
@@ -36,4 +42,15 @@ export class Message extends Entity<MessageProps> {
   get createdAt() {
     return this.props.createdAt
   }
-}
+
+  get dto() {
+    return {
+      id: this.id,
+      type: this.type,
+      value: this.value,
+      chatId: this.props.chatId,
+      createdAt: this.createdAt,
+      parentMessageId: this.props.parentMessageId,
+    }
+  }
+} 

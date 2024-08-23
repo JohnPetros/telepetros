@@ -1,14 +1,18 @@
-import type { ChatDto } from '../../dtos'
 import { Entity } from '../abstracts'
-import { Message } from './message'
+import type { Chatter } from './chatter'
+import type { Message } from './message'
 
 type ChatProps = {
-  chattersIds: string[]
+  chatters: Chatter[]
   messages: Message[]
 }
 
 export class Chat extends Entity<ChatProps> {
-  static create(dto: ChatDto) {
-    return new Chat({ messages: dto.messages.map(Message.create), chattersIds: dto.chattersIds })
+  static create() {
+    return new Chat({ chatters: [], messages: [] })
+  }
+
+  addChatters(chatters: Chatter[]) {
+    this.props.chatters = chatters
   }
 }
