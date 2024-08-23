@@ -4,6 +4,7 @@ export interface IHttp<Body = void, Params = void> {
   body: Body
   params: Params
   signJwt(chatterDto: ChatterDto): Promise<string>
+  verifyJwt(): Promise<boolean>
   getChatter(): Promise<ChatterDto>
   getQuery(key: string): string | null
   setCookie(key: string, value: string, duration: number): void

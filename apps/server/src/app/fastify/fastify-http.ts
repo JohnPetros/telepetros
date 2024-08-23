@@ -40,8 +40,16 @@ export class FastifyHttp<Body = void, Params = void> implements IHttp<Body, Para
     return jwt
   }
 
+  async verifyJwt(): Promise<boolean> {
+    try {
+      await this.request.jwtVerify()
+      return true
+    } catch (error) {
+      return false
+    }
+  }
+
   async getChatter(): Promise<ChatterDto> {
-    await this.request.jwtVerify()
     return this.request.user as ChatterDto
   }
 

@@ -6,12 +6,19 @@ import { ZodError } from 'zod'
 
 import type { IServerApp } from '@telepetros/core/interfaces'
 
-import { AppError, AuthError, NotFoundError } from '@telepetros/core/errors'
+import {
+  AlreadyExistsError,
+  AppError,
+  AuthError,
+  NotFoundError,
+} from '@telepetros/core/errors'
 
 import { HTTP_STATUS_CODE } from '@telepetros/core/constants'
 
 import { ENV } from '@/constants'
 import { AuthRoutes, ChannelsRoutes, ChattersRoutes } from './routes'
+import { VerifyJwtController } from '@/api/controllers/auth/verify-jwt-controller'
+import { FastifyHttp } from './fastify-http'
 
 export class FastifyApp implements IServerApp {
   private readonly app: FastifyInstance
@@ -38,8 +45,16 @@ export class FastifyApp implements IServerApp {
 
   private registerRoutes() {
     this.app.register(AuthRoutes, { prefix: '/auth' })
+    this.setJwtPreHandler()
     this.app.register(ChannelsRoutes, { prefix: '/channels' })
     this.app.register(ChattersRoutes, { prefix: '/chatters' })
+  }
+
+  private setJwtPreHandler() {
+    this.app.addHook('preHandler', async (request, response) => {
+      const http = new FastifyHttp(request, response)
+      new VerifyJwtController(true).handle(http)
+    })
   }
 
   private setErrorHandler() {
