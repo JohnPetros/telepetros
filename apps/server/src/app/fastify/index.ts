@@ -2,15 +2,14 @@ import Fastify, { type FastifyInstance } from 'fastify'
 import { serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod'
 import Cors from '@fastify/cors'
 import Jwt from '@fastify/jwt'
+import { ZodError } from 'zod'
 
 import type { IServerApp } from '@telepetros/core/interfaces'
-
-import { ChannelsRoutes } from './routes'
-import { AuthRoutes } from './routes/auth-routes'
-import { ENV } from '@/constants'
 import { AppError, AuthError, NotFoundError } from '@telepetros/core/errors'
 import { HTTP_STATUS_CODE } from '@telepetros/core/constants'
-import { ZodError } from 'zod'
+
+import { ENV } from '@/constants'
+import { AuthRoutes, ChannelsRoutes, ChattersRoutes } from './routes'
 
 export class FastifyApp implements IServerApp {
   private readonly app: FastifyInstance
@@ -22,10 +21,11 @@ export class FastifyApp implements IServerApp {
     this.app.setSerializerCompiler(serializerCompiler)
     this.app.setValidatorCompiler(validatorCompiler)
     this.app.register(Jwt, { secret: ENV.jwtSecret })
-    this.app.register(AuthRoutes, { prefix: '/auth' })
-    this.app.register(ChannelsRoutes, { prefix: '/channels' })
+    this.registerRoutes()
+
     this.setErrorHandler()
   }
+
   startServer() {
     this.app.listen({ port: ENV.port }).then(() => {
       console.log(`Server running on port: ${ENV.port}`)
@@ -33,6 +33,12 @@ export class FastifyApp implements IServerApp {
   }
 
   stopServer() {}
+
+  private registerRoutes() {
+    this.app.register(AuthRoutes, { prefix: '/auth' })
+    this.app.register(ChannelsRoutes, { prefix: '/channels' })
+    this.app.register(ChattersRoutes, { prefix: '/chatters' })
+  }
 
   private setErrorHandler() {
     this.app.setErrorHandler((error, _, reply) => {

@@ -6,6 +6,7 @@ type ChannelProps = {
   hash: string
   ownerId: string
   isPublic: boolean
+  avatar?: string
   chatId: string
 }
 
@@ -17,6 +18,7 @@ export class Channel extends Entity<ChannelProps> {
         hash: dto.hash,
         isPublic: dto.isPublic ?? true,
         ownerId: dto.ownerId,
+        avatar: dto.avatar,
         chatId: dto.chatId,
       },
       dto.id,
@@ -29,6 +31,10 @@ export class Channel extends Entity<ChannelProps> {
 
   get hash() {
     return this.props.hash
+  }
+
+  get avatar() {
+    return this.props.avatar
   }
 
   get isPublic() {
@@ -48,6 +54,7 @@ export class Channel extends Entity<ChannelProps> {
       id: this.id,
       name: this.name,
       hash: this.hash,
+      avatar: this.avatar,
       isPublic: this.isPublic,
       ownerId: this.ownerId,
       chatId: this.chatId,

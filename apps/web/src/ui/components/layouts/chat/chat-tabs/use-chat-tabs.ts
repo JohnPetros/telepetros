@@ -1,16 +1,17 @@
 'use client'
 
+import { useState } from 'react'
+
 import { useApi } from '@/infra/api'
 import { CACHE } from '@/ui/constants/cache'
 import { useAuthContext } from '@/ui/contexts/auth-context'
 import { useCache } from '@/ui/hooks/use-cache'
-import { useState } from 'react'
 
 type Tab = 'channels' | 'chatters'
 
 export function useChatTabs() {
   const [selectedTab, setSelectedTab] = useState<Tab>('channels')
-  const { channelsService } = useApi()
+  const { channelsService, chattersService } = useApi()
   const { chatter } = useAuthContext()
 
   async function fetchChannels() {
@@ -24,11 +25,29 @@ export function useChatTabs() {
     return response.data
   }
 
+  async function fetchChatters() {
+    if (!chatter) return
+
+    const response = await chattersService.listChattersByChatter(chatter.id)
+
+    if (response.isFailure) {
+      console.log(response.errorMessage)
+    }
+    return response.data
+  }
+
   function handleTabChange(tab: string) {
     setSelectedTab(tab as Tab)
   }
 
-  const { data: channels } = useCache({ key: CACHE.channels.key, fetcher: fetchChannels })
+  const { data: channels } = useCache({
+    key: CACHE.channelsList.key,
+    fetcher: fetchChannels,
+  })
+  const { data: chatters } = useCache({
+    key: CACHE.chattersList.key,
+    fetcher: fetchChatters,
+  })
 
   async function handleCreateChannel(channelName: string) {
     if (!chatter) return
@@ -45,6 +64,7 @@ export function useChatTabs() {
 
   return {
     channels,
+    chatters,
     selectedTab,
     handleCreateChannel,
     handleTabChange,

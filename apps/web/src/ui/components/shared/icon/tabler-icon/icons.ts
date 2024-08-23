@@ -3,6 +3,7 @@ import {
   type Icon,
   type IconProps,
   IconBrandGithub,
+  IconSettings,
   IconPlus,
   IconCornerDownRight,
   IconImageInPicture,
@@ -18,4 +19,5 @@ export const ICONS: Record<
   image: IconImageInPicture,
   github: IconBrandGithub,
   plus: IconPlus,
+  gear: IconSettings,
 }

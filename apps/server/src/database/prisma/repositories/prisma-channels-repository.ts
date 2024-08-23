@@ -37,8 +37,10 @@ export class PrismaChannelsRepository implements IChannelsRepository {
         hash: channel.hash,
         is_public: channel.isPublic,
         owner_id: channel.ownerId,
-        chat_id: channel.chatId,
+        chat_id: channel.id,
+        chat: {},
       },
+      include: { chat: true },
     })
 
     return this.mapper.toDomain(createdChannel)
