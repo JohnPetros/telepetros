@@ -22,6 +22,17 @@ export class PrismaChattersRepository implements IChattersRepository {
     return this.mapper.toDomain(prismaChatter)
   }
 
+  async findByEmail(email: string): Promise<Chatter | null> {
+    const prismaChatter = await prisma.chatter.findFirst({
+      where: {
+        email,
+      },
+    })
+    if (!prismaChatter) return null
+
+    return this.mapper.toDomain(prismaChatter)
+  }
+
   async add(chatter: Chatter): Promise<void> {
     const prismaChatter = this.mapper.toPrisma(chatter)
 

@@ -33,7 +33,7 @@ export class LoginWithGithubUseCase implements IUseCase<Request, ChatterDto> {
     }
 
     const chatter = Chatter.create(response.data)
-    const chatterExists = await this.chattersRepository.findById(chatter.id)
+    const chatterExists = await this.chattersRepository.findByEmail(chatter.email)
 
     if (!chatterExists) await this.chattersRepository.add(chatter)
 
