@@ -49,7 +49,6 @@ export class GithubService implements IGithubService {
     }
 
     const githubUser = userResponse.body
-    console.log({ githubUser })
 
     const chatterDto: ChatterDto = {
       name: githubUser.name,

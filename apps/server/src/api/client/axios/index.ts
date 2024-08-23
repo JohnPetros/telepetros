@@ -53,9 +53,12 @@ export class AxiosApiClient implements IApiClient {
     this.axios.defaults.baseURL = url
   }
 
+  setJwt(jwt: string): void {
+    this.setHeader('Authorization', `Bearer ${jwt}`)
+  }
+
   private sendResponse<ResponseBody>(response: AxiosResponse) {
     this.clearParams()
-    console.log('AXIOS', response.status)
     return new HttpReponse<ResponseBody>({
       body: response.data,
       statusCode: response.status,
