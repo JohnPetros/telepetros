@@ -10,17 +10,19 @@ datasource db {
 model Chat {
   id          String        @id @default(uuid())
   ChatterChat ChatterChat[]
-  Message     Message?
+  Message     Message[]
   Channel     Channel?
 
   @@map("chats")
 }
 
 model Message {
-  id                String  @id @default(uuid())
+  id                String   @id @default(uuid())
+  type              String
   value             String
-  parent_message_id String? @unique
-  chat_id           String  @unique
+  parent_message_id String?  @unique
+  chat_id           String
+  created_at        DateTime @default(now())
 
   parent_message Message? @relation("parent_message", fields: [parent_message_id], references: [id])
   Message        Message? @relation("parent_message")
