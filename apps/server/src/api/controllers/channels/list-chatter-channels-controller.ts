@@ -7,10 +7,8 @@ type Params = {
 
 export class ListChatterChannelsController implements IController<void, Params> {
   async handle(http: IHttp<void, Params>) {
-    const channelsDto = await channelsRepository.findManyByChatterId(
-      http.params.chatterId,
-    )
+    const channels = await channelsRepository.findManyByChatterId(http.params.chatterId)
 
-    return http.send(channelsDto)
+    return http.send(channels.map((chatter) => chatter.dto))
   }
 }
