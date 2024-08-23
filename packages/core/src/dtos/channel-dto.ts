@@ -4,4 +4,5 @@ export type ChannelDto = {
   hash: string
   isPublic?: boolean
   ownerId: string
+  chatId: string
 }
