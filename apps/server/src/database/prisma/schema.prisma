@@ -7,6 +7,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Chat {
+  id          String        @id @default(uuid())
+  ChatterChat ChatterChat[]
+  Message     Message?
+  Channel     Channel?
+
+  @@map("chats")
+}
+
+model Message {
+  id                String  @id @default(uuid())
+  value             String
+  parent_message_id String? @unique
+  chat_id           String  @unique
+
+  parent_message Message? @relation("parent_message", fields: [parent_message_id], references: [id])
+  Message        Message? @relation("parent_message")
+  chat           Chat     @relation(fields: [chat_id], references: [id])
+
+  @@map("messages")
+}
+
 model Chatter {
   id         String @id @default(uuid())
   name       String
@@ -14,9 +36,24 @@ model Chatter {
   avatar_url String
   banner_url String
 
-  channels Channel[]
+  channels     Channel[]
+  ChatterChat1 ChatterChat[] @relation("chatter_1")
+  ChatterChat2 ChatterChat[] @relation("chatter_2")
 
   @@map("chatters")
+}
+
+model ChatterChat {
+  id           String @id @default(uuid())
+  chatter_1_id String
+  chatter_2_id String
+  chat_id      String
+
+  chatter_1 Chatter @relation("chatter_1", fields: [chatter_1_id], references: [id])
+  chatter_2 Chatter @relation("chatter_2", fields: [chatter_2_id], references: [id])
+  chat      Chat    @relation(fields: [chat_id], references: [id])
+
+  @@map("chatter_chats")
 }
 
 model Channel {
@@ -25,8 +62,10 @@ model Channel {
   hash      String  @unique
   is_public Boolean @default(true)
   owner_id  String
+  chat_id   String  @unique
 
   owner Chatter @relation(fields: [owner_id], references: [id])
+  chat  Chat    @relation(fields: [chat_id], references: [id])
 
   @@map("channels")
 }
