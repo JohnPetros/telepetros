@@ -7,17 +7,17 @@ import { PrismaChannelMapper } from '../mappers'
 export class PrismaChannelsRepository implements IChannelsRepository {
   private readonly mapper: PrismaChannelMapper = new PrismaChannelMapper()
 
-  async add(channel: Channel): Promise<Channel> {
-    const createdChannel = await prisma.channel.create({
-      data: {
-        name: channel.name,
-        hash: channel.hash,
-        is_public: channel.isPublic,
-        owner_id: channel.ownerId,
+  async findById(channelId: string): Promise<Channel | null> {
+    const primasChannel = await prisma.channel.findFirst({
+      where: {
+        id: channelId,
       },
+      include: {},
     })
 
-    return this.mapper.toDomain(createdChannel)
+    if (!primasChannel) return null
+
+    return this.mapper.toDomain(primasChannel)
   }
 
   async findManyByChatterId(ownerId: string): Promise<Channel[]> {
@@ -28,5 +28,19 @@ export class PrismaChannelsRepository implements IChannelsRepository {
     })
 
     return primasChannel.map(this.mapper.toDomain)
+  }
+
+  async add(channel: Channel): Promise<Channel> {
+    const createdChannel = await prisma.channel.create({
+      data: {
+        name: channel.name,
+        hash: channel.hash,
+        is_public: channel.isPublic,
+        owner_id: channel.ownerId,
+        chat_id: channel.chatId,
+      },
+    })
+
+    return this.mapper.toDomain(createdChannel)
   }
 }
