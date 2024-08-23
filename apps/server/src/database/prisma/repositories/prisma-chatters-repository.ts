@@ -33,12 +33,14 @@ export class PrismaChattersRepository implements IChattersRepository {
     return this.mapper.toDomain(prismaChatter)
   }
 
-  async add(chatter: Chatter): Promise<void> {
+  async add(chatter: Chatter): Promise<Chatter> {
     const prismaChatter = this.mapper.toPrisma(chatter)
 
-    await prisma.chatter.create({
+    const createdChatter = await prisma.chatter.create({
       data: prismaChatter,
     })
+
+    return this.mapper.toDomain(createdChatter)
   }
 
   async findManyByChatterId(chatterId: string): Promise<Chatter[]> {

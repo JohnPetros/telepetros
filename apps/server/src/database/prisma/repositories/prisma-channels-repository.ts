@@ -31,17 +31,19 @@ export class PrismaChannelsRepository implements IChannelsRepository {
   }
 
   async add(channel: Channel): Promise<Channel> {
-    const createdChannel = await prisma.channel.create({
-      data: {
-        name: channel.name,
-        hash: channel.hash,
-        is_public: channel.isPublic,
-        owner_id: channel.ownerId,
-        chat_id: channel.id,
-        chat: {},
-      },
-      include: { chat: true },
-    })
+    const [, createdChannel] = await prisma.$transaction([
+      prisma.chat.create({ data: { id: channel.chatId } }),
+      prisma.channel.create({
+        data: {
+          id: channel.id,
+          name: channel.name,
+          hash: channel.hash,
+          owner_id: channel.ownerId,
+          is_public: channel.isPublic,
+          chat_id: channel.chatId,
+        },
+      }),
+    ])
 
     return this.mapper.toDomain(createdChannel)
   }
