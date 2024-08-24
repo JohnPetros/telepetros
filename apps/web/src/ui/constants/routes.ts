@@ -1,5 +1,5 @@
 export const ROUTES = {
   home: '/',
-  chat: '/chat',
+  channel: '/channel',
   login: '/login',
 }
