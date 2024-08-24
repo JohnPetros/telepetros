@@ -14,7 +14,7 @@ export const ChannelsRoutes = async (app: FastifyInstance) => {
 
   router
     .get(
-      '/:chatterId',
+      '/:channelId',
       {
         schema: {
           params: z.object({

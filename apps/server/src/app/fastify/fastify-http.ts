@@ -28,6 +28,7 @@ export class FastifyHttp<Body = void, Params = void> implements IHttp<Body, Para
   hasCookie(key: string): boolean {
     throw new Error('Method not implemented.')
   }
+
   next(): unknown {
     throw new Error('Method not implemented.')
   }

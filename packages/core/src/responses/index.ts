@@ -1,2 +1,2 @@
 export { ServiceResponse } from './service-response'
-export { HttpReponse } from './http-response'
+export { ApiResponse } from './api-response'

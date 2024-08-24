@@ -9,9 +9,11 @@ export const VerifyJwtController = (authService: IAuthService): IController => {
         return http.redirect(`${ROUTES.login}?error=user-not-found`)
       }
 
-      await authService.verifyJwt()
+      const response = await authService.verifyJwt()
 
-      return http.next()
+      if (response.isFailure) {
+        return http.redirect(ROUTES.login)
+      }
     },
   }
 }

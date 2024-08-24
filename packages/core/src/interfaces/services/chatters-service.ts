@@ -1,6 +1,6 @@
 import type { ChatterDto } from '#dtos'
-import type { ServiceResponse } from '../../responses'
+import type { ApiResponse } from '../../responses'
 
 export interface IChattersService {
-  listChattersByChatter(chatterId: string): Promise<ServiceResponse<ChatterDto[]>>
+  fetchChattersListByChatter(chatterId: string): Promise<ApiResponse<ChatterDto[]>>
 }

@@ -1,10 +1,6 @@
 import type { ChatterDto } from '@telepetros/core/dtos'
 import type { IApiClient, IGithubService } from '@telepetros/core/interfaces'
-import {
-  GithubAccessTokenNotFoundError,
-  GithubUserNotFoundError,
-} from '@telepetros/core/errors'
-import { ServiceResponse } from '@telepetros/core/responses'
+import { ApiResponse } from '@telepetros/core/responses'
 
 type AccessTokenResponse = {
   access_token: string
@@ -23,7 +19,7 @@ export class GithubService implements IGithubService {
     githubClientId: string,
     githubClientSecret: string,
     githubClientCode: string,
-  ): Promise<ServiceResponse<ChatterDto>> {
+  ): Promise<ApiResponse<ChatterDto>> {
     this.apiClient.setParam('client_id', githubClientId)
     this.apiClient.setParam('client_secret', githubClientSecret)
     this.apiClient.setParam('code', githubClientCode)
@@ -32,8 +28,11 @@ export class GithubService implements IGithubService {
       'https://github.com/login/oauth/access_token',
     )
 
-    if (accessTokenResponse.isError) {
-      return new ServiceResponse({ error: GithubUserNotFoundError })
+    if (accessTokenResponse.isFailure) {
+      return new ApiResponse({
+        statusCode: accessTokenResponse.statusCode,
+        error: 'Github access token not found',
+      })
     }
 
     const { access_token } = accessTokenResponse.body
@@ -44,8 +43,11 @@ export class GithubService implements IGithubService {
       'https://api.github.com/user',
     )
 
-    if (userResponse.isError) {
-      return new ServiceResponse({ error: GithubAccessTokenNotFoundError })
+    if (userResponse.isFailure) {
+      return new ApiResponse({
+        statusCode: userResponse.statusCode,
+        error: 'Github user not found',
+      })
     }
 
     const githubUser = userResponse.body
@@ -56,6 +58,6 @@ export class GithubService implements IGithubService {
       avatar: githubUser.avatar_url,
     }
 
-    return new ServiceResponse({ data: chatterDto })
+    return new ApiResponse({ body: chatterDto, statusCode: userResponse.statusCode })
   }
 }

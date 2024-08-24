@@ -8,6 +8,7 @@ import type { IServerApp } from '@telepetros/core/interfaces'
 
 import {
   AlreadyExistsError,
+  ApiError,
   AppError,
   AuthError,
   NotFoundError,
@@ -45,7 +46,6 @@ export class FastifyApp implements IServerApp {
 
   private registerRoutes() {
     this.app.register(AuthRoutes, { prefix: '/auth' })
-    this.setJwtPreHandler()
     this.app.register(ChannelsRoutes, { prefix: '/channels' })
     this.app.register(ChattersRoutes, { prefix: '/chatters' })
   }
@@ -66,6 +66,8 @@ export class FastifyApp implements IServerApp {
           message: error.message,
         }
 
+        error.statusCode
+
         if (error instanceof AuthError)
           return reply.status(HTTP_STATUS_CODE.unauthorized).send(response)
 
@@ -74,6 +76,9 @@ export class FastifyApp implements IServerApp {
 
         if (error instanceof AlreadyExistsError)
           return reply.status(HTTP_STATUS_CODE.conflict).send(response)
+
+        if (error instanceof ApiError)
+          return reply.status(error.statusCode).send(response)
       }
 
       if (error instanceof ZodError)

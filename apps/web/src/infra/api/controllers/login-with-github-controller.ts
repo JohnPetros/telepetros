@@ -11,10 +11,10 @@ export const LoginWithGithubController = (authService: IAuthService): IControlle
       const response = await authService.loginWithGithub(githubClientCode)
 
       if (response.isFailure) {
-        http.redirect(`${ROUTES.login}?error=${response.errorMessage}`)
+        http.redirect(`${ROUTES.login}?error=${response.error}`)
       }
 
-      http.setCookie(COOKIES.jwt.key, response.data.jwt, COOKIES.jwt.duration)
+      http.setCookie(COOKIES.jwt.key, response.body.jwt, COOKIES.jwt.duration)
       return http.redirect(ROUTES.home)
     },
   }

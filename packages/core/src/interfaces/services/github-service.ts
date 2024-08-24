@@ -1,10 +1,10 @@
 import type { ChatterDto } from '#dtos'
-import type { ServiceResponse } from '../../responses'
+import type { ApiResponse } from '../../responses'
 
 export interface IGithubService {
   fetchUser(
     clientId: string,
     clientSecret: string,
     clientCode: string,
-  ): Promise<ServiceResponse<ChatterDto>>
+  ): Promise<ApiResponse<ChatterDto>>
 }

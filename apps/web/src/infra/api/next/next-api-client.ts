@@ -1,8 +1,8 @@
 import type { IApiClient } from '@telepetros/core/interfaces'
 import { handleApiError } from './utils/handle-api-error'
-import { HttpReponse } from '@telepetros/core/responses'
 import { addUrlParams } from './utils'
 import { AppError } from '@telepetros/core/errors'
+import { ApiResponse } from '@telepetros/core/responses'
 
 export const NextApiClient = (): IApiClient => {
   let baseUrl: string
@@ -24,7 +24,7 @@ export const NextApiClient = (): IApiClient => {
         return handleApiError<ResponseBody>(data, response.status)
       }
 
-      return new HttpReponse<ResponseBody>({
+      return new ApiResponse<ResponseBody>({
         body: data,
         statusCode: response.status,
       })
@@ -42,7 +42,7 @@ export const NextApiClient = (): IApiClient => {
         return handleApiError<ResponseBody>(data, response.status)
       }
 
-      return new HttpReponse<ResponseBody>({
+      return new ApiResponse<ResponseBody>({
         body: data,
         statusCode: response.status,
       })

@@ -1,8 +1,8 @@
-import type { HttpReponse } from '../../responses'
+import type { ApiResponse } from '../../responses'
 
 export interface IApiClient {
-  get<ResponseBody>(url: string, body?: unknown): Promise<HttpReponse<ResponseBody>>
-  post<ResponseBody>(url: string, body?: unknown): Promise<HttpReponse<ResponseBody>>
+  get<ResponseBody>(url: string, body?: unknown): Promise<ApiResponse<ResponseBody>>
+  post<ResponseBody>(url: string, body?: unknown): Promise<ApiResponse<ResponseBody>>
   setBaseUrl(url: string): void
   setJwt(jwt: string): void
   setHeader(key: string, value: string): void
