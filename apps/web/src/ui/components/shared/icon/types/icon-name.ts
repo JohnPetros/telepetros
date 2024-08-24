@@ -1,1 +1,8 @@
-export type IconName = 'github' | 'plus' | 'arrow-right-corner' | 'image' | 'gear'
+export type IconName =
+  | 'github'
+  | 'plus'
+  | 'arrow-right-corner'
+  | 'image'
+  | 'gear'
+  | 'clip'
+  | 'emote'

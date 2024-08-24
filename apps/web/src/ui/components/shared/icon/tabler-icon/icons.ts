@@ -6,6 +6,8 @@ import {
   IconSettings,
   IconPlus,
   IconCornerDownRight,
+  IconPaperclip,
+  IconMoodSmile,
   IconImageInPicture,
 } from '@tabler/icons-react'
 
@@ -20,4 +22,6 @@ export const ICONS: Record<
   github: IconBrandGithub,
   plus: IconPlus,
   gear: IconSettings,
+  clip: IconPaperclip,
+  emote: IconMoodSmile,
 }
