@@ -1,30 +1,30 @@
 import type { IUseCase } from '#interfaces/handlers'
-import type { IGithubService } from '#interfaces/services'
+import type { IGoogleService } from '#interfaces/services'
 import type { IChattersRepository } from '#interfaces/repositories'
 import type { ChatterDto } from '#dtos'
 import { Chatter } from '#domain/entities'
 
 type Request = {
-  githubClientId: string
-  githubClientSecret: string
-  githubClientCode: string
+  googleClientId: string
+  googleClientSecret: string
+  googleClientCode: string
 }
 
-export class LoginWithGithubUseCase implements IUseCase<Request, ChatterDto> {
+export class LoginWithGoogleUseCase implements IUseCase<Request, ChatterDto> {
   constructor(
-    private readonly githubService: IGithubService,
+    private readonly googleService: IGoogleService,
     private readonly chattersRepository: IChattersRepository,
   ) {}
 
   async execute({
-    githubClientId,
-    githubClientSecret,
-    githubClientCode,
+    googleClientId,
+    googleClientSecret,
+    googleClientCode,
   }: Request): Promise<ChatterDto> {
-    const response = await this.githubService.fetchUser(
-      githubClientId,
-      githubClientSecret,
-      githubClientCode,
+    const response = await this.googleService.fetchUser(
+      googleClientId,
+      googleClientSecret,
+      googleClientCode,
     )
 
     if (response.isFailure) {
@@ -36,7 +36,7 @@ export class LoginWithGithubUseCase implements IUseCase<Request, ChatterDto> {
 
     if (!chatterExists) {
       const addedChatter = await this.chattersRepository.add(chatter)
-      return addedChatter.dto
+      return addedChatter
     }
 
     return chatterExists.dto

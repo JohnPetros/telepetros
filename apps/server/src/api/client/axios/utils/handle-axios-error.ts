@@ -4,7 +4,8 @@ import { ApiResponse } from '@telepetros/core/responses'
 
 export function handleAxiosError<ResponseBody>(axiosError: unknown) {
   if (isAxiosError(axiosError)) {
-    console.log(`Axios Error: ${axiosError}`)
+    console.log('Axios Error: ')
+    console.log(axiosError.response?.data)
     return new ApiResponse({
       body: axiosError.message,
       statusCode: axiosError.response?.status,

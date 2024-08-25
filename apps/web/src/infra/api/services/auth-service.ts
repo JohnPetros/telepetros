@@ -11,5 +11,11 @@ export const AuthService = (apiClient: IApiClient): IAuthService => {
         githubClientCode,
       })
     },
+
+    async loginWithGoogle(googleClientCode: string) {
+      return await apiClient.post<{ jwt: string }>('/auth/google', {
+        googleClientCode,
+      })
+    },
   }
 }

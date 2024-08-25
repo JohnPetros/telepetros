@@ -51,6 +51,7 @@ export class FastifyHttp<Body = void, Params = void> implements IHttp<Body, Para
   }
 
   async getChatter(): Promise<ChatterDto> {
+    await this.verifyJwt()
     return this.request.user as ChatterDto
   }
 
