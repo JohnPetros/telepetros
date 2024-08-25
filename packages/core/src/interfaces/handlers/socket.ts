@@ -1,5 +1,5 @@
 import type { IWs } from './ws'
 
-export interface IConnector {
+export interface ISocket {
   handle(ws: IWs): void
 }

@@ -3,6 +3,7 @@ export type MessageDto = {
   type: string
   value: string
   chatId: string
+  chatterId: string
   createdAt?: Date
   parentMessageId?: string
 }
