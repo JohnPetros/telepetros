@@ -2,10 +2,10 @@ import Fastify, { type FastifyInstance } from 'fastify'
 import { serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod'
 import Cors from '@fastify/cors'
 import Jwt from '@fastify/jwt'
+import Websocket from '@fastify/websocket'
 import { ZodError } from 'zod'
 
 import type { IServerApp } from '@telepetros/core/interfaces'
-
 import {
   AlreadyExistsError,
   ApiError,
@@ -13,11 +13,10 @@ import {
   AuthError,
   NotFoundError,
 } from '@telepetros/core/errors'
-
 import { HTTP_STATUS_CODE } from '@telepetros/core/constants'
 
 import { ENV } from '@/constants'
-import { AuthRoutes, ChannelsRoutes, ChattersRoutes } from './routes'
+import { AuthRoutes, ChannelsRoutes, ChatRoutes, ChattersRoutes } from './routes'
 import { VerifyJwtController } from '@/api/controllers/auth/verify-jwt-controller'
 import { FastifyHttp } from './fastify-http'
 
@@ -31,6 +30,7 @@ export class FastifyApp implements IServerApp {
     this.app.setSerializerCompiler(serializerCompiler)
     this.app.setValidatorCompiler(validatorCompiler)
     this.app.register(Jwt, { secret: ENV.jwtSecret })
+    this.app.register(Websocket)
     this.registerRoutes()
 
     this.setErrorHandler()
@@ -48,6 +48,7 @@ export class FastifyApp implements IServerApp {
     this.app.register(AuthRoutes, { prefix: '/auth' })
     this.app.register(ChannelsRoutes, { prefix: '/channels' })
     this.app.register(ChattersRoutes, { prefix: '/chatters' })
+    this.app.register(ChatRoutes, { prefix: '/chat' })
   }
 
   private setJwtPreHandler() {

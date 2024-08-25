@@ -7,8 +7,8 @@ type Params = {
 
 export class GetChannelController implements IController<void, Params> {
   async handle(http: IHttp<void, Params>) {
-    const channelDto = await channelsRepository.findById(http.params.channelId)
+    const channel = await channelsRepository.findById(http.params.channelId)
 
-    return http.send(channelDto)
+    return http.send(channel?.dto)
   }
 }

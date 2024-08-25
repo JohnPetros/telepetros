@@ -1,8 +1,13 @@
+'use client'
+
 import { useAuthContext } from '@/ui/contexts/auth-context'
-import { ChatMessage } from '../../shared/chat-message'
 import { useChannelChatPage } from './use-channel-chat-page'
-import { Avatar, Link } from '@nextui-org/react'
+import { Button, Input, Link } from '@nextui-org/react'
 import { Icon } from '../../shared/icon'
+import { Chat } from '../../shared/chat'
+import { Header } from '../../shared/header'
+import { ChatMessage } from '../../shared/chat/chat-message'
+import { ROUTES } from '@/ui/constants'
 
 type ChannelChatPageProps = {
   channelId: string
@@ -15,29 +20,17 @@ export const ChannelChatPage = ({ channelId }: ChannelChatPageProps) => {
   if (!chatter || !channel) return null
 
   return (
-    <>
-      <header className='flex items-center justify-between bg-white'>
-        <div className='flex items-center gap-3'>
-          {channel.avatar ? (
-            <Avatar src={chatter.avatar} />
-          ) : (
-            <Avatar name={chatter.name} />
-          )}
-          <h2>EITA</h2>
-        </div>
-        <Link>
-          <Icon name='gear' size={24} />
-        </Link>
-      </header>
+    <div className='flex flex-col h-full'>
+      <Header
+        resource={{ name: chatter.name, avatar: chatter.avatar }}
+        link={
+          <Link href={`${ROUTES.channel}/${chatter.id}`}>
+            <Icon name='gear' size={24} className='text-slate-700' />
+          </Link>
+        }
+      />
 
-      <div>
-        <h1 className='text-3xl text-slate-700'>Channel Chat</h1>
-        <p className='text-lg text-slate-400'>23 members, 10 online</p>
-      </div>
-
-      <div>
-        <ChatMessage chatter={{ name: chatter.name, avatar: chatter.avatar }} />
-      </div>
-    </>
+      <Chat id={channel.chatId} />
+    </div>
   )
 }

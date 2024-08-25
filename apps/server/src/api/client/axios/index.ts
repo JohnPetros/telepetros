@@ -1,7 +1,7 @@
 import axios, { type AxiosInstance, type AxiosResponse } from 'axios'
 
 import type { IApiClient } from '@telepetros/core/interfaces'
-import { HttpReponse } from '@telepetros/core/responses'
+import { ApiResponse } from '@telepetros/core/responses'
 
 import { handleAxiosError } from './utils'
 
@@ -29,7 +29,7 @@ export class AxiosApiClient implements IApiClient {
   async post<ResponseBody>(
     url: string,
     body: unknown,
-  ): Promise<HttpReponse<ResponseBody>> {
+  ): Promise<ApiResponse<ResponseBody>> {
     try {
       const response = await this.axios.post(url, body)
       return this.sendResponse(response)
@@ -59,7 +59,7 @@ export class AxiosApiClient implements IApiClient {
 
   private sendResponse<ResponseBody>(response: AxiosResponse) {
     this.clearParams()
-    return new HttpReponse<ResponseBody>({
+    return new ApiResponse<ResponseBody>({
       body: response.data,
       statusCode: response.status,
     })

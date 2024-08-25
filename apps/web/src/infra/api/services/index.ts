@@ -5,7 +5,7 @@ import { ChattersService } from './chatters-service'
 
 const apiClient = NextApiClient()
 
-apiClient.setBaseUrl(ENV.serverUrl)
+apiClient.setBaseUrl(ENV.apiUrl)
 
 export const channelsService = ChannelsService(apiClient)
 export const chattersService = ChattersService(apiClient)

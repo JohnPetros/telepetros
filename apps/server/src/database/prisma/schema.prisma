@@ -8,10 +8,12 @@ datasource db {
 }
 
 model Chat {
-  id          String        @id @default(uuid())
-  ChatterChat ChatterChat[]
-  Message     Message[]
-  Channel     Channel?
+  id String @id @default(uuid())
+
+  ChatterChat    ChatterChat[]
+  Message        Message[]
+  Channel        Channel?
+  ChannelMembers ChannelMembers[]
 
   @@map("chats")
 }
@@ -38,9 +40,10 @@ model Chatter {
   avatar_url String
   banner_url String
 
-  channels     Channel[]
-  ChatterChat1 ChatterChat[] @relation("chatter_1")
-  ChatterChat2 ChatterChat[] @relation("chatter_2")
+  channels       Channel[]
+  ChatterChat1   ChatterChat[]    @relation("chatter_1")
+  ChatterChat2   ChatterChat[]    @relation("chatter_2")
+  ChannelMembers ChannelMembers[]
 
   @@map("chatters")
 }
@@ -70,4 +73,13 @@ model Channel {
   chat  Chat    @relation(fields: [chat_id], references: [id])
 
   @@map("channels")
+}
+
+model ChannelMembers {
+  id              String @id @default(uuid())
+  channel_chat_id String
+  chatter_id      String
+
+  chat    Chat    @relation(fields: [channel_chat_id], references: [id])
+  chatter Chatter @relation(fields: [chatter_id], references: [id])
 }

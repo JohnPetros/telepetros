@@ -3,7 +3,6 @@ import type { IGithubService } from '#interfaces/services'
 import type { IChattersRepository } from '#interfaces/repositories'
 import type { ChatterDto } from '#dtos'
 import { Chatter } from '#domain/entities'
-import { GithubAccessTokenNotFoundError } from '../../errors'
 
 type Request = {
   githubClientId: string
@@ -32,7 +31,7 @@ export class LoginWithGithubUseCase implements IUseCase<Request, ChatterDto> {
       response.throwError()
     }
 
-    const chatter = Chatter.create(response.data)
+    const chatter = Chatter.create(response.body)
     const chatterExists = await this.chattersRepository.findByEmail(chatter.email)
 
     if (!chatterExists) {
