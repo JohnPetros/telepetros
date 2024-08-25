@@ -1,7 +1,7 @@
 import type { MessageDto } from '../../dtos'
+import type { MessageType } from '../types'
+import type { Chatter } from './chatter'
 import { Entity } from '../abstracts'
-
-type MessageType = 'text' | 'image'
 
 type MessageProps = {
   type: MessageType
@@ -9,6 +9,7 @@ type MessageProps = {
   parentMessageId?: string
   createdAt: Date
   chatId: string
+  chatterId: string
 }
 
 export class Message extends Entity<MessageProps> {
@@ -23,12 +24,17 @@ export class Message extends Entity<MessageProps> {
       value: dto.value,
       createdAt: dto.createdAt ?? new Date(),
       parentMessageId: dto.parentMessageId,
-      chatId: dto.chatId
+      chatId: dto.chatId,
+      chatterId: dto.chatterId,
     })
   }
 
   static isMessageType(type: string): type is MessageType {
     return ['text', 'image'].includes(type)
+  }
+
+  isFromChatter(chatter: Chatter) {
+    return this.props.chatterId === chatter.id
   }
 
   get type() {
@@ -43,14 +49,15 @@ export class Message extends Entity<MessageProps> {
     return this.props.createdAt
   }
 
-  get dto() {
+  get dto(): MessageDto {
     return {
       id: this.id,
       type: this.type,
       value: this.value,
       chatId: this.props.chatId,
+      chatterId: this.props.chatterId,
       createdAt: this.createdAt,
       parentMessageId: this.props.parentMessageId,
     }
   }
-} 
+}
