@@ -3,7 +3,7 @@ import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { FastifyWs } from '../fastify-ws'
 import z from 'zod'
 
-import { ChatConnector } from '@/realtime/connectors'
+import { ChatSocket } from '@/realtime/sockets'
 import type { Server } from 'socket.io'
 
 declare module 'fastify' {
@@ -26,9 +26,9 @@ export const ChatRoutes = async (app: FastifyInstance) => {
       websocket: true,
     },
     (socket, request) => {
-      const chatConnector = new ChatConnector(request.params.chatId)
+      const chatSocket = new ChatSocket(request.params.chatId)
       const ws = new FastifyWs(socket, app)
-      return chatConnector.handle(ws)
+      return chatSocket.handle(ws)
     },
   )
 }

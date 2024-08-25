@@ -8,7 +8,7 @@ export class PrismaChatsRepository implements IChatsRepository {
   private readonly messageMapper: PrismaMessageMapper = new PrismaMessageMapper()
   private readonly chatterMapper: PrismaChatterMapper = new PrismaChatterMapper()
 
-  async findByChannelChatId(chatId: string): Promise<Chat> {
+  async findByChannelChatId(chatId: string): Promise<Chat | null> {
     const prismaChat = await prisma.chat.findFirst({
       where: {
         id: chatId,
@@ -26,7 +26,9 @@ export class PrismaChatsRepository implements IChatsRepository {
     let channelMembers: Chatter[] = []
     let channelMessages: Message[] = []
 
-    const chat = Chat.create()
+    if (!prismaChat) return null
+
+    const chat = Chat.create({ id: prismaChat.id, chatters: [], messages: [] })
 
     if (prismaChat?.ChannelMembers) {
       channelMembers = prismaChat?.ChannelMembers.map((prismaChatter) =>

@@ -16,7 +16,6 @@ export class ChatSocket implements ISocket {
 
   handle(ws: IWs): void {
     ws.on<ConnectChatterPayload>(EVENTS.chat.connectChatter, async (payload) => {
-      console.log(payload)
       ws.broadcast(EVENTS.chat.connectChatter, payload)
     })
 

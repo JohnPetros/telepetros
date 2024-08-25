@@ -1,1 +1,1 @@
-export type WsCallback<Payload> = (payload?: Payload) => void
+export type WsCallback<Payload> = (payload: Payload) => void

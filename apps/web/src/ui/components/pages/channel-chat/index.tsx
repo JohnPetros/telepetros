@@ -14,7 +14,7 @@ type ChannelChatPageProps = {
 }
 
 export const ChannelChatPage = ({ channelId }: ChannelChatPageProps) => {
-  const { channel } = useChannelChatPage(channelId)
+  const { channel, chat } = useChannelChatPage(channelId)
   const { chatter } = useAuthContext()
 
   if (!chatter || !channel) return null
@@ -30,7 +30,7 @@ export const ChannelChatPage = ({ channelId }: ChannelChatPageProps) => {
         }
       />
 
-      <Chat id={channel.chatId} />
+      {chat && <Chat initialChat={chat} />}
     </div>
   )
 }

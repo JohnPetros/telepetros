@@ -1,4 +1,4 @@
-import { Channel, Chat, Chatter } from '#domain/entities'
+import { Channel, Chat } from '#domain/entities'
 import type { ChannelDto } from '#dtos'
 import type { IUseCase } from '#interfaces/handlers'
 import type { IChannelsRepository, IChattersRepository } from '#interfaces/repositories'
@@ -24,7 +24,7 @@ export class CreateChannelUseCase implements IUseCase<Request, ChannelDto> {
 
     if (!hasChatter) throw new ChatterNotFoundError()
 
-    const addedChatter = await this.channelsRepository.add(channel)
-    return addedChatter.dto
+    const addedChannel = await this.channelsRepository.add(channel)
+    return addedChannel.dto
   }
 }

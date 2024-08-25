@@ -1,36 +1,52 @@
 import { useEffect, useState } from 'react'
 
+import { Chat, Message } from '@telepetros/core/entities'
+
 import { useAuthContext } from '@/ui/contexts/auth-context'
-import { useWs } from '@/ui/hooks'
-import { ENV } from '@/ui/constants'
-import { ChatSocket } from '@/infra/realtime/sockets'
-import type { IChatSocket } from '@telepetros/core/interfaces'
-import type { MessageDto } from '@telepetros/core/dtos'
+import { useChatSocket } from '@/infra/realtime/sockets'
 
-export function useChat(chatId: string) {
+export function useChat(initialChat: Chat) {
+  const [chat, setChat] = useState<Chat>(initialChat)
+  const [isConnected, setIsConnected] = useState(false)
   const { chatter } = useAuthContext()
-  const ws = useWs({
-    url: `${ENV.realTimeUrl}/chat/${chatId}`,
-    onOpen: () => console.log('OPEN'),
-  })
-  const [messages, setMessages] = useState<string[]>([])
-  const [chatSocket, setChatSocket] = useState<IChatSocket | null>(null)
 
-  function handleMessageSend() {}
+  function handleReceiveMessage(message: Message) {
+    chat.appendMessage(message)
+    setChat(Chat.create(chat.dto))
+  }
+
+  function handleConnectChatter(chatterId: string) {
+    chat.appendOnlineChatterId(chatterId)
+    setChat(chat)
+  }
+
+  const { isOpen, connectChatter, sendMessage } = useChatSocket({
+    chatId: chat.id,
+    onConnectChatter: handleConnectChatter,
+    onReceiveMessage: handleReceiveMessage,
+  })
+
+  function handleSendMessage(messageValue: string) {
+    if (!chatter) return
+
+    const message = Message.create({
+      type: 'text',
+      value: messageValue,
+      chatId: chat.id,
+      chatterId: chatter.id,
+    })
+    sendMessage(message)
+  }
 
   useEffect(() => {
-    function handleConnectChatter(messagesDto: MessageDto[]) {
-      console.log('messagesDto', messagesDto)
+    if (isOpen && chatter && !isConnected) {
+      connectChatter(chatter.id)
+      setIsConnected(true)
     }
-
-    if (ws && chatter) {
-      const chatSocket = ChatSocket(ws)
-      chatSocket.connectChatter(chatter.id, handleConnectChatter)
-      setChatSocket(chatSocket)
-    }
-  }, [ws, chatter])
+  }, [isOpen, isConnected, chatter, connectChatter])
 
   return {
-    messages,
+    chat,
+    handleSendMessage,
   }
 }

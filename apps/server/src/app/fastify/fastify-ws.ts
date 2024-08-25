@@ -11,10 +11,6 @@ export class FastifyWs implements IWs {
     private readonly server: FastifyInstance,
   ) {}
 
-  send(payload: unknown): void {
-    this.socket.send(payload)
-  }
-
   on<Payload>(event: string, callback: WsCallback<Payload>): void {
     this.socket.on('message', (message: string) => {
       const response = RealtimeResponse.parseMessage(message)
@@ -25,12 +21,14 @@ export class FastifyWs implements IWs {
     })
   }
 
-  emit<Payload>(event: string, payload: unknown, callback: WsCallback<Payload>): void {
+  emit(event: string, payload: unknown): void {
     const response = new RealtimeResponse({ event, payload })
     this.socket.send(response.message)
   }
 
   broadcast(event: string, payload: unknown): void {
+    console.log('emit')
+
     const response = new RealtimeResponse({ event, payload })
     for (const client of this.server.websocketServer.clients) {
       client.send(response.message)

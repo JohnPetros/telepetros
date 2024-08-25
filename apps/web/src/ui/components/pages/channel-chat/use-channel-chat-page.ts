@@ -1,7 +1,7 @@
 import { useApi } from '@/infra/api'
 import { CACHE } from '@/ui/constants/cache'
 import { useCache } from '@/ui/hooks'
-import { Channel } from '@telepetros/core/entities'
+import { Channel, Chat } from '@telepetros/core/entities'
 
 export function useChannelChatPage(channelId: string) {
   const { channelsService } = useApi()
@@ -15,12 +15,13 @@ export function useChannelChatPage(channelId: string) {
     return response.body
   }
 
-  const { data: channelDto } = useCache({
+  const { data } = useCache({
     key: CACHE.channel.key,
     fetcher: fetchChannel,
   })
 
   return {
-    channel: channelDto ? Channel.create(channelDto) : null,
+    channel: data ? Channel.create(data.channel) : null,
+    chat: data ? Chat.create(data.chat) : null,
   }
 }

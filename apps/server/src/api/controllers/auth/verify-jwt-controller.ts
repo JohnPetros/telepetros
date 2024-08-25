@@ -1,4 +1,3 @@
-import { JwtNotFoundError } from '@telepetros/core/errors'
 import type { IController, IHttp } from '@telepetros/core/interfaces'
 
 export class VerifyJwtController implements IController {

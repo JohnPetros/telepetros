@@ -1,1 +1,1 @@
-export { ChatSocket } from './chat-socket'
+export { useChatSocket } from './use-chat-socket'

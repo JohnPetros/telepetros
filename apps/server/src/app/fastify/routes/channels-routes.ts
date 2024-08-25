@@ -2,11 +2,14 @@ import { z } from 'zod'
 import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 
-import { CreateChannelController, GetChannelController } from '@/api/controllers/channels'
+import {
+  CreateChannelController,
+  GetChannelChatController,
+} from '@/api/controllers/channels'
 import { ListChatterChannelsController } from '@/api/controllers/channels'
 import { FastifyHttp } from '../fastify-http'
 export const ChannelsRoutes = async (app: FastifyInstance) => {
-  const getChannelController = new GetChannelController()
+  const getChannelChatController = new GetChannelChatController()
   const createChannelController = new CreateChannelController()
   const listChatterChannelsController = new ListChatterChannelsController()
   const router = app.withTypeProvider<ZodTypeProvider>()
@@ -23,7 +26,7 @@ export const ChannelsRoutes = async (app: FastifyInstance) => {
       },
       async (request, response) => {
         const http = new FastifyHttp<void, typeof request.params>(request, response)
-        return getChannelController.handle(http)
+        return getChannelChatController.handle(http)
       },
     )
     .get(

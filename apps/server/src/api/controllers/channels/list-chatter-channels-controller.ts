@@ -9,6 +9,6 @@ export class ListChatterChannelsController implements IController<void, Params> 
   async handle(http: IHttp<void, Params>) {
     const channels = await channelsRepository.findManyByChatterId(http.params.chatterId)
 
-    return http.send(channels.map((chatter) => chatter.dto))
+    return http.send(channels.map((channel) => channel.dto))
   }
 }

@@ -19,14 +19,17 @@ export class Message extends Entity<MessageProps> {
       throw new Error()
     }
 
-    return new Message({
-      type,
-      value: dto.value,
-      createdAt: dto.createdAt ?? new Date(),
-      parentMessageId: dto.parentMessageId,
-      chatId: dto.chatId,
-      chatterId: dto.chatterId,
-    })
+    return new Message(
+      {
+        type,
+        value: dto.value,
+        createdAt: dto.createdAt ?? new Date(),
+        parentMessageId: dto.parentMessageId,
+        chatId: dto.chatId,
+        chatterId: dto.chatterId,
+      },
+      dto.id,
+    )
   }
 
   static isMessageType(type: string): type is MessageType {

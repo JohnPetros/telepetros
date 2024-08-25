@@ -1,13 +1,18 @@
+import type { MessageType } from '@telepetros/core/types'
+
 import { Avatar } from '@nextui-org/react'
 
 type ChatMessageProps = {
+  type: MessageType
+  value: string
+  createdAt: Date
   chatter: {
     name: string
     avatar?: string
   }
 }
 
-export const ChatMessage = ({ chatter }: ChatMessageProps) => {
+export const ChatMessage = ({ chatter, type, value, createdAt }: ChatMessageProps) => {
   return (
     <div className='flex items-end gap-3'>
       {chatter.avatar ? (
@@ -15,12 +20,9 @@ export const ChatMessage = ({ chatter }: ChatMessageProps) => {
       ) : (
         <Avatar name={chatter.name} size='lg' />
       )}
-      <div className='flex flex-col gap-2 max-w-96 p-3 bg-slate-300/45 rounded-xl rounded-es-none'>
+      <div className='flex flex-col gap-2 min-w-80 max-w-96 p-3 bg-slate-300/45 rounded-xl rounded-es-none'>
         <strong className='text-blue-500 font-semibold text-md'>{chatter.name}</strong>
-        <p className='text-sm text-slate-800 font-medium'>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi magni sapiente
-          repellendus consectetur fugiat, error vel suscipit consequatur inventore id
-        </p>
+        <p className='text-sm text-slate-800 font-medium'>{value}</p>
         <time className='block ml-auto text-slate-500 text-xs'>08:57</time>
       </div>
     </div>
