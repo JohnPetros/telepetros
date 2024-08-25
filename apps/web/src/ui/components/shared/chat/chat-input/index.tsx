@@ -1,10 +1,20 @@
-import { Button, Input } from '@nextui-org/react'
-import { Icon } from '../../icon'
+'use client'
 
-export const ChatInput = () => {
+import { Button, Input } from '@nextui-org/react'
+
+import { Icon } from '../../icon'
+import { useChatInput } from './use-chat-input'
+
+type ChatInputProps = {
+  onSend: (value: string) => void
+}
+
+export const ChatInput = ({ onSend }: ChatInputProps) => {
+  const { value, handleChangeValue, handleKeyDown } = useChatInput(onSend)
+
   return (
     <Input
-      placeholder='Your'
+      placeholder='Your message'
       classNames={{
         input: 'text-slate-800 font-semibold',
         inputWrapper: 'h-16 ml-1',
@@ -20,6 +30,9 @@ export const ChatInput = () => {
           <Icon name='emote' size={28} className='text-slate-500' />
         </Button>
       }
+      value={value}
+      onChange={handleChangeValue}
+      onKeyDown={handleKeyDown}
     />
   )
 }
