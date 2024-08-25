@@ -1,9 +1,9 @@
 import {
   PrismaChannelsRepository,
   PrismaChattersRepository,
-  PrismaMessagesRepository,
+  PrismaChatsRepository,
 } from './prisma/repositories'
 
 export const channelsRepository = new PrismaChannelsRepository()
 export const chattersRepository = new PrismaChattersRepository()
-export const messagesRepository = new PrismaMessagesRepository()
+export const chatsRepository = new PrismaChatsRepository()

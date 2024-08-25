@@ -5,7 +5,7 @@ import { prisma } from '../client'
 import { PrismaChannelMapper } from '../mappers'
 
 export class PrismaChannelsRepository implements IChannelsRepository {
-  private readonly mapper: PrismaChannelMapper = new PrismaChannelMapper()
+  private readonly channelMapper: PrismaChannelMapper = new PrismaChannelMapper()
 
   async findById(channelId: string): Promise<Channel | null> {
     const primasChannel = await prisma.channel.findFirst({
@@ -17,7 +17,7 @@ export class PrismaChannelsRepository implements IChannelsRepository {
 
     if (!primasChannel) return null
 
-    return this.mapper.toDomain(primasChannel)
+    return this.channelMapper.toDomain(primasChannel)
   }
 
   async findManyByChatterId(ownerId: string): Promise<Channel[]> {
@@ -27,12 +27,15 @@ export class PrismaChannelsRepository implements IChannelsRepository {
       },
     })
 
-    return primasChannel.map(this.mapper.toDomain)
+    return primasChannel.map(this.channelMapper.toDomain)
   }
 
   async add(channel: Channel): Promise<Channel> {
-    const [, createdChannel] = await prisma.$transaction([
+    const [, , createdChannel] = await prisma.$transaction([
       prisma.chat.create({ data: { id: channel.chatId } }),
+      prisma.channelMembers.create({
+        data: { chatter_id: channel.ownerId, channel_chat_id: channel.chatId },
+      }),
       prisma.channel.create({
         data: {
           id: channel.id,
@@ -45,6 +48,6 @@ export class PrismaChannelsRepository implements IChannelsRepository {
       }),
     ])
 
-    return this.mapper.toDomain(createdChannel)
+    return this.channelMapper.toDomain(createdChannel)
   }
 }

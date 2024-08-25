@@ -1,5 +1,5 @@
-import type { Chatter } from '@telepetros/core/entities'
 import type { IChattersRepository } from '@telepetros/core/interfaces'
+import type { Chatter } from '@telepetros/core/entities'
 
 import { prisma } from '../client'
 import { PrismaChatterMapper } from '../mappers'

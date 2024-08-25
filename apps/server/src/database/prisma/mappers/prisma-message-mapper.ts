@@ -9,18 +9,22 @@ export class PrismaMessageMapper {
       type: prismaMessage.type,
       createdAt: prismaMessage.created_at,
       chatId: prismaMessage.chat_id,
-      parentMessageId: prismaMessage.parent_message_id ? prismaMessage.parent_message_id : undefined
+      chatterId: prismaMessage.chatter_id,
+      parentMessageId: prismaMessage.parent_message_id
+        ? prismaMessage.parent_message_id
+        : undefined,
     })
   }
 
   toPrisma(message: Message): PrismaMessage {
     const dto = message.dto
     return {
-      id: dto.id,
+      id: message.id,
+      created_at: message.createdAt,
       value: dto.value,
       type: dto.type,
-      created_at: dto.createdAt,
       chat_id: dto.chatId,
+      chatter_id: dto.chatterId,
       parent_message_id: dto.parentMessageId ? dto.parentMessageId : null,
     }
   }
