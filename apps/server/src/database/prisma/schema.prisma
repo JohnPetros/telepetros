@@ -35,11 +35,12 @@ model Message {
 }
 
 model Chatter {
-  id         String @id @default(uuid())
+  id         String  @id @default(uuid())
   name       String
-  email      String @unique
+  email      String  @unique
   avatar_url String
   banner_url String
+  is_online  Boolean @default(true)
 
   channels      Channel[]
   Message       Message[]
