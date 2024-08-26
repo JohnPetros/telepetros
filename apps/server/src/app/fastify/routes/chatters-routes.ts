@@ -1,11 +1,16 @@
 import { z } from 'zod'
 import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
+import { jwtDecode } from 'jwt-decode'
 
-import { FastifyHttp } from '../fastify-http'
+import { ChatterNotFoundError, JwtNotFoundError } from '@telepetros/core/errors'
+import type { ChatterDto } from '@telepetros/core/dtos'
+import { Chatter } from '@telepetros/core/entities'
+
 import { ListChattersByChatterController } from '@/api/controllers/chatters'
-import { FastifyWs } from '../fastify-ws'
 import { ChatterSocket } from '@/realtime/sockets'
+import { FastifyHttp } from '../fastify-http'
+import { FastifyWs } from '../fastify-ws'
 
 export const ChattersRoutes = async (app: FastifyInstance) => {
   const listChattersByChatterController = new ListChattersByChatterController()
@@ -27,18 +32,20 @@ export const ChattersRoutes = async (app: FastifyInstance) => {
       },
     )
     .get(
-      '/:channelId/connect',
-      {
-        schema: {
-          params: z.object({
-            channelId: z.string().uuid(),
-          }),
-        },
-        websocket: true,
-      },
+      '/connection',
+
       async (socket, request) => {
+        const jwt = request.cookies.jwt
+        if (!jwt) throw new JwtNotFoundError()
+
+        const chatterDto = jwtDecode<ChatterDto>(jwt)
+        if (!chatterDto) throw new ChatterNotFoundError()
+        const chatter = Chatter.create(chatterDto)
+
+        console.log(chatter.id)
+
         const ws = new FastifyWs({ server: app, socket })
-        const chatterSocket = new ChatterSocket(request.params.channelId)
+        const chatterSocket = new ChatterSocket(chatter.id)
         return chatterSocket.handle(ws)
       },
     )

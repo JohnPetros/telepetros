@@ -5,14 +5,12 @@ import type { MessageDto } from '@telepetros/core/dtos'
 
 import { chatsRepository } from '@/database'
 
-type SendMessagePayload = MessageDto
-
 export class ChatSocket implements ISocket {
   handle(ws: IWs): void {
-    ws.on<SendMessagePayload>(EVENTS.chat.disconnectChatter, async (payload) => {
+    ws.on<MessageDto>(EVENTS.chat.sendMessage, async (payload) => {
       const useCase = new SendMessageUseCase(chatsRepository)
-      const sentMessageDto = await useCase.execute(payload)
-      ws.broadcast(EVENTS.chat.receiveMessage, sentMessageDto)
+      const messageDto = await useCase.execute(payload)
+      ws.broadcast(EVENTS.chat.receiveMessage, messageDto)
     })
   }
 }

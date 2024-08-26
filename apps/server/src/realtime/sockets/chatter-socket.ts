@@ -11,18 +11,18 @@ export class ChatterSocket implements ISocket {
   constructor(private readonly chatterId: string) {}
 
   handle(ws: IWs): void {
-    ws.on(EVENTS.chat.connectChatter, async () => {
+    ws.on(EVENTS.chatter.connect, async () => {
       const useCase = new ConnectChatterUseCase(chattersRepository)
       await useCase.execute(this.chatterId)
 
-      ws.broadcast(EVENTS.chat.connectChatter)
+      ws.broadcast(EVENTS.chatter.connect)
     })
 
     ws.close(async () => {
       const useCase = new DisconnectChatterUseCase(chattersRepository)
       await useCase.execute(this.chatterId)
 
-      ws.broadcast(EVENTS.chat.disconnectChatter)
+      // ws.broadcast(EVENTS.chat.disconnectChatter)
     })
   }
 }
