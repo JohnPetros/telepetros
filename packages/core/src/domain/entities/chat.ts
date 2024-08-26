@@ -5,7 +5,6 @@ import { Entity } from '../abstracts'
 
 type ChatProps = {
   chatters: Chatter[]
-  onlineChattersIds: string[]
   messages: Message[]
 }
 
@@ -16,7 +15,6 @@ export class Chat extends Entity<ChatProps> {
         {
           chatters: dto.chatters.map(Chatter.create),
           messages: dto.messages.map(Message.create),
-          onlineChattersIds: [],
         },
         dto.id,
       )
@@ -25,7 +23,6 @@ export class Chat extends Entity<ChatProps> {
     return new Chat({
       chatters: [],
       messages: [],
-      onlineChattersIds: [],
     })
   }
 
@@ -41,10 +38,6 @@ export class Chat extends Entity<ChatProps> {
     this.props.messages.push(message)
   }
 
-  appendOnlineChatterId(chatterId: string) {
-    this.props.onlineChattersIds.push(chatterId)
-  }
-
   getChatterByMessage(message: Message): Chatter | null {
     const chatter = this.props.chatters.find((chatter) => message.isFromChatter(chatter))
     return chatter ?? null
@@ -52,10 +45,6 @@ export class Chat extends Entity<ChatProps> {
 
   get chattersCount() {
     return this.props.chatters.length
-  }
-
-  get onlineChattersCount() {
-    return this.props.onlineChattersIds.length
   }
 
   get messages() {

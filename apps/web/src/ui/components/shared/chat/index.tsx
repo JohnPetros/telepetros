@@ -9,21 +9,21 @@ type ChatProps = {
 }
 
 export const Chat = ({ initialChat }: ChatProps) => {
-  const { chat, handleSendMessage } = useChat(initialChat)
+  const { chat, onlineChattersCount, handleSendMessage } = useChat(initialChat)
   const { chatter } = useAuthContext()
 
-  if (chatter)
+  if (chatter && chat)
     return (
       <div className='relative flex-1 flex bg-red-700 flex-col px-6 py-3 bg-gradient-to-b from-sky-50 to-white'>
         <div>
           <h1 className='text-2xl text-slate-700 font-semibold'>Channel Chat</h1>
           <p className='mt-1 text-md text-slate-400'>
-            {chat.chattersCount} members, {chat.onlineChattersCount} online
+            {chat.chattersCount} members, {onlineChattersCount} online
           </p>
         </div>
 
         <div className='space-y-3 mt-6'>
-          {chat?.messages.map((message) => {
+          {chat.messages.map((message) => {
             const messageChatter = chat.getChatterByMessage(message)
             if (messageChatter)
               return (

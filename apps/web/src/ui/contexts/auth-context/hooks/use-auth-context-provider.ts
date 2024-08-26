@@ -1,4 +1,3 @@
-import { cookies } from 'next/headers'
 import { jwtDecode } from 'jwt-decode'
 
 import type { ChatterDto } from '@telepetros/core/dtos'

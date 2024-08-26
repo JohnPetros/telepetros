@@ -8,21 +8,31 @@ import { useChatSocket } from '@/infra/realtime/sockets'
 export function useChat(initialChat: Chat) {
   const [chat, setChat] = useState<Chat>(initialChat)
   const [isConnected, setIsConnected] = useState(false)
+  const [onlineChattersCount, setOnlineChattersCount] = useState(0)
   const { chatter } = useAuthContext()
 
   function handleReceiveMessage(message: Message) {
     chat.appendMessage(message)
-    setChat(Chat.create(chat.dto))
+    setChat((chat) => {
+      return Chat.create(chat.dto)
+    })
   }
 
-  function handleConnectChatter(chatterId: string) {
-    chat.appendOnlineChatterId(chatterId)
-    setChat(chat)
+  function handleConnectChatter(onlineChattersCount: number) {
+    setOnlineChattersCount(onlineChattersCount)
+    // chat.appendOnlineChatterId(chatterId)
+    // setChat(chat)
+  }
+  function handleDisConnectChatter(onlineChattersCount: number) {
+    setOnlineChattersCount(onlineChattersCount)
+    // chat.appendOnlineChatterId(chatterId)
+    // setChat(chat)
   }
 
   const { isOpen, connectChatter, sendMessage } = useChatSocket({
     chatId: chat.id,
     onConnectChatter: handleConnectChatter,
+    onDisconnectChatter: handleDisConnectChatter,
     onReceiveMessage: handleReceiveMessage,
   })
 
@@ -39,14 +49,15 @@ export function useChat(initialChat: Chat) {
   }
 
   useEffect(() => {
-    if (isOpen && chatter && !isConnected) {
-      connectChatter(chatter.id)
+    if (isOpen && !isConnected) {
+      connectChatter()
       setIsConnected(true)
     }
-  }, [isOpen, isConnected, chatter, connectChatter])
+  }, [isOpen, isConnected, connectChatter])
 
   return {
     chat,
+    onlineChattersCount,
     handleSendMessage,
   }
 }

@@ -8,13 +8,13 @@ export class PrismaChatsRepository implements IChatsRepository {
   private readonly messageMapper: PrismaMessageMapper = new PrismaMessageMapper()
   private readonly chatterMapper: PrismaChatterMapper = new PrismaChatterMapper()
 
-  async findByChannelChatId(chatId: string): Promise<Chat | null> {
+  async findById(chatId: string): Promise<Chat | null> {
     const prismaChat = await prisma.chat.findFirst({
       where: {
         id: chatId,
       },
       include: {
-        ChannelMembers: {
+        ChattersChats: {
           include: {
             chatter: true,
           },
@@ -23,15 +23,19 @@ export class PrismaChatsRepository implements IChatsRepository {
       },
     })
 
-    let channelMembers: Chatter[] = []
+    let chatters: Chatter[] = []
     let channelMessages: Message[] = []
 
     if (!prismaChat) return null
 
-    const chat = Chat.create({ id: prismaChat.id, chatters: [], messages: [] })
+    const chat = Chat.create({
+      id: prismaChat.id,
+      chatters: [],
+      messages: [],
+    })
 
-    if (prismaChat?.ChannelMembers) {
-      channelMembers = prismaChat?.ChannelMembers.map((prismaChatter) =>
+    if (prismaChat?.ChattersChats) {
+      chatters = prismaChat?.ChattersChats.map((prismaChatter) =>
         this.chatterMapper.toDomain(prismaChatter.chatter),
       )
     }
@@ -42,7 +46,7 @@ export class PrismaChatsRepository implements IChatsRepository {
       )
     }
 
-    chat.addChatters(channelMembers)
+    chat.addChatters(chatters)
     chat.addMessages(channelMessages)
 
     return chat

@@ -23,7 +23,7 @@ export class GetChannelChatUseCase implements IUseCase<Request, Response> {
       throw new ChannelNotFoundError()
     }
 
-    const chat = await this.chatsRepository.findByChannelChatId(channel.chatId)
+    const chat = await this.chatsRepository.findById(channel.chatId)
 
     if (!chat) {
       throw new ChatNoFoundError()

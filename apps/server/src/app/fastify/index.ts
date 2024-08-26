@@ -3,6 +3,7 @@ import { serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod
 import Cors from '@fastify/cors'
 import Jwt from '@fastify/jwt'
 import Websocket from '@fastify/websocket'
+import Cookies from '@fastify/cookie'
 import { ZodError } from 'zod'
 
 import type { IServerApp } from '@telepetros/core/interfaces'
@@ -26,9 +27,10 @@ export class FastifyApp implements IServerApp {
   constructor() {
     this.app = Fastify()
 
-    this.app.register(Cors, { origin: '*' })
     this.app.setSerializerCompiler(serializerCompiler)
     this.app.setValidatorCompiler(validatorCompiler)
+    this.app.register(Cors, { origin: '*' })
+    this.app.register(Cookies)
     this.app.register(Jwt, { secret: ENV.jwtSecret })
     this.app.register(Websocket)
     this.registerRoutes()

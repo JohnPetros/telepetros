@@ -10,10 +10,9 @@ datasource db {
 model Chat {
   id String @id @default(uuid())
 
-  ChatterChat    ChatterChat[]
-  Message        Message[]
-  Channel        Channel?
-  ChannelMembers ChannelMembers[]
+  Message       Message[]
+  Channel       Channel?
+  ChattersChats ChattersChats[]
 
   @@map("chats")
 }
@@ -42,24 +41,20 @@ model Chatter {
   avatar_url String
   banner_url String
 
-  channels       Channel[]
-  ChatterChat1   ChatterChat[]    @relation("chatter_1")
-  ChatterChat2   ChatterChat[]    @relation("chatter_2")
-  ChannelMembers ChannelMembers[]
-  Message        Message[]
+  channels      Channel[]
+  Message       Message[]
+  ChattersChats ChattersChats[]
 
   @@map("chatters")
 }
 
-model ChatterChat {
-  id           String @id @default(uuid())
-  chatter_1_id String
-  chatter_2_id String
-  chat_id      String
+model ChattersChats {
+  id         String @id @default(uuid())
+  chatter_id String
+  chat_id    String
 
-  chatter_1 Chatter @relation("chatter_1", fields: [chatter_1_id], references: [id])
-  chatter_2 Chatter @relation("chatter_2", fields: [chatter_2_id], references: [id])
-  chat      Chat    @relation(fields: [chat_id], references: [id])
+  chatter Chatter @relation(fields: [chatter_id], references: [id])
+  chat    Chat    @relation(fields: [chat_id], references: [id])
 
   @@map("chatter_chats")
 }
@@ -76,13 +71,4 @@ model Channel {
   chat  Chat    @relation(fields: [chat_id], references: [id])
 
   @@map("channels")
-}
-
-model ChannelMembers {
-  id              String @id @default(uuid())
-  channel_chat_id String
-  chatter_id      String
-
-  chat    Chat    @relation(fields: [channel_chat_id], references: [id])
-  chatter Chatter @relation(fields: [chatter_id], references: [id])
 }

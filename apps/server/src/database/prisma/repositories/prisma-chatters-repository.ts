@@ -1,3 +1,5 @@
+import type { Chatter as PrismaChatter } from '@prisma/client'
+
 import type { IChattersRepository } from '@telepetros/core/interfaces'
 import type { Chatter } from '@telepetros/core/entities'
 
@@ -44,26 +46,29 @@ export class PrismaChattersRepository implements IChattersRepository {
   }
 
   async findManyByChatterId(chatterId: string): Promise<Chatter[]> {
-    const chatterChats = await prisma.chatterChat.findMany({
+    const prismaChatters = await prisma.$queryRaw`
+        SELECT C.* FROM chatters C
+        JOIN chatter_chats CC ON CC.chatter_id = C.id 
+        WHERE 
+          C.id != ${chatterId} AND 
+          CC.chat_id IN (
+            SELECT chat_id 
+            FROM chatter_chats 
+            WHERE chatter_id = ${chatterId}
+          )
+        `
+
+    return (prismaChatters as PrismaChatter[]).map(this.mapper.toDomain)
+  }
+
+  async updateChatter(chatter: Chatter): Promise<void> {
+    const prismaChatter = this.mapper.toPrisma(chatter)
+
+    await prisma.chatter.update({
       where: {
-        OR: [{ chatter_1_id: chatterId }, { chatter_2_id: chatterId }],
+        id: chatter.id,
       },
-      include: {
-        chatter_1: true,
-        chatter_2: true,
-      },
+      data: prismaChatter,
     })
-
-    const chatters = []
-
-    for (const { chatter_1_id, chatter_1, chatter_2_id, chatter_2 } of chatterChats) {
-      if (chatter_1_id === chatterId) {
-        chatters.push(chatter_2)
-      } else if (chatter_2_id === chatterId) {
-        chatters.push(chatter_1)
-      }
-    }
-
-    return chatters.map(this.mapper.toDomain)
   }
 }

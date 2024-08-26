@@ -29,6 +29,15 @@ export const LoginPage = () => {
             >
               Login with Github
             </Button>
+            <Button
+              href={`https://accounts.google.com/o/oauth2/auth?client_id=${ENV.googleClientId}&redirect_uri=${ENV.appUrl}/api/auth/callback/google&scope=profile%20email&response_type=code`}
+              as={Link}
+              size='lg'
+              className='mt-3 bg-red-800 text-gray-100'
+              startContent={<Icon name='google' size={24} />}
+            >
+              Login with Google
+            </Button>
           </CardBody>
         </Card>
       </form>

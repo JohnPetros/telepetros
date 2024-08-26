@@ -1,16 +1,13 @@
 import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
-import { FastifyWs } from '../fastify-ws'
+import { jwtDecode } from 'jwt-decode'
 import z from 'zod'
 
-import { ChatSocket } from '@/realtime/sockets'
-import type { Server } from 'socket.io'
+import { UnauthorizedError } from '@telepetros/core/errors'
+import type { ChatterDto } from '@telepetros/core/dtos'
 
-declare module 'fastify' {
-  interface FastifyInstance {
-    io: Server
-  }
-}
+import { ChatSocket } from '@/realtime/sockets'
+import { FastifyWs } from '../fastify-ws'
 
 export const ChatRoutes = async (app: FastifyInstance) => {
   const router = app.withTypeProvider<ZodTypeProvider>()
@@ -18,16 +15,11 @@ export const ChatRoutes = async (app: FastifyInstance) => {
   router.get(
     '/:chatId',
     {
-      schema: {
-        params: z.object({
-          chatId: z.string().uuid(),
-        }),
-      },
       websocket: true,
     },
-    (socket, request) => {
-      const chatSocket = new ChatSocket(request.params.chatId)
-      const ws = new FastifyWs(socket, app)
+    async (socket) => {
+      const chatSocket = new ChatSocket()
+      const ws = new FastifyWs({ server: app, socket })
       return chatSocket.handle(ws)
     },
   )

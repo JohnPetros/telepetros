@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useState } from 'react'
 
-import { Message } from '@telepetros/core/entities'
 import { EVENTS } from '@telepetros/core/constants'
 import { RealtimeResponse } from '@telepetros/core/responses'
 
@@ -12,14 +11,12 @@ type ChatSocketProps = {
   chatId: string
   onConnectChatter: (onlineChattersCount: number) => void
   onDisconnectChatter: (onlineChattersCount: number) => void
-  onReceiveMessage: (message: Message) => void
 }
 
-export function useChatSocket({
+export function useChatterSocket({
   chatId,
   onConnectChatter,
   onDisconnectChatter,
-  onReceiveMessage,
 }: ChatSocketProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [websocket, setWebsocket] = useState<WebSocket | null>(null)
@@ -33,17 +30,9 @@ export function useChatSocket({
         payload,
       })
 
-      console.log(response.message)
       websocket.send(response.message)
     },
     [websocket],
-  )
-
-  const sendMessage = useCallback(
-    (message: Message) => {
-      sendResponse(EVENTS.chat.sendMessage, message.dto)
-    },
-    [sendResponse],
   )
 
   const connectChatter = useCallback(() => {
@@ -61,12 +50,9 @@ export function useChatSocket({
         case EVENTS.chat.disconnectChatter:
           onDisconnectChatter(response.payload.chatterId)
           break
-        case EVENTS.chat.receiveMessage:
-          onReceiveMessage(Message.create(response.payload))
-          break
       }
     },
-    [onConnectChatter, onDisconnectChatter, onReceiveMessage],
+    [onConnectChatter, onDisconnectChatter],
   )
 
   useEffect(() => {
@@ -90,7 +76,6 @@ export function useChatSocket({
 
   return {
     isOpen,
-    sendMessage,
     connectChatter,
   }
 }

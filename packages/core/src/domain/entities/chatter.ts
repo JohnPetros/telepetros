@@ -6,6 +6,7 @@ type ChatterProps = {
   email: string
   avatar: string
   banner: string
+  isOnline: boolean
 }
 
 export class Chatter extends Entity<ChatterProps> {
@@ -15,10 +16,19 @@ export class Chatter extends Entity<ChatterProps> {
         name: dto.name,
         email: dto.email,
         avatar: dto.avatar,
+        isOnline: true,
         banner: dto.banner ?? '',
       },
       dto.id,
     )
+  }
+
+  connect() {
+    this.props.isOnline = true
+  }
+
+  disconnect() {
+    this.props.isOnline = false
   }
 
   get name() {

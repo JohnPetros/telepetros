@@ -5,7 +5,7 @@ export class VerifyJwtController implements IController {
   constructor(private readonly isMiddleware = false) {}
 
   async handle(http: IHttp) {
-    console.log(await http.getChatter())
+    await http.getChatter()
     // chattersRepository.findById()
 
     return http.send(true)
