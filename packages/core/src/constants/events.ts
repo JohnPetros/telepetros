@@ -1,8 +1,10 @@
 export const EVENTS = {
   chat: {
-    disconnectChatter: 'disconnect-chatter',
-    connectChatter: 'connect-chatter',
     sendMessage: 'send-message',
     receiveMessage: 'receive-message',
+  },
+  chatter: {
+    disconnect: 'disconnect-chatter',
+    connect: 'connect-chatter',
   },
 }
