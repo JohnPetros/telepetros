@@ -43,8 +43,41 @@ export class Chat extends Entity<ChatProps> {
     return chatter ?? null
   }
 
+  onConnectChatter(chatterId: string) {
+    if (this.includesChatter(chatterId)) this.connectChatter(chatterId)
+  }
+
+  onDisconnectChatter(chatterId: string) {
+    if (this.includesChatter(chatterId)) this.disconnectChatter(chatterId)
+  }
+
+  includesChatter(chatterId: string) {
+    const chattersIds = this.props.chatters.map((chatter) => chatter.id)
+    return chattersIds.includes(chatterId)
+  }
+
+  private connectChatter(chatterId: string) {
+    this.props.chatters = this.props.chatters.map((chatter) => {
+      if (chatter.id === chatterId) chatter.connect()
+      return chatter
+    })
+  }
+
+  private disconnectChatter(chatterId: string) {
+    this.props.chatters = this.props.chatters.map((chatter) => {
+      if (chatter.id === chatterId) chatter.disconnect()
+      return chatter
+    })
+  }
+
   get chattersCount() {
     return this.props.chatters.length
+  }
+
+  get onlineChattersCount() {
+    return this.props.chatters.reduce((count, currentChatter) => {
+      return count + (currentChatter.isOnline ? 1 : 0)
+    }, 0)
   }
 
   get messages() {

@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 
 import { ChatLayout } from '@/ui/components/layouts/chat'
 import { AuthContextProvider } from '@/ui/contexts/auth-context'
+import { ChattersConnectionContextProvider } from '@/ui/contexts/chatters-connection-context'
 
 type LayoutProps = {
   children: ReactNode
@@ -10,7 +11,9 @@ type LayoutProps = {
 export default function Layout({ children }: LayoutProps) {
   return (
     <AuthContextProvider>
-      <ChatLayout>{children}</ChatLayout>
+      <ChattersConnectionContextProvider>
+        <ChatLayout>{children}</ChatLayout>
+      </ChattersConnectionContextProvider>
     </AuthContextProvider>
   )
 }

@@ -3,13 +3,14 @@ import { useEffect, useState } from 'react'
 import { Chat, Message } from '@telepetros/core/entities'
 
 import { useAuthContext } from '@/ui/contexts/auth-context'
-import { useChatSocket } from '@/infra/realtime/sockets'
+import { useChatSocket } from '@/ui/realtime/sockets'
+import { useChattersConnectionContext } from '@/ui/contexts/chatters-connection-context/hooks'
 
 export function useChat(initialChat: Chat) {
   const [chat, setChat] = useState<Chat>(initialChat)
-  const [isConnected, setIsConnected] = useState(false)
-  const [onlineChattersCount, setOnlineChattersCount] = useState(0)
   const { chatter } = useAuthContext()
+  const { lastConnectedChatterId, lastDisconnectedChatterId } =
+    useChattersConnectionContext()
 
   function handleReceiveMessage(message: Message) {
     chat.appendMessage(message)
@@ -18,21 +19,8 @@ export function useChat(initialChat: Chat) {
     })
   }
 
-  function handleConnectChatter(onlineChattersCount: number) {
-    setOnlineChattersCount(onlineChattersCount)
-    // chat.appendOnlineChatterId(chatterId)
-    // setChat(chat)
-  }
-  function handleDisConnectChatter(onlineChattersCount: number) {
-    setOnlineChattersCount(onlineChattersCount)
-    // chat.appendOnlineChatterId(chatterId)
-    // setChat(chat)
-  }
-
-  const { isOpen, connectChatter, sendMessage } = useChatSocket({
+  const { sendMessage } = useChatSocket({
     chatId: chat.id,
-    onConnectChatter: handleConnectChatter,
-    onDisconnectChatter: handleDisConnectChatter,
     onReceiveMessage: handleReceiveMessage,
   })
 
@@ -49,15 +37,21 @@ export function useChat(initialChat: Chat) {
   }
 
   useEffect(() => {
-    if (isOpen && !isConnected) {
-      connectChatter()
-      setIsConnected(true)
+    if (lastConnectedChatterId) {
+      // chat.onConnectChatter(lastConnectedChatterId)
+      // setChat(Chat.create(chat.dto))
     }
-  }, [isOpen, isConnected, connectChatter])
+  }, [lastConnectedChatterId, chat.dto, chat.onConnectChatter])
+
+  useEffect(() => {
+    if (lastDisconnectedChatterId) {
+      // chat.onConnectChatter(lastDisconnectedChatterId)
+      // setChat(Chat.create(chat.dto))
+    }
+  }, [lastDisconnectedChatterId, chat.dto, chat.onConnectChatter])
 
   return {
     chat,
-    onlineChattersCount,
     handleSendMessage,
   }
 }

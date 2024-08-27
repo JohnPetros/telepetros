@@ -12,18 +12,21 @@ type WsProps = {
 }
 
 export function useReactWebsocket({ url, onResponse, onError }: WsProps) {
-  const handleWebsocketMessage = useCallback(
+  const handleMessage = useCallback(
     (message: MessageEvent) => {
       if (!onResponse) return
       const response = RealtimeResponse.parseMessage(message.data)
+      console.log('useChatSocket', response)
+
       onResponse(response)
     },
     [onResponse],
   )
 
   const { sendMessage, readyState } = useWebSocket(url, {
-    onMessage: handleWebsocketMessage,
+    onMessage: handleMessage,
     onError,
+    share: false,
   })
 
   const sendResponse = useCallback(

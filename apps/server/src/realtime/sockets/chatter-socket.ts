@@ -15,14 +15,14 @@ export class ChatterSocket implements ISocket {
       const useCase = new ConnectChatterUseCase(chattersRepository)
       await useCase.execute(this.chatterId)
 
-      ws.broadcast(EVENTS.chatter.connect)
+      ws.broadcast(EVENTS.chatter.connect, this.chatterId)
     })
 
     ws.close(async () => {
       const useCase = new DisconnectChatterUseCase(chattersRepository)
       await useCase.execute(this.chatterId)
 
-      // ws.broadcast(EVENTS.chat.disconnectChatter)
+      ws.broadcast(EVENTS.chatter.disconnect, this.chatterId)
     })
   }
 }

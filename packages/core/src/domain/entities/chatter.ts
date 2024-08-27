@@ -31,6 +31,10 @@ export class Chatter extends Entity<ChatterProps> {
     this.props.isOnline = false
   }
 
+  get isOnline() {
+    return this.props.isOnline
+  }
+
   get name() {
     return this.props.name
   }

@@ -31,22 +31,16 @@ export const ChattersRoutes = async (app: FastifyInstance) => {
         return listChattersByChatterController.handle(http)
       },
     )
-    .get(
-      '/connection',
+    .get('/connection', { websocket: true }, async (socket, request) => {
+      const jwt = request.cookies.jwt
+      if (!jwt) throw new JwtNotFoundError()
 
-      async (socket, request) => {
-        const jwt = request.cookies.jwt
-        if (!jwt) throw new JwtNotFoundError()
+      const chatterDto = jwtDecode<ChatterDto>(jwt)
+      if (!chatterDto) throw new ChatterNotFoundError()
+      const chatter = Chatter.create(chatterDto)
 
-        const chatterDto = jwtDecode<ChatterDto>(jwt)
-        if (!chatterDto) throw new ChatterNotFoundError()
-        const chatter = Chatter.create(chatterDto)
-
-        console.log(chatter.id)
-
-        const ws = new FastifyWs({ server: app, socket })
-        const chatterSocket = new ChatterSocket(chatter.id)
-        return chatterSocket.handle(ws)
-      },
-    )
+      const ws = new FastifyWs({ server: app, socket })
+      const chatterSocket = new ChatterSocket(chatter.id)
+      return chatterSocket.handle(ws)
+    })
 }

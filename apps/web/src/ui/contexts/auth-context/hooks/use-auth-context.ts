@@ -6,7 +6,10 @@ export function useAuthContext() {
   const context = useContext(AuthContext)
 
   if (!context)
-    throw new AppError('Auth context must be used inside auth context provider')
+    throw new AppError(
+      'Context error',
+      'Auth context must be used inside auth context provider',
+    )
 
   return context
 }

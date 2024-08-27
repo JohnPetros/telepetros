@@ -9,7 +9,7 @@ type ChatProps = {
 }
 
 export const Chat = ({ initialChat }: ChatProps) => {
-  const { chat, onlineChattersCount, handleSendMessage } = useChat(initialChat)
+  const { chat, handleSendMessage } = useChat(initialChat)
   const { chatter } = useAuthContext()
 
   if (chatter && chat)
@@ -18,7 +18,7 @@ export const Chat = ({ initialChat }: ChatProps) => {
         <div>
           <h1 className='text-2xl text-slate-700 font-semibold'>Channel Chat</h1>
           <p className='mt-1 text-md text-slate-400'>
-            {chat.chattersCount} members, {onlineChattersCount} online
+            {chat.chattersCount} members, {chat.onlineChattersCount} online
           </p>
         </div>
 

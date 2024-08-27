@@ -19,6 +19,7 @@ export class PrismaChatterMapper {
       email: chatter.email,
       banner_url: chatter.banner,
       avatar_url: chatter.avatar,
+      is_online: chatter.isOnline,
     }
   }
 }

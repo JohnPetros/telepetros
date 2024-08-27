@@ -17,6 +17,7 @@ export function useChatSocket({ chatId, onReceiveMessage }: ChatSocketProps) {
   const { sendResponse } = useWs({
     url: `${ENV.realTimeUrl}/chat/${chatId}`,
     onResponse(response) {
+      console.log('useChatSocket', response)
       switch (response.event) {
         case EVENTS.chat.receiveMessage:
           onReceiveMessage(Message.create(response.payload))
