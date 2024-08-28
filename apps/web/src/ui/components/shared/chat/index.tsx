@@ -35,7 +35,7 @@ export const Chat = ({ initialChat }: ChatProps) => {
                 <ChatMessage
                   key={message.id}
                   type={message.type}
-                  createdAt={message.createdAt}
+                  time={message.time}
                   chatter={{ name: messageChatter.name, avatar: messageChatter.avatar }}
                   value={message.value}
                   isMe={message.isFromChatter(chatter)}

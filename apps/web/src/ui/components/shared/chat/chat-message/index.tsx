@@ -5,7 +5,7 @@ import { Avatar } from '@nextui-org/react'
 type ChatMessageProps = {
   type: MessageType
   value: string
-  createdAt: Date
+  time: string
   chatter: {
     name: string
     avatar?: string
@@ -17,7 +17,7 @@ export const ChatMessage = ({
   chatter,
   type,
   value,
-  createdAt,
+  time,
   isMe = false,
 }: ChatMessageProps) => {
   if (isMe)
@@ -46,7 +46,7 @@ export const ChatMessage = ({
       <div className='flex flex-col gap-2 min-w-80 max-w-96 p-3 bg-slate-300/45 rounded-xl rounded-es-none'>
         <strong className='text-blue-500 font-semibold text-md'>{chatter.name}</strong>
         <p className='text-sm text-slate-800 font-medium'>{value}</p>
-        <time className='block ml-auto text-slate-500 text-xs'>08:57</time>
+        <time className='block ml-auto text-slate-500 text-xs'>{time}</time>
       </div>
     </div>
   )

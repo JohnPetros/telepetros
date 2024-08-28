@@ -2,6 +2,7 @@ import type { MessageDto } from '../../dtos'
 import type { MessageType } from '../types'
 import type { Chatter } from './chatter'
 import { Entity } from '../abstracts'
+import { Datetime } from '#libs'
 
 type MessageProps = {
   type: MessageType
@@ -54,6 +55,10 @@ export class Message extends Entity<MessageProps> {
 
   get createdAt() {
     return this.props.createdAt
+  }
+
+  get time() {
+    return new Datetime().format(this.createdAt, 'hh:mm')
   }
 
   get dto(): MessageDto {

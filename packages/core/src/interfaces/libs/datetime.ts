@@ -1,5 +1,5 @@
-type DateFormat = 
+type DateFormat = 'hh:mm'
 
 export interface IDatetime {
-    format(date: Date): string 
+  format(date: Date, format: DateFormat): string
 }
