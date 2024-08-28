@@ -38,17 +38,17 @@ export function useChat(initialChat: Chat) {
 
   useEffect(() => {
     if (lastConnectedChatterId) {
-      // chat.onConnectChatter(lastConnectedChatterId)
-      // setChat(Chat.create(chat.dto))
+      chat.onConnectChatter(lastConnectedChatterId)
+      setChat(Chat.create(chat.dto))
     }
-  }, [lastConnectedChatterId, chat.dto, chat.onConnectChatter])
+  }, [lastConnectedChatterId])
 
   useEffect(() => {
     if (lastDisconnectedChatterId) {
-      // chat.onConnectChatter(lastDisconnectedChatterId)
-      // setChat(Chat.create(chat.dto))
+      chat.onDisconnectChatter(lastDisconnectedChatterId)
+      setChat(Chat.create(chat.dto))
     }
-  }, [lastDisconnectedChatterId, chat.dto, chat.onConnectChatter])
+  }, [lastDisconnectedChatterId])
 
   return {
     chat,

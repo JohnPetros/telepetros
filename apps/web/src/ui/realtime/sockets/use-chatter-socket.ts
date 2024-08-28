@@ -19,7 +19,7 @@ export function useChatterSocket({
   onDisconnectChatter,
 }: UseChatterSocketProps) {
   const [isConnected, setIsConnected] = useState(false)
-  const { sendResponse } = useWs({
+  const { isOpen, sendResponse } = useWs({
     url: `${ENV.realTimeUrl}/chatters/connection`,
     onResponse(response) {
       switch (response.event) {
@@ -32,9 +32,6 @@ export function useChatterSocket({
           break
       }
     },
-    onError() {
-      alert('error')
-    },
   })
 
   const connectChatter = useCallback(() => {
@@ -42,11 +39,11 @@ export function useChatterSocket({
   }, [sendResponse, chatterId])
 
   useEffect(() => {
-    if (isConnected) return
+    if (!isOpen || isConnected) return
 
     connectChatter()
     setIsConnected(true)
-  }, [isConnected, connectChatter])
+  }, [isOpen, isConnected, connectChatter])
 
   return {
     isConnected,

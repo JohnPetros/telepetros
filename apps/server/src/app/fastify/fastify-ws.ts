@@ -11,35 +11,23 @@ type FastifyWsProps = {
   server: FastifyInstance
 }
 
-type Pipes = Record<string, WsCallback[]>
-
 export class FastifyWs implements IWs {
   private readonly socket: WebSocket
   private readonly server: FastifyInstance
-  private readonly handlers: any[]
-  private readonly pipes: Pipes
 
   constructor({ server, socket }: FastifyWsProps) {
     this.server = server
     this.socket = socket
-    this.handlers = []
-    this.pipes = {}
-
-    this.socket.on('message', async (message: string) => {
-      for (const handler of this.handlers) {
-        const response = RealtimeResponse.parseMessage(message)
-        this.socket.data = response.event
-
-        if (handler.event === response.event) {
-          await handler.callback(response.payload)
-        }
-      }
-    })
   }
 
   on<Payload>(event: string, callback: WsCallback<Payload>): void {
-    const has = this.handlers.some((handler) => handler.event === event)
-    if (!has) this.handlers.push({ event, callback })
+    this.socket.on('message', async (message: string) => {
+      const response = RealtimeResponse.parseMessage(message)
+
+      if (event === response.event) {
+        callback(response.payload)
+      }
+    })
   }
 
   close(callback: VoidFunction): void {
