@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { type RefObject, useEffect, useState } from 'react'
 
 import { Chat, Message } from '@telepetros/core/entities'
 
@@ -6,7 +6,7 @@ import { useAuthContext } from '@/ui/contexts/auth-context'
 import { useChatSocket } from '@/ui/realtime/sockets'
 import { useChattersConnectionContext } from '@/ui/contexts/chatters-connection-context/hooks'
 
-export function useChat(initialChat: Chat) {
+export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
   const [chat, setChat] = useState<Chat>(initialChat)
   const { chatter } = useAuthContext()
   const { lastConnectedChatterId, lastDisconnectedChatterId } =
@@ -16,6 +16,10 @@ export function useChat(initialChat: Chat) {
     chat.appendMessage(message)
     setChat((chat) => {
       return Chat.create(chat.dto)
+    })
+    chatRef.current?.scrollTo({
+      top: chatRef.current.scrollHeight - 200,
+      behavior: 'smooth',
     })
   }
 

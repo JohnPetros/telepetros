@@ -75,7 +75,6 @@ export class Chat extends Entity<ChatProps> {
   }
 
   get onlineChattersCount() {
-    console.log(this.props.chatters)
     return this.props.chatters.reduce((count, currentChatter) => {
       return count + (currentChatter.isOnline ? 1 : 0)
     }, 0)

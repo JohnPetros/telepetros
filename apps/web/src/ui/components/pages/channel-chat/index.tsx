@@ -20,7 +20,7 @@ export const ChannelChatPage = ({ channelId }: ChannelChatPageProps) => {
   if (!chatter || !channel) return null
 
   return (
-    <div className='flex flex-col h-full'>
+    <div className='flex flex-col h-screen'>
       <Header
         resource={{ name: chatter.name, avatar: chatter.avatar }}
         link={

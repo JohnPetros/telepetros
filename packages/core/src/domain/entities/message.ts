@@ -48,6 +48,10 @@ export class Message extends Entity<MessageProps> {
     return this.props.value
   }
 
+  get chatterId() {
+    return this.props.chatterId
+  }
+
   get createdAt() {
     return this.props.createdAt
   }

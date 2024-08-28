@@ -10,8 +10,8 @@ type ChatLayoutProps = {
 
 export const ChatLayout = ({ children }: ChatLayoutProps) => {
   return (
-    <div className='grid grid-cols-[16rem_1fr]'>
-      <aside className='flex flex-col bg-slate-50 border-r-1 border-r-slate-300 p-3 h-screen'>
+    <div>
+      <aside className='fixed top-0 bottom-0 z-50 flex flex-col bg-slate-50 border-r-1 border-r-slate-300 p-3 h-screen w-72'>
         <CardLink route={ROUTES.home} title='Home' isActive />
         <div className='mt-6'>
           <ChatTabs />
@@ -20,7 +20,7 @@ export const ChatLayout = ({ children }: ChatLayoutProps) => {
           <Chatter />
         </div>
       </aside>
-      <main>{children}</main>
+      <main className='w-full pl-72'>{children}</main>
     </div>
   )
 }
