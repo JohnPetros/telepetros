@@ -14,6 +14,7 @@
     "@tabler/icons-react": "^3.12.0",
     "@telepetros/core": "*",
     "@telepetros/validation": "*",
+    "dayjs": "^1.11.13",
     "framer-motion": "^11.3.28",
     "jwt-decode": "^4.0.0",
     "next": "14.2.5",
