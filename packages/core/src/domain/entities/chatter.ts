@@ -16,7 +16,7 @@ export class Chatter extends Entity<ChatterProps> {
         name: dto.name,
         email: dto.email,
         avatar: dto.avatar,
-        isOnline: true,
+        isOnline: dto.isOnline,
         banner: dto.banner ?? '',
       },
       dto.id,
@@ -58,6 +58,7 @@ export class Chatter extends Entity<ChatterProps> {
       email: this.email,
       avatar: this.avatar,
       banner: this.banner,
+      isOnline: this.isOnline,
     }
   }
 }

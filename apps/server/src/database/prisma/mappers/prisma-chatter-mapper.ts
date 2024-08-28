@@ -9,6 +9,7 @@ export class PrismaChatterMapper {
       email: primasChatter.email,
       avatar: primasChatter.avatar_url,
       banner: primasChatter.banner_url,
+      isOnline: primasChatter.is_online,
     })
   }
 
