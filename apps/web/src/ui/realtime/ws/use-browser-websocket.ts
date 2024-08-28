@@ -4,13 +4,15 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { RealtimeResponse } from '@telepetros/core/responses'
 
-type ChatSocketProps = {
-  url: string
-  onResponse: (response: RealtimeResponse<any>) => void
-  onError: VoidFunction
-}
+import type { UseChatSocketProps } from './use-chat-socket-props'
 
-export function useBrowserWebsocket({ url, onResponse }: ChatSocketProps) {
+export function useBrowserWebsocket({
+  url,
+  onResponse,
+  onError,
+  onOpen,
+}: UseChatSocketProps) {
+  const [isOpen, setIsOpen] = useState(false)
   const [websocket, setWebsocket] = useState<WebSocket | null>(null)
 
   const sendResponse = useCallback(
@@ -40,8 +42,13 @@ export function useBrowserWebsocket({ url, onResponse }: ChatSocketProps) {
 
     websocket.onopen = () => {
       setWebsocket(websocket)
+      setIsOpen(true)
     }
-  }, [url])
+
+    websocket.onerror = () => {
+      if (onError) onError()
+    }
+  }, [url, onError])
 
   useEffect(() => {
     if (!websocket) return
@@ -54,6 +61,7 @@ export function useBrowserWebsocket({ url, onResponse }: ChatSocketProps) {
   }, [websocket, handleWebsocketMessage])
 
   return {
+    isOpen,
     sendResponse,
   }
 }
