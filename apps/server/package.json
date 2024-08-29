@@ -16,6 +16,7 @@
     "@telepetros/core": "*",
     "@telepetros/validation": "*",
     "axios": "^1.7.4",
+    "cloudinary": "^2.4.0",
     "fastify": "^4.28.1",
     "fastify-socket.io": "^5.1.0",
     "fastify-type-provider-zod": "^2.0.0",
