@@ -17,6 +17,18 @@ export class AxiosApiClient implements IApiClient {
     })
   }
 
+  async sendFile<ResponseBody>(
+    url: string,
+    body: FormData,
+  ): Promise<ApiResponse<ResponseBody>> {
+    try {
+      const response = await axios.post(url, body)
+      return this.sendResponse<ResponseBody>(response)
+    } catch (error) {
+      return handleAxiosError<ResponseBody>(error)
+    }
+  }
+
   async get<ResponseBody>(url: string) {
     try {
       const response = await this.axios.get(url)
