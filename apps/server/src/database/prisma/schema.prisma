@@ -63,6 +63,7 @@ model ChattersChats {
 model Channel {
   id        String  @id @default(uuid())
   name      String
+  avatar    String
   hash      String  @unique
   is_public Boolean @default(true)
   owner_id  String

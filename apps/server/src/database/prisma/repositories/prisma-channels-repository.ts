@@ -41,6 +41,7 @@ export class PrismaChannelsRepository implements IChannelsRepository {
           id: channel.id,
           name: channel.name,
           hash: channel.hash,
+          avatar: String(channel.avatar),
           owner_id: channel.ownerId,
           is_public: channel.isPublic,
           chat_id: channel.chatId,
