@@ -5,7 +5,7 @@ export class PrismaChannelMapper {
   toDomain(primasChannel: PrismaChannel): Channel {
     return Channel.create({
       id: primasChannel.id,
-      hash: primasChannel.hash,
+      inviteCode: primasChannel.invite_code,
       name: primasChannel.name,
       avatar: primasChannel.avatar,
       isPublic: primasChannel.is_public,
@@ -17,7 +17,7 @@ export class PrismaChannelMapper {
   toPrisma(channel: Channel): PrismaChannel {
     return {
       id: channel.id,
-      hash: channel.hash,
+      invite_code: channel.inviteCode,
       is_public: channel.isPublic,
       name: channel.name,
       owner_id: channel.ownerId,
