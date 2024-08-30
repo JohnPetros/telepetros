@@ -17,9 +17,9 @@ export class CreateChannelUseCase implements IUseCase<Request, ChannelDto> {
     private readonly chattersRepository: IChattersRepository,
   ) {}
 
-  async execute({ name, hash, ownerId }: Request) {
+  async execute({ name, hash, avatar, ownerId }: Request) {
     const chat = Chat.create()
-    const channel = Channel.create({ name, hash, ownerId, chatId: chat.id })
+    const channel = Channel.create({ name, hash, ownerId, avatar, chatId: chat.id })
 
     const hasChatter = await this.chattersRepository.findById(channel.ownerId)
 
