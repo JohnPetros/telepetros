@@ -2,9 +2,11 @@
 
 import { type RefObject, useState } from 'react'
 
+import type { ChannelDto } from '@telepetros/core/dtos'
+
 import { useApi } from '@/infra/api'
-import { CACHE } from '@/ui/constants/cache'
 import type { PopoverRef } from '@/ui/components/shared/popover/types'
+import { CACHE } from '@/ui/constants/cache'
 import { useAuthContext } from '@/ui/contexts/auth-context'
 import { useCache, useToast, useNavigation } from '@/ui/hooks'
 import { ROUTES } from '@/ui/constants'
@@ -54,6 +56,12 @@ export function useChatTabs(popoverRef: RefObject<PopoverRef>) {
     fetcher: fetchChatters,
   })
 
+  async function updateChannelsCache(channelDto: ChannelDto) {
+    if (!channels) return
+
+    await mutateChannelsCache([...channels, channelDto])
+  }
+
   async function handleCreateChannel(channelName: string, channelAvatarFile: File) {
     if (!chatter || !channels) return
 
@@ -76,9 +84,24 @@ export function useChatTabs(popoverRef: RefObject<PopoverRef>) {
 
     if (channelResponse.isSuccess) {
       const createdChannel = channelResponse.body
-      await mutateChannelsCache([...channels, createdChannel])
+      await updateChannelsCache(createdChannel)
       navigateTo(`${ROUTES.channel}/${createdChannel.id}/chat`)
       return
+    }
+  }
+
+  async function handleJoinChannel(inviteCode: string) {
+    const response = await channelsService.joinChannel(inviteCode)
+
+    if (response.isFailure) {
+      toast.showError(response.errorMessage)
+      return
+    }
+
+    if (response.isSuccess) {
+      const joinedChannel = response.body
+      await updateChannelsCache(joinedChannel)
+      navigateTo(`${ROUTES.channel}/${joinedChannel.id}/chat`)
     }
   }
 
@@ -87,6 +110,7 @@ export function useChatTabs(popoverRef: RefObject<PopoverRef>) {
     chatters,
     selectedTab,
     handleCreateChannel,
+    handleJoinChannel,
     handleTabChange,
   }
 }
