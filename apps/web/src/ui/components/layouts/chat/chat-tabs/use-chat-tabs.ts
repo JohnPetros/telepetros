@@ -6,8 +6,7 @@ import { useApi } from '@/infra/api'
 import { CACHE } from '@/ui/constants/cache'
 import type { PopoverRef } from '@/ui/components/shared/popover/types'
 import { useAuthContext } from '@/ui/contexts/auth-context'
-import { useCache } from '@/ui/hooks/use-cache'
-import { useNavigation } from '@/ui/hooks'
+import { useCache, useToast, useNavigation } from '@/ui/hooks'
 import { ROUTES } from '@/ui/constants'
 
 type Tab = 'channels' | 'chatters'
@@ -17,6 +16,7 @@ export function useChatTabs(popoverRef: RefObject<PopoverRef>) {
   const { channelsService, chattersService, uploadService } = useApi()
   const { chatter } = useAuthContext()
   const { navigateTo } = useNavigation()
+  const toast = useToast()
 
   async function fetchChannels() {
     if (!chatter) return
@@ -34,7 +34,7 @@ export function useChatTabs(popoverRef: RefObject<PopoverRef>) {
     const response = await chattersService.fetchChattersListByChatter(chatter.id)
 
     if (response.isFailure) {
-      console.log(response.error)
+      console.log(response.errorMessage)
     }
     return response.body
   }
@@ -60,6 +60,7 @@ export function useChatTabs(popoverRef: RefObject<PopoverRef>) {
     const uploadResponse = await uploadService.saveImage('avatar', channelAvatarFile)
 
     if (uploadResponse.isFailure) {
+      toast.showError(uploadResponse.errorMessage)
       return
     }
 
