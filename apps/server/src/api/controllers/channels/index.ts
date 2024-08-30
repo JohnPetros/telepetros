@@ -1,4 +1,4 @@
 export { CreateChannelController } from './create-channel-controller'
 export { GetChannelChatController } from './get-channel-controller'
-export { JoinChannelByNameController } from './join-channel-by-name-controller'
+export { JoinChannelController } from './join-channel-controller'
 export { ListChatterChannelsController } from './list-chatter-channels-controller'

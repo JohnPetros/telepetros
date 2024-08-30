@@ -20,10 +20,10 @@ export class PrismaChannelsRepository implements IChannelsRepository {
     return this.channelMapper.toDomain(primasChannel)
   }
 
-  async findByName(channelName: string): Promise<Channel | null> {
+  async findByInviteCode(inviteCode: string): Promise<Channel | null> {
     const primasChannel = await prisma.channel.findFirst({
       where: {
-        name: channelName,
+        invite_code: inviteCode,
       },
       include: {},
     })
@@ -53,7 +53,7 @@ export class PrismaChannelsRepository implements IChannelsRepository {
         data: {
           id: channel.id,
           name: channel.name,
-          hash: channel.hash,
+          invite_code: channel.inviteCode,
           avatar: String(channel.avatar),
           owner_id: channel.ownerId,
           is_public: channel.isPublic,

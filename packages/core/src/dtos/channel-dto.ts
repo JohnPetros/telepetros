@@ -1,7 +1,7 @@
 export type ChannelDto = {
   id?: string
   name: string
-  hash: string
+  inviteCode: string
   avatar?: string
   isPublic?: boolean
   ownerId: string

@@ -13,9 +13,7 @@ export const ChannelsService = (apiClient: IApiClient): IChannelsService => {
     },
 
     async fetchChannelsListByChatter(chatterId: string) {
-      const response = await apiClient.get<ChannelDto[]>(`/channels/chatter/${chatterId}`)
-
-      return response
+      return await apiClient.get<ChannelDto[]>(`/channels/chatter/${chatterId}`)
     },
 
     async createChannel(name: string, avatar: string, ownerId: string) {
@@ -24,6 +22,10 @@ export const ChannelsService = (apiClient: IApiClient): IChannelsService => {
         avatar,
         ownerId,
       })
+    },
+
+    async joinChannel(inviteCode: string) {
+      return await apiClient.post<ChannelDto>(`/channels/join/${inviteCode}`)
     },
   }
 }

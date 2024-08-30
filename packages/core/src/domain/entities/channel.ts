@@ -3,7 +3,7 @@ import { Entity } from '../abstracts'
 
 type ChannelProps = {
   name: string
-  hash: string
+  inviteCode: string
   ownerId: string
   isPublic: boolean
   avatar?: string
@@ -15,7 +15,7 @@ export class Channel extends Entity<ChannelProps> {
     return new Channel(
       {
         name: dto.name,
-        hash: dto.hash,
+        inviteCode: dto.inviteCode,
         isPublic: dto.isPublic ?? true,
         ownerId: dto.ownerId,
         avatar: dto.avatar,
@@ -29,12 +29,12 @@ export class Channel extends Entity<ChannelProps> {
     return this.props.name
   }
 
-  get hash() {
-    return this.props.hash
+  get inviteCode() {
+    return this.props.inviteCode
   }
 
   get avatar() {
-    return this.props.avatar
+    return String(this.props.avatar)
   }
 
   get isPublic() {
@@ -53,7 +53,7 @@ export class Channel extends Entity<ChannelProps> {
     return {
       id: this.id,
       name: this.name,
-      hash: this.hash,
+      inviteCode: this.inviteCode,
       avatar: this.avatar,
       isPublic: this.isPublic,
       ownerId: this.ownerId,

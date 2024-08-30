@@ -1,23 +1,23 @@
 import { Chatter } from '#domain/entities'
-import type { ChatterDto } from '#dtos'
+import type { ChannelDto, ChatterDto } from '#dtos'
 import type { IUseCase } from '#interfaces/handlers'
 import type { IChannelsRepository, IChatsRepository } from '#interfaces/repositories'
 import { ChannelNotFoundError, ChannelNotPublicError } from '../../errors'
 
 type Request = {
   chatterDto: ChatterDto
-  channelName: string
+  inviteCode: string
 }
 
-export class JoinChannelByNameUseCase implements IUseCase<Request, string> {
+export class JoinChannelUseCase implements IUseCase<Request, ChannelDto> {
   constructor(
     private readonly channelsRepository: IChannelsRepository,
     private readonly chatsRepository: IChatsRepository,
   ) {}
 
-  async execute({ channelName, chatterDto }: Request): Promise<string> {
+  async execute({ inviteCode, chatterDto }: Request): Promise<ChannelDto> {
     const chatter = Chatter.create(chatterDto)
-    const channel = await this.channelsRepository.findByName(channelName)
+    const channel = await this.channelsRepository.findByInviteCode(inviteCode)
 
     if (!channel) {
       throw new ChannelNotFoundError()
@@ -29,6 +29,6 @@ export class JoinChannelByNameUseCase implements IUseCase<Request, string> {
 
     await this.chatsRepository.addChatterChat(chatter.id, channel.chatId)
 
-    return channel.chatId
+    return channel.dto
   }
 }
