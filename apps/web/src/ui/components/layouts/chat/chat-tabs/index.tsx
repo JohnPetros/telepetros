@@ -58,7 +58,11 @@ export const ChatTabs = () => {
           <ul>
             {channels?.map((channel) => (
               <li key={channel.id} className='mt-3'>
-                <CardLink title={channel.name} route={`channel/${channel.id}/chat`} />
+                <CardLink
+                  title={channel.name}
+                  avatar={channel.avatar}
+                  route={`/channel/${channel.id}/chat`}
+                />
               </li>
             ))}
           </ul>

@@ -1,16 +1,23 @@
+import type { ChannelDto, ChatDto } from '@telepetros/core/dtos'
 import { useApi } from '@/infra/api'
 import { CACHE } from '@/ui/constants/cache'
-import { useCache } from '@/ui/hooks'
+import { useCache, useNavigation } from '@/ui/hooks'
 import { Channel, Chat } from '@telepetros/core/entities'
 
-export function useChannelChatPage(channelId: string) {
+type ChannelChatPageProps = {
+  channel: ChannelDto
+  chat: ChatDto
+}
+
+export function useChannelChatPage(initialData: ChannelChatPageProps) {
   const { channelsService } = useApi()
 
   async function fetchChannel() {
-    const response = await channelsService.fetchChannel(channelId)
+    if (!initialData.channel.id) return
+    const response = await channelsService.fetchChannel(initialData.channel.id)
 
     if (response.isFailure) {
-      console.log(response.error)
+      alert('OPA')
     }
     return response.body
   }
@@ -18,6 +25,7 @@ export function useChannelChatPage(channelId: string) {
   const { data } = useCache({
     key: CACHE.channel.key,
     fetcher: fetchChannel,
+    initialData,
   })
 
   return {

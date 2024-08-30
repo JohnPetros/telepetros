@@ -18,6 +18,7 @@ export const CardLink = ({
   icon,
   isActive = false,
 }: CardLinkProps) => {
+  console.log({ avatar })
   return (
     <Card
       as={Link}

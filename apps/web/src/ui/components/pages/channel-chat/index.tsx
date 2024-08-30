@@ -1,20 +1,24 @@
 'use client'
 
+import type { ChannelDto, ChatDto } from '@telepetros/core/dtos'
+
 import { useAuthContext } from '@/ui/contexts/auth-context'
 import { useChannelChatPage } from './use-channel-chat-page'
-import { Button, Input, Link } from '@nextui-org/react'
+import { Link } from '@nextui-org/react'
 import { Icon } from '../../shared/icon'
 import { Chat } from '../../shared/chat'
 import { Header } from '../../shared/header'
-import { ChatMessage } from '../../shared/chat/chat-message'
 import { ROUTES } from '@/ui/constants'
 
 type ChannelChatPageProps = {
-  channelId: string
+  initialData: {
+    channel: ChannelDto
+    chat: ChatDto
+  }
 }
 
-export const ChannelChatPage = ({ channelId }: ChannelChatPageProps) => {
-  const { channel, chat } = useChannelChatPage(channelId)
+export const ChannelChatPage = ({ initialData }: ChannelChatPageProps) => {
+  const { channel, chat } = useChannelChatPage(initialData)
   const { chatter } = useAuthContext()
 
   if (!chatter || !channel) return null
