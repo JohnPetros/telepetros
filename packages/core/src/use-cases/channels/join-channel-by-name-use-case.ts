@@ -9,13 +9,13 @@ type Request = {
   channelName: string
 }
 
-export class JoinChannelByNameUseCase implements IUseCase<Request> {
+export class JoinChannelByNameUseCase implements IUseCase<Request, string> {
   constructor(
     private readonly channelsRepository: IChannelsRepository,
     private readonly chatsRepository: IChatsRepository,
   ) {}
 
-  async execute({ channelName, chatterDto }: Request): Promise<void> {
+  async execute({ channelName, chatterDto }: Request): Promise<string> {
     const chatter = Chatter.create(chatterDto)
     const channel = await this.channelsRepository.findByName(channelName)
 
@@ -28,5 +28,7 @@ export class JoinChannelByNameUseCase implements IUseCase<Request> {
     }
 
     await this.chatsRepository.addChatterChat(chatter.id, channel.chatId)
+
+    return channel.chatId
   }
 }

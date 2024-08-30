@@ -13,7 +13,9 @@ export const ChannelsService = (apiClient: IApiClient): IChannelsService => {
     },
 
     async fetchChannelsListByChatter(chatterId: string) {
-      return await apiClient.get<ChannelDto[]>(`/channels/chatter/${chatterId}`)
+      const response = await apiClient.get<ChannelDto[]>(`/channels/chatter/${chatterId}`)
+
+      return response
     },
 
     async createChannel(name: string, avatar: string, ownerId: string) {

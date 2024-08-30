@@ -24,7 +24,9 @@ export function useChatTabs(popoverRef: RefObject<PopoverRef>) {
     const response = await channelsService.fetchChannelsListByChatter(chatter.id)
 
     if (response.isFailure) {
+      toast.showError(response.errorMessage)
     }
+
     return response.body
   }
 
