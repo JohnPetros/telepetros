@@ -1,10 +1,17 @@
 import { useState } from 'react'
 
-export function useCreateChannelModal(onCreate: (name: string) => Promise<void>) {
+export function useCreateChannelModal(
+  onCreate: (name: string, avatarFile: File) => Promise<void>,
+) {
   const [channelName, setChannelName] = useState('')
+  const [avatarFile, setAvatarFile] = useState<File | null>(null)
 
   async function handleModalConfirm() {
-    await onCreate(channelName)
+    if (avatarFile) await onCreate(channelName, avatarFile)
+  }
+
+  function handlePickImage(file: File) {
+    setAvatarFile(file)
   }
 
   function handleInputChange(value: string) {
@@ -13,6 +20,7 @@ export function useCreateChannelModal(onCreate: (name: string) => Promise<void>)
 
   return {
     handleModalConfirm,
+    handlePickImage,
     handleInputChange,
   }
 }

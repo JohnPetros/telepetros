@@ -1,27 +1,27 @@
 import type { ReactNode } from 'react'
 
 import { Modal } from '@/ui/components/shared/modal'
-import { Icon } from '@/ui/components/shared/icon'
 import { Input } from '@/ui/components/shared/input'
 import { useCreateChannelModal } from './use-create-channel-modal'
 import { ImagePicker } from '@/ui/components/shared/image-picker'
 
 type CreateChannelModalProps = {
   children: ReactNode
-  onCreate: (name: string) => Promise<void>
+  onCreate: (name: string, avatarFile: File) => Promise<void>
 }
 
 export const CreateChannelModal = ({ children, onCreate }: CreateChannelModalProps) => {
-  const { handleModalConfirm, handleInputChange } = useCreateChannelModal(onCreate)
+  const { handleModalConfirm, handleInputChange, handlePickImage } =
+    useCreateChannelModal(onCreate)
 
   return (
     <Modal title='Create Channel' onConfirm={handleModalConfirm} trigger={children}>
       <p className='text-slate-700'>Give your channel a beautiful name and icon.</p>
-      <ImagePicker />
+      <ImagePicker onPick={handlePickImage} />
       <Input
         type='text'
         variant='flat'
-        label='Email'
+        label='Name'
         labelPlacement='outside'
         autoFocus
         required

@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { type RefObject, useState } from 'react'
 
 import { useApi } from '@/infra/api'
 import { CACHE } from '@/ui/constants/cache'
+import type { PopoverRef } from '@/ui/components/shared/popover/types'
 import { useAuthContext } from '@/ui/contexts/auth-context'
 import { useCache } from '@/ui/hooks/use-cache'
 import { useNavigation } from '@/ui/hooks'
@@ -11,9 +12,9 @@ import { ROUTES } from '@/ui/constants'
 
 type Tab = 'channels' | 'chatters'
 
-export function useChatTabs() {
+export function useChatTabs(popoverRef: RefObject<PopoverRef>) {
   const [selectedTab, setSelectedTab] = useState<Tab>('channels')
-  const { channelsService, chattersService } = useApi()
+  const { channelsService, chattersService, uploadService } = useApi()
   const { chatter } = useAuthContext()
   const { navigateTo } = useNavigation()
 
@@ -51,13 +52,27 @@ export function useChatTabs() {
     fetcher: fetchChatters,
   })
 
-  async function handleCreateChannel(channelName: string) {
+  async function handleCreateChannel(channelName: string, channelAvatarFile: File) {
     if (!chatter || !channels) return
 
-    const response = await channelsService.createChannel(channelName, chatter.id)
+    popoverRef.current?.close()
 
-    if (response.isSuccess) {
-      const createdChannel = response.body
+    const uploadResponse = await uploadService.saveImage('avatar', channelAvatarFile)
+
+    if (uploadResponse.isFailure) {
+      return
+    }
+
+    const avatar = uploadResponse.body.imageUrl
+
+    const channelResponse = await channelsService.createChannel(
+      channelName,
+      avatar,
+      chatter.id,
+    )
+
+    if (channelResponse.isSuccess) {
+      const createdChannel = channelResponse.body
       await mutateChannelsCache([...channels, createdChannel])
       navigateTo(`${ROUTES.channel}/${createdChannel.id}/chat`)
       return

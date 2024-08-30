@@ -1,15 +1,19 @@
 'use client'
 
+import { useRef } from 'react'
 import { Tabs, Tab, Button } from '@nextui-org/react'
-import { useChatTabs } from './use-chat-tabs'
+
+import type { PopoverRef } from '@/ui/components/shared/popover/types'
 import { CardLink } from '@/ui/components/shared/card-link'
 import { Icon } from '@/ui/components/shared/icon'
 import { Popover } from '@/ui/components/shared/popover'
 import { CreateChannelModal } from './create-channel-modal'
+import { useChatTabs } from './use-chat-tabs'
 
 export const ChatTabs = () => {
+  const popoverRef = useRef<PopoverRef>(null)
   const { channels, chatters, selectedTab, handleTabChange, handleCreateChannel } =
-    useChatTabs()
+    useChatTabs(popoverRef)
 
   return (
     <div className='flex flex-wrap gap-4 w-full'>
@@ -23,6 +27,7 @@ export const ChatTabs = () => {
       >
         <Tab key='channels' title='Channels' className='w-full'>
           <Popover
+            ref={popoverRef}
             trigger={
               <Button
                 startContent={<Icon name='plus' size={24} />}

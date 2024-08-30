@@ -48,6 +48,24 @@ export const NextApiClient = (): IApiClient => {
       })
     },
 
+    async sendFile<ResponseBody>(url: string, body: FormData) {
+      console.log('opa')
+      const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
+        method: 'POST',
+        body: body,
+      })
+      const data = await response.json()
+
+      if (!response.ok) {
+        return handleApiError<ResponseBody>(data, response.status)
+      }
+
+      return new ApiResponse<ResponseBody>({
+        body: data,
+        statusCode: response.status,
+      })
+    },
+
     setBaseUrl(url: string) {
       baseUrl = url
     },
@@ -57,7 +75,7 @@ export const NextApiClient = (): IApiClient => {
     },
 
     setHeader(key: string, value: string) {
-      if (!(key in headers)) headers[key] = value
+      headers[key] = value
     },
 
     setParam(key: string, value: string) {

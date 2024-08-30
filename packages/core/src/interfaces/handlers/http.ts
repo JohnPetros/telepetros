@@ -9,6 +9,7 @@ export interface IHttp<Body = void, Params = void> {
   getQuery(key: string): string | null
   setCookie(key: string, value: string, duration: number): void
   getCookie(key: string): string | null
+  getImageFile(): Promise<Buffer>
   hasCookie(key: string): boolean
   send(response: unknown, statusCode?: number): unknown
   next(): unknown

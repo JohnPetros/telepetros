@@ -19,12 +19,14 @@ type ModalProps = {
   title: string
   children: ReactNode
   trigger?: ReactNode
+  isLarge?: boolean
   isDefaultOpen?: boolean
+  onClose?: VoidFunction
   onConfirm: VoidFunction
 }
 
 const ModalComponent = (
-  { title, children, trigger, isDefaultOpen = false, onConfirm }: ModalProps,
+  { title, children, trigger, isLarge, isDefaultOpen = false, onConfirm }: ModalProps,
   ref: ForwardedRef<ModalRef>,
 ) => {
   const { isOpen, onOpenChange, onOpen, onClose } = useDisclosure()
@@ -35,15 +37,17 @@ const ModalComponent = (
     () => {
       return {
         close: onClose,
+        open: onOpen,
       }
     },
-    [onClose],
+    [onClose, onOpen],
   )
 
   return (
     <>
       {trigger && <Slot onClick={onOpen}>{trigger}</Slot>}
       <ModalContainer
+        size={isLarge ? '5xl' : 'lg'}
         backdrop='blur'
         isOpen={isOpen}
         onClose={onClose}
@@ -51,12 +55,13 @@ const ModalComponent = (
         isDismissable={false}
         defaultOpen={isDefaultOpen}
         isKeyboardDismissDisabled={true}
+        className='z-[100]'
       >
-        <ModalContent>
+        <ModalContent className='p-2'>
           <ModalHeader className='flex flex-col gap-1'>{title}</ModalHeader>
           <ModalBody>{children}</ModalBody>
-          <ModalFooter>
-            <Button color='primary' onPress={handleConfirmButtonClick}>
+          <ModalFooter className='mt-3'>
+            <Button color='primary' fullWidth onPress={handleConfirmButtonClick}>
               Confirm
             </Button>
           </ModalFooter>

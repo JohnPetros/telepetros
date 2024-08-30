@@ -1,7 +1,7 @@
 'use client'
 
 import { useJwtContext } from '@/ui/contexts/jwt-context/use-jwt-context'
-import { apiClient, channelsService, chattersService } from './services'
+import { apiClient, channelsService, chattersService, uploadService } from './services'
 import { AuthService } from './services/auth-service'
 
 export function useApi() {
@@ -14,5 +14,6 @@ export function useApi() {
     authService,
     channelsService,
     chattersService,
+    uploadService,
   }
 }

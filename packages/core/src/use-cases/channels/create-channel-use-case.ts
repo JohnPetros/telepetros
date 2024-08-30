@@ -6,6 +6,7 @@ import { ChatterNotFoundError } from '../../errors'
 
 type Request = {
   name: string
+  avatar: string
   ownerId: string
   hash: string
 }
