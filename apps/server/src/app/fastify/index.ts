@@ -4,6 +4,7 @@ import Cors from '@fastify/cors'
 import Jwt from '@fastify/jwt'
 import Websocket from '@fastify/websocket'
 import Cookies from '@fastify/cookie'
+import Multipart from '@fastify/multipart'
 import { ZodError } from 'zod'
 
 import type { IServerApp } from '@telepetros/core/interfaces'
@@ -13,11 +14,18 @@ import {
   AppError,
   AuthError,
   NotFoundError,
+  ValidationError,
 } from '@telepetros/core/errors'
 import { HTTP_STATUS_CODE } from '@telepetros/core/constants'
 
 import { ENV } from '@/constants'
-import { AuthRoutes, ChannelsRoutes, ChatRoutes, ChattersRoutes } from './routes'
+import {
+  AuthRoutes,
+  ChannelsRoutes,
+  ChatRoutes,
+  ChattersRoutes,
+  UploadRoutes,
+} from './routes'
 import { VerifyJwtController } from '@/api/controllers/auth/verify-jwt-controller'
 import { FastifyHttp } from './fastify-http'
 
@@ -32,6 +40,7 @@ export class FastifyApp implements IServerApp {
     this.app.register(Cors, { origin: '*' })
     this.app.register(Cookies)
     this.app.register(Jwt, { secret: ENV.jwtSecret })
+    this.app.register(Multipart)
     this.app.register(Websocket)
     this.registerRoutes()
 
@@ -51,6 +60,7 @@ export class FastifyApp implements IServerApp {
     this.app.register(ChannelsRoutes, { prefix: '/channels' })
     this.app.register(ChattersRoutes, { prefix: '/chatters' })
     this.app.register(ChatRoutes, { prefix: '/chat' })
+    this.app.register(UploadRoutes, { prefix: '/upload' })
   }
 
   private setJwtPreHandler() {
@@ -79,6 +89,9 @@ export class FastifyApp implements IServerApp {
 
         if (error instanceof AlreadyExistsError)
           return reply.status(HTTP_STATUS_CODE.conflict).send(response)
+
+        if (error instanceof ValidationError)
+          return reply.status(HTTP_STATUS_CODE.badRequest).send(response)
 
         if (error instanceof ApiError)
           return reply.status(error.statusCode).send(response)
