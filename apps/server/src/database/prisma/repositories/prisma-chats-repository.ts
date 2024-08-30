@@ -52,6 +52,15 @@ export class PrismaChatsRepository implements IChatsRepository {
     return chat
   }
 
+  async addChatterChat(chatterId: string, chatId: string): Promise<void> {
+    await prisma.chatterChat.create({
+      data: {
+        chatter_id: chatterId,
+        chat_id: chatId,
+      },
+    })
+  }
+
   async addMessage(message: Message): Promise<Message> {
     const prismaMessage = this.messageMapper.toPrisma(message)
 
