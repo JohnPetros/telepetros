@@ -8,6 +8,10 @@ type ChannelWithChatDto = {
 
 export interface IChannelsService {
   fetchChannel(chatterId: string): Promise<ApiResponse<ChannelWithChatDto>>
-  createChannel(name: string, ownerId: string): Promise<ApiResponse<ChannelDto>>
+  createChannel(
+    name: string,
+    avatar: string,
+    ownerId: string,
+  ): Promise<ApiResponse<ChannelDto>>
   fetchChannelsListByChatter(chatterId: string): Promise<ApiResponse<ChannelDto[]>>
 }

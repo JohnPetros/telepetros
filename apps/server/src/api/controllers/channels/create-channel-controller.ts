@@ -8,6 +8,7 @@ import { CreateChannelUseCase } from '@telepetros/core/use-cases'
 
 type Body = {
   ownerId: string
+  avatar: string
   name: string
 }
 
@@ -19,6 +20,7 @@ export class CreateChannelController implements IController<Body> {
 
     const createdChatterDto = await useCase.execute({
       name: http.body.name,
+      avatar: http.body.avatar,
       ownerId: http.body.ownerId,
       hash: encryptor.generateHash(),
     })

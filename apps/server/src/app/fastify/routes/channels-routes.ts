@@ -29,6 +29,7 @@ export const ChannelsRoutes = async (app: FastifyInstance) => {
         return getChannelChatController.handle(http)
       },
     )
+    
     .get(
       '/chatter/:chatterId',
       {
@@ -50,6 +51,7 @@ export const ChannelsRoutes = async (app: FastifyInstance) => {
           body: z.object({
             ownerId: z.string().uuid(),
             name: z.string(),
+            avatar: z.string(),
           }),
         },
       },
