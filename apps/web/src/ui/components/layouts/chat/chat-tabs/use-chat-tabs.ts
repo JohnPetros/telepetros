@@ -15,14 +15,14 @@ type Tab = 'channels' | 'chatters'
 export function useChatTabs(popoverRef: RefObject<PopoverRef>) {
   const [selectedTab, setSelectedTab] = useState<Tab>('channels')
   const { channelsService, chattersService, uploadService } = useApi()
-  const { chatter } = useAuthContext()
+  const { authChatter } = useAuthContext()
   const { navigateTo } = useNavigation()
   const toast = useToast()
 
   async function fetchChannels() {
-    if (!chatter) return
+    if (!authChatter) return
 
-    const response = await channelsService.fetchChannelsListByChatter(chatter.id)
+    const response = await channelsService.fetchChannelsListByChatter(authChatter.id)
 
     if (response.isFailure) {
       toast.showError(response.errorMessage)
@@ -32,9 +32,9 @@ export function useChatTabs(popoverRef: RefObject<PopoverRef>) {
   }
 
   async function fetchChatters() {
-    if (!chatter) return
+    if (!authChatter) return
 
-    const response = await chattersService.fetchChattersListByChatter(chatter.id)
+    const response = await chattersService.fetchChattersListByChatter(authChatter.id)
 
     if (response.isFailure) {
       toast.showError(response.errorMessage)
@@ -68,7 +68,7 @@ export function useChatTabs(popoverRef: RefObject<PopoverRef>) {
   }
 
   async function handleCreateChannel(channelName: string, channelAvatarFile: File) {
-    if (!chatter || !channels) return
+    if (!authChatter || !channels) return
     popoverRef.current?.close()
 
     const uploadResponse = await uploadService.saveImage('avatar', channelAvatarFile)
@@ -83,7 +83,7 @@ export function useChatTabs(popoverRef: RefObject<PopoverRef>) {
     const channelResponse = await channelsService.createChannel(
       channelName,
       avatar,
-      chatter.id,
+      authChatter.id,
     )
 
     if (channelResponse.isSuccess) {

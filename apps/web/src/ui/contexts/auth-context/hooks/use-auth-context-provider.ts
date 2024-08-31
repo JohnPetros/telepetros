@@ -9,7 +9,7 @@ export function useAuthContextProvider(jwt: string) {
   async function logout() {}
 
   return {
-    chatter: Chatter.create(chatterDto),
+    authChatter: Chatter.create(chatterDto),
     logout,
   }
 }

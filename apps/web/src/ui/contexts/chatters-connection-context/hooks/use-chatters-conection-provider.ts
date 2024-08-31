@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useAuthContext } from '../../auth-context'
 
 export function useChattersConnectionProvider() {
-  const { chatter } = useAuthContext()
+  const { authChatter } = useAuthContext()
   const [lastConnectedChatterId, setLastConnectedChatterId] = useState('')
   const [lastDisconnectedChatterId, setLastDisconnectedChatterId] = useState('')
 
@@ -16,7 +16,7 @@ export function useChattersConnectionProvider() {
   }
 
   useChatterSocket({
-    chatterId: chatter.id,
+    chatterId: authChatter.id,
     onConnectChatter: handleChatterConnect,
     onDisconnectChatter: handleChatterDisconnect,
   })
