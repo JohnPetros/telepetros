@@ -52,8 +52,43 @@ export class PrismaChatsRepository implements IChatsRepository {
     return chat
   }
 
-  async addChatterChat(chatterId: string, chatId: string): Promise<void> {
-    await prisma.chatterChat.create({
+  async findIdByChatters(
+    firstChatterId: string,
+    secondChatterId: string,
+  ): Promise<string | null> {
+    const id = await prisma.$queryRaw`
+    SELECT chat_id FROM chatters C
+    WHERE 
+      CC.chatter_id = ${firstChatterId} OR 
+      CC.chatter_id = ${secondChatterId} AND
+      CC.chat_id NOT IN (
+        SELECT chat_id FROM chatter_chats 
+      )
+    `
+
+    if (!id) return null
+
+    return String(id)
+  }
+
+  async addChatterChat(
+    firstChatterId: string,
+    secondChatterId: string,
+    chatId: string,
+  ): Promise<void> {
+    await prisma.$transaction([
+      prisma.chat.create({ data: { id: chatId } }),
+      prisma.chattersChats.createMany({
+        data: [
+          { chatter_id: firstChatterId, chat_id: chatId },
+          { chatter_id: secondChatterId, chat_id: chatId },
+        ],
+      }),
+    ])
+  }
+
+  async addChatterToChat(chatterId: string, chatId: string): Promise<void> {
+    await prisma.chattersChats.create({
       data: {
         chatter_id: chatterId,
         chat_id: chatId,

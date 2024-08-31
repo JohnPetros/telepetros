@@ -9,11 +9,18 @@ import { Icon } from '@/ui/components/shared/icon'
 import { Popover } from '@/ui/components/shared/popover'
 import { CreateChannelModal } from './create-channel-modal'
 import { useChatTabs } from './use-chat-tabs'
+import { JoinChannelModal } from './join-channel-modal'
 
 export const ChatTabs = () => {
   const popoverRef = useRef<PopoverRef>(null)
-  const { channels, chatters, selectedTab, handleTabChange, handleCreateChannel } =
-    useChatTabs(popoverRef)
+  const {
+    channels,
+    chatters,
+    selectedTab,
+    handleTabChange,
+    handleCreateChannel,
+    handleJoinChannel,
+  } = useChatTabs(popoverRef)
 
   return (
     <div className='flex flex-wrap gap-4 w-full'>
@@ -47,13 +54,15 @@ export const ChatTabs = () => {
                 Create channel
               </Button>
             </CreateChannelModal>
-            <Button
-              fullWidth
-              color='primary'
-              className='mt-1 bg-transparent text-slate-700 hover:bg-blue-500 hover:text-gray-50'
-            >
-              Join to a channel
-            </Button>
+            <JoinChannelModal onJoin={handleJoinChannel}>
+              <Button
+                fullWidth
+                color='primary'
+                className='mt-1 bg-transparent text-slate-700 hover:bg-blue-500 hover:text-gray-50'
+              >
+                Join to a channel
+              </Button>
+            </JoinChannelModal>
           </Popover>
           <ul>
             {channels?.map((channel) => (

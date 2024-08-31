@@ -1,10 +1,9 @@
-import type { Chatter as PrismaChatter } from '@prisma/client'
-
 import type { IChattersRepository } from '@telepetros/core/interfaces'
 import type { Chatter } from '@telepetros/core/entities'
 
 import { prisma } from '../client'
 import { PrismaChatterMapper } from '../mappers'
+import type { PrismaChatter } from '../types'
 
 export class PrismaChattersRepository implements IChattersRepository {
   private readonly mapper: PrismaChatterMapper

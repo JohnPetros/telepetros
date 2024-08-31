@@ -16,7 +16,7 @@ export const JoinChannelModal = ({ children, onJoin }: CreateChannelModalProps) 
 
   return (
     <Modal title='Join Channel' onConfirm={handleModalConfirm} trigger={children}>
-      <p className='text-slate-700'>Chat with other people in the channel</p>
+      <p className='text-slate-700'>Chat with other people in the channel.</p>
       <Input
         type='text'
         label='Invite Code'

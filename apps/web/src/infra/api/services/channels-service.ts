@@ -25,7 +25,7 @@ export const ChannelsService = (apiClient: IApiClient): IChannelsService => {
     },
 
     async joinChannel(inviteCode: string) {
-      return await apiClient.post<ChannelDto>(`/channels/join/${inviteCode}`)
+      return await apiClient.post<ChannelDto>('/channels/join/', { inviteCode })
     },
   }
 }

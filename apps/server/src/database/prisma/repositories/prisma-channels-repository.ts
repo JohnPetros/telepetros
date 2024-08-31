@@ -3,9 +3,10 @@ import type { IChannelsRepository } from '@telepetros/core/interfaces'
 
 import { prisma } from '../client'
 import { PrismaChannelMapper } from '../mappers'
+import type { PrismaChannel } from '../types'
 
 export class PrismaChannelsRepository implements IChannelsRepository {
-  private readonly channelMapper: PrismaChannelMapper = new PrismaChannelMapper()
+  private readonly mapper: PrismaChannelMapper = new PrismaChannelMapper()
 
   async findById(channelId: string): Promise<Channel | null> {
     const primasChannel = await prisma.channel.findFirst({
@@ -17,7 +18,7 @@ export class PrismaChannelsRepository implements IChannelsRepository {
 
     if (!primasChannel) return null
 
-    return this.channelMapper.toDomain(primasChannel)
+    return this.mapper.toDomain(primasChannel)
   }
 
   async findByInviteCode(inviteCode: string): Promise<Channel | null> {
@@ -30,17 +31,17 @@ export class PrismaChannelsRepository implements IChannelsRepository {
 
     if (!primasChannel) return null
 
-    return this.channelMapper.toDomain(primasChannel)
+    return this.mapper.toDomain(primasChannel)
   }
 
-  async findManyByChatterId(ownerId: string): Promise<Channel[]> {
-    const primasChannel = await prisma.channel.findMany({
-      where: {
-        owner_id: ownerId,
-      },
-    })
+  async findManyByChatterId(chatterId: string): Promise<Channel[]> {
+    const prismaChannels = await prisma.$queryRaw`
+      SELECT C.* FROM channels C
+      JOIN chatter_chats CC ON CC.chat_id = C.chat_id
+      WHERE CC.chatter_id = ${chatterId}
+    `
 
-    return primasChannel.map(this.channelMapper.toDomain)
+    return (prismaChannels as PrismaChannel[]).map(this.mapper.toDomain)
   }
 
   async add(channel: Channel): Promise<Channel> {
@@ -62,6 +63,6 @@ export class PrismaChannelsRepository implements IChannelsRepository {
       }),
     ])
 
-    return this.channelMapper.toDomain(createdChannel)
+    return this.mapper.toDomain(createdChannel)
   }
 }

@@ -4,11 +4,10 @@ import { type RefObject, useState } from 'react'
 
 import type { ChannelDto } from '@telepetros/core/dtos'
 
-import { useApi } from '@/infra/api'
 import type { PopoverRef } from '@/ui/components/shared/popover/types'
 import { CACHE } from '@/ui/constants/cache'
 import { useAuthContext } from '@/ui/contexts/auth-context'
-import { useCache, useToast, useNavigation } from '@/ui/hooks'
+import { useCache, useToast, useNavigation, useApi } from '@/ui/hooks'
 import { ROUTES } from '@/ui/constants'
 
 type Tab = 'channels' | 'chatters'
@@ -92,6 +91,8 @@ export function useChatTabs(popoverRef: RefObject<PopoverRef>) {
 
   async function handleJoinChannel(inviteCode: string) {
     const response = await channelsService.joinChannel(inviteCode)
+
+    popoverRef.current?.close()
 
     if (response.isFailure) {
       toast.showError(response.errorMessage)

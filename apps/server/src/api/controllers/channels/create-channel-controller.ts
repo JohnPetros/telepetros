@@ -1,10 +1,9 @@
 import type { IHttp, IController } from '@telepetros/core/interfaces'
-import { Channel } from '@telepetros/core/entities'
 
 import { channelsRepository, chattersRepository } from '@/database'
 import { Encryptor } from '@/utils'
-import { HTTP_STATUS_CODE } from '@/constants/http-status-code'
 import { CreateChannelUseCase } from '@telepetros/core/use-cases'
+import { HTTP_STATUS_CODE } from '@telepetros/core/constants'
 
 type Body = {
   ownerId: string
