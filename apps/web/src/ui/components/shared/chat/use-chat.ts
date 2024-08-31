@@ -28,12 +28,11 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
     onReceiveMessage: handleReceiveMessage,
   })
 
-  function handleSendMessage(messageValue: string) {
+  function handleSendMessage(messageText: string, attachment: File | null) {
     if (!authChatter) return
 
     const message = Message.create({
-      type: 'text',
-      value: messageValue,
+      text: messageText,
       chatId: chat.id,
       chatterId: authChatter.id,
     })

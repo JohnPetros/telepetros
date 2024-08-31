@@ -33,10 +33,9 @@ export const Chat = ({ initialChat, children: header }: ChatProps) => {
               return (
                 <ChatMessage
                   key={message.id}
-                  type={message.type}
                   time={message.time}
                   chatter={{ name: messageChatter.name, avatar: messageChatter.avatar }}
-                  value={message.value}
+                  text={message.text}
                   isMe={message.isFromChatter(authChatter)}
                   avatar={
                     <ChatAvatar
