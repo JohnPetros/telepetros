@@ -10,6 +10,7 @@ import {
   IconPaperclip,
   IconMoodSmile,
   IconImageInPicture,
+  IconTrash,
   IconAt,
 } from '@tabler/icons-react'
 
@@ -28,4 +29,5 @@ export const ICONS: Record<
   clip: IconPaperclip,
   emoticon: IconMoodSmile,
   at: IconAt,
+  trash: IconTrash,
 }
