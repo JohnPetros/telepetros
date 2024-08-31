@@ -3,6 +3,7 @@ import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 
 import {
+  JoinChatterChatController,
   ListChattersByChatterController,
   ListChattersByNameController,
 } from '@/api/controllers/chatters'
@@ -13,6 +14,7 @@ import { FastifyWs } from '../fastify-ws'
 export const ChattersRoutes = async (app: FastifyInstance) => {
   const listChattersByChatterController = new ListChattersByChatterController()
   const listChattersByNameController = new ListChattersByNameController()
+  const joinChatterChatController = new JoinChatterChatController()
   const router = app.withTypeProvider<ZodTypeProvider>()
 
   router
@@ -49,4 +51,18 @@ export const ChattersRoutes = async (app: FastifyInstance) => {
       const chatterSocket = new ChatterSocket('')
       return chatterSocket.handle(ws)
     })
+    .post(
+      '/join',
+      {
+        schema: {
+          body: z.object({
+            chatterId: z.string(),
+          }),
+        },
+      },
+      async (request, response) => {
+        const http = new FastifyHttp<typeof request.body>(request, response)
+        return joinChatterChatController.handle(http)
+      },
+    )
 }

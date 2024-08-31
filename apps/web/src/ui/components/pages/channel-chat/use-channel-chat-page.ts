@@ -1,6 +1,6 @@
 import type { ChannelDto, ChatDto } from '@telepetros/core/dtos'
 import { CACHE } from '@/ui/constants/cache'
-import { useApi, useCache } from '@/ui/hooks'
+import { useApi, useCache, useToast } from '@/ui/hooks'
 import { Channel, Chat } from '@telepetros/core/entities'
 
 type ChannelChatPageProps = {
@@ -10,14 +10,17 @@ type ChannelChatPageProps = {
 
 export function useChannelChatPage(initialData: ChannelChatPageProps) {
   const { channelsService } = useApi()
+  const toast = useToast()
 
   async function fetchChannel() {
     if (!initialData.channel.id) return
-    const response = await channelsService.fetchChannel(initialData.channel.id)
+    const response = await channelsService.fetchChannelChat(initialData.channel.id)
 
     if (response.isFailure) {
-      alert('OPA')
+      toast.showError(response.errorMessage)
+      return
     }
+
     return response.body
   }
 

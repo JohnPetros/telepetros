@@ -1,9 +1,9 @@
 'use client'
 
-export function useModal(onConfirm: VoidFunction, closeModal: VoidFunction) {
+export function useModal(onConfirm?: VoidFunction, closeModal?: VoidFunction) {
   function handleConfirmButtonClick() {
-    onConfirm()
-    closeModal()
+    if (onConfirm) onConfirm()
+    if (closeModal) closeModal()
   }
 
   return {

@@ -10,6 +10,8 @@ import { Popover } from '@/ui/components/shared/popover'
 import { CreateChannelModal } from './create-channel-modal'
 import { useChatTabs } from './use-chat-tabs'
 import { JoinChannelModal } from './join-channel-modal'
+import { FindChatterModal } from './find-chatter-modal'
+import { ChatCard } from '@/ui/components/shared/chat-card'
 
 export const ChatTabs = () => {
   const popoverRef = useRef<PopoverRef>(null)
@@ -19,6 +21,7 @@ export const ChatTabs = () => {
     selectedTab,
     handleTabChange,
     handleCreateChannel,
+    handleFindChatter,
     handleJoinChannel,
   } = useChatTabs(popoverRef)
 
@@ -67,32 +70,39 @@ export const ChatTabs = () => {
           <ul>
             {channels?.map((channel) => (
               <li key={channel.id} className='mt-3'>
-                <CardLink
-                  title={channel.name}
-                  avatar={channel.avatar}
-                  route={`/channel/${channel.id}/chat`}
-                />
+                <ChatCard.Container>
+                  <ChatCard.Info
+                    name={channel.name}
+                    avatar={channel.avatar}
+                    showOnlineState={false}
+                  />
+                </ChatCard.Container>
               </li>
             ))}
           </ul>
         </Tab>
         <Tab key='chatters' title='Chatters' className='w-full'>
-          <Button
-            startContent={<Icon name='plus' size={24} />}
-            fullWidth
-            className='bg-slate-200 text-slate-600'
-          >
-            Chatter
-          </Button>
+          <FindChatterModal onFind={handleFindChatter}>
+            <Button
+              startContent={<Icon name='plus' size={24} />}
+              fullWidth
+              className='bg-slate-200 text-slate-600'
+            >
+              Chatter
+            </Button>
+          </FindChatterModal>
           {chatters && (
             <ul className='mt-3'>
               {chatters?.map((chatter) => (
                 <li key={chatter.id}>
-                  <CardLink
-                    title={chatter.name}
-                    avatar={chatter.avatar}
-                    route={`chatter/${chatter.id}/chat`}
-                  />
+                  <ChatCard.Container>
+                    <ChatCard.Info
+                      name={chatter.name}
+                      avatar={chatter.avatar}
+                      isOnline={chatter.isOnline}
+                      showOnlineState={true}
+                    />
+                  </ChatCard.Container>
                 </li>
               ))}
             </ul>

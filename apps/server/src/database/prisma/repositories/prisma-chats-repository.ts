@@ -56,19 +56,20 @@ export class PrismaChatsRepository implements IChatsRepository {
     firstChatterId: string,
     secondChatterId: string,
   ): Promise<string | null> {
-    const id = await prisma.$queryRaw`
-    SELECT chat_id FROM chatters C
+    const result = (await prisma.$queryRaw`
+    SELECT CC.chat_id FROM chatters C
+    JOIN chatter_chats CC ON CC.chatter_id = C.id
     WHERE 
-      CC.chatter_id = ${firstChatterId} OR 
-      CC.chatter_id = ${secondChatterId} AND
-      CC.chat_id NOT IN (
-        SELECT chat_id FROM chatter_chats 
-      )
-    `
+      (CC.chatter_id = ${firstChatterId} OR CC.chatter_id = ${secondChatterId}) AND
+      CC.chat_id NOT IN (SELECT chat_id FROM chatter_chats)
+    `) as Array<string>
 
-    if (!id) return null
+    console.log(result)
+    const chatId = result[0]
 
-    return String(id)
+    if (!chatId) return null
+
+    return chatId
   }
 
   async addChatterChat(
@@ -76,15 +77,16 @@ export class PrismaChatsRepository implements IChatsRepository {
     secondChatterId: string,
     chatId: string,
   ): Promise<void> {
-    await prisma.$transaction([
-      prisma.chat.create({ data: { id: chatId } }),
-      prisma.chattersChats.createMany({
-        data: [
-          { chatter_id: firstChatterId, chat_id: chatId },
-          { chatter_id: secondChatterId, chat_id: chatId },
-        ],
-      }),
-    ])
+    await prisma.chat.create({
+      data: {
+        id: chatId,
+        ChattersChats: {
+          createMany: {
+            data: [{ chatter_id: firstChatterId }, { chatter_id: secondChatterId }],
+          },
+        },
+      },
+    })
   }
 
   async addChatterToChat(chatterId: string, chatId: string): Promise<void> {

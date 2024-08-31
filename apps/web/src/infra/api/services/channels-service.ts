@@ -8,8 +8,8 @@ type ChannelWithChatDto = {
 
 export const ChannelsService = (apiClient: IApiClient): IChannelsService => {
   return {
-    async fetchChannel(chatterId: string) {
-      return await apiClient.get<ChannelWithChatDto>(`/channels/${chatterId}`)
+    async fetchChannelChat(chatterId: string) {
+      return await apiClient.get<ChannelWithChatDto>(`/channels/${chatterId}/chat`)
     },
 
     async fetchChannelsListByChatter(chatterId: string) {

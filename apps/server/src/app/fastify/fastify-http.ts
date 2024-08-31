@@ -30,7 +30,6 @@ export class FastifyHttp<Body = void, Params = void> implements IHttp<Body, Para
   }
 
   getCookie(key: string): string | null {
-    console.log(this.request.cookies)
     return this.request.cookies[key] ?? null
   }
 

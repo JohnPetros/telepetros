@@ -1,8 +1,7 @@
 import type { IController, IHttp } from '@telepetros/core/interfaces'
-import type { ChattersListParams } from '@telepetros/core/types'
+import { ListChattersByNameUseCase } from '@telepetros/core/use-cases'
 
 import { chattersRepository } from '@/database'
-import { ListChattersByNameUseCase } from '@telepetros/core/use-cases'
 
 type Params = {
   name: string

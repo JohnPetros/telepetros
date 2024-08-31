@@ -2,7 +2,7 @@
 
 import { type RefObject, useState } from 'react'
 
-import type { ChannelDto } from '@telepetros/core/dtos'
+import type { ChannelDto, ChatterDto } from '@telepetros/core/dtos'
 
 import type { PopoverRef } from '@/ui/components/shared/popover/types'
 import { CACHE } from '@/ui/constants/cache'
@@ -37,7 +37,7 @@ export function useChatTabs(popoverRef: RefObject<PopoverRef>) {
     const response = await chattersService.fetchChattersListByChatter(chatter.id)
 
     if (response.isFailure) {
-      console.log(response.errorMessage)
+      toast.showError(response.errorMessage)
     }
     return response.body
   }
@@ -50,8 +50,8 @@ export function useChatTabs(popoverRef: RefObject<PopoverRef>) {
     key: CACHE.channelsList.key,
     fetcher: fetchChannels,
   })
-  const { data: chatters } = useCache({
-    key: CACHE.chattersList.key,
+  const { data: chatters, mutateCache: mutateChattersCache } = useCache({
+    key: CACHE.chattersListByChatter.key,
     fetcher: fetchChatters,
   })
 
@@ -61,9 +61,14 @@ export function useChatTabs(popoverRef: RefObject<PopoverRef>) {
     await mutateChannelsCache([...channels, channelDto])
   }
 
+  async function updateChattersCache(chatterDto: ChatterDto) {
+    if (!chatters) return
+
+    await mutateChattersCache([...chatters, chatterDto])
+  }
+
   async function handleCreateChannel(channelName: string, channelAvatarFile: File) {
     if (!chatter || !channels) return
-
     popoverRef.current?.close()
 
     const uploadResponse = await uploadService.saveImage('avatar', channelAvatarFile)
@@ -91,7 +96,6 @@ export function useChatTabs(popoverRef: RefObject<PopoverRef>) {
 
   async function handleJoinChannel(inviteCode: string) {
     const response = await channelsService.joinChannel(inviteCode)
-
     popoverRef.current?.close()
 
     if (response.isFailure) {
@@ -106,12 +110,29 @@ export function useChatTabs(popoverRef: RefObject<PopoverRef>) {
     }
   }
 
+  async function handleFindChatter(chatterId: string) {
+    const response = await chattersService.joinChatterChat(chatterId)
+    popoverRef.current?.close()
+
+    if (response.isFailure) {
+      toast.showError(response.errorMessage)
+      return
+    }
+
+    if (response.isSuccess) {
+      const secondChatter = response.body
+      await updateChattersCache(secondChatter)
+      navigateTo(`${ROUTES.chatter}/${secondChatter.id}/chat`)
+    }
+  }
+
   return {
     channels,
     chatters,
     selectedTab,
     handleCreateChannel,
     handleJoinChannel,
+    handleFindChatter,
     handleTabChange,
   }
 }
