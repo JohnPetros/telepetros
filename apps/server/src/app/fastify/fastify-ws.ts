@@ -30,7 +30,7 @@ export class FastifyWs implements IWs {
     })
   }
 
-  close(callback: VoidFunction): void {
+  onClose(callback: VoidFunction): void {
     this.socket.on('close', () => {
       callback()
     })
