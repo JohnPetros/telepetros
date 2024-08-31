@@ -12,6 +12,8 @@ export class ChatterSocket implements ISocket {
 
   handle(ws: IWs): void {
     ws.on(EVENTS.chatter.connect, async (chatterId: string) => {
+      console.log(`Connected ${chatterId}`)
+
       const useCase = new ConnectChatterUseCase(chattersRepository)
       await useCase.execute(chatterId)
 
@@ -21,6 +23,8 @@ export class ChatterSocket implements ISocket {
 
     ws.onClose(async () => {
       if (!this.chatterId) return
+      console.log(`Disconnected ${this.chatterId}`)
+
       const useCase = new DisconnectChatterUseCase(chattersRepository)
       await useCase.execute(this.chatterId)
 

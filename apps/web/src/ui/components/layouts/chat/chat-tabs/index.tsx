@@ -12,6 +12,7 @@ import { useChatTabs } from './use-chat-tabs'
 import { JoinChannelModal } from './join-channel-modal'
 import { FindChatterModal } from './find-chatter-modal'
 import { ChatCard } from '@/ui/components/shared/chat-card'
+import { ROUTES } from '@/ui/constants'
 
 export const ChatTabs = () => {
   const popoverRef = useRef<PopoverRef>(null)
@@ -70,7 +71,10 @@ export const ChatTabs = () => {
           <ul>
             {channels?.map((channel) => (
               <li key={channel.id} className='mt-3'>
-                <ChatCard.Container>
+                <ChatCard.Container
+                  as='link'
+                  href={`${ROUTES.chatter}/${channel.id}/chat`}
+                >
                   <ChatCard.Info
                     name={channel.name}
                     avatar={channel.avatar}
@@ -95,7 +99,10 @@ export const ChatTabs = () => {
             <ul className='mt-3'>
               {chatters?.map((chatter) => (
                 <li key={chatter.id}>
-                  <ChatCard.Container>
+                  <ChatCard.Container
+                    as='link'
+                    href={`${ROUTES.chatter}/${chatter.id}/chat`}
+                  >
                     <ChatCard.Info
                       name={chatter.name}
                       avatar={chatter.avatar}

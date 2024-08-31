@@ -27,14 +27,14 @@ export const ChatAvatar = ({
           {isOnline ? (
             <span
               className={twMerge(
-                'block bg-red-700 rounded-full',
+                'block bg-green-700 rounded-full',
                 size === 'sm' ? 'size-3' : 'size-6',
               )}
             />
           ) : (
             <span
               className={twMerge(
-                'block bg-green-700 rounded-full',
+                'block bg-red-700 rounded-full',
                 size === 'sm' ? 'size-3' : 'size-6',
               )}
             />

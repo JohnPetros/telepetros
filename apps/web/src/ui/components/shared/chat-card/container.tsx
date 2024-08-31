@@ -4,6 +4,7 @@ import { Button, Card, CardBody, type CardProps, Link } from '@nextui-org/react'
 type ContainerProps = {
   children: ReactNode
   isActive?: boolean
+  href?: string
   as?: 'link' | 'button'
   className?: string
 } & CardProps
@@ -11,6 +12,7 @@ type ContainerProps = {
 export const Container = ({
   children,
   className,
+  href,
   isActive = false,
   as = 'link',
 }: ContainerProps) => {
@@ -18,6 +20,7 @@ export const Container = ({
     <Card
       as={as === 'link' ? Link : Button}
       shadow='sm'
+      href={href}
       isHoverable
       isPressable
       fullWidth

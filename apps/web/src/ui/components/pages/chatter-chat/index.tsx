@@ -8,6 +8,7 @@ import { Icon } from '../../shared/icon'
 import { Chat } from '../../shared/chat'
 import { Header } from '../../shared/header'
 import { useChatterChatPage } from './use-chatter-chat'
+import { ChatAvatar } from '../../shared/chatter-avatar'
 
 type ChannelChatPageProps = {
   chatDto: ChatDto
@@ -21,14 +22,20 @@ export const ChatterChatPage = ({ chatDto, chatterDto }: ChannelChatPageProps) =
 
   return (
     <div className='flex flex-col h-screen'>
-      <Header
-        resource={{ name: chatter.name, avatar: chatter.avatar }}
-        link={
-          <Link href={`${ROUTES.channel}/${chatter.id}`}>
-            <Icon name='gear' size={24} className='text-slate-700' />
-          </Link>
-        }
-      />
+      <Header>
+        <div className='flex items-center gap-3'>
+          <ChatAvatar
+            avatar={chatter.avatar}
+            name={chatter.name}
+            isOnline={chatter.isOnline}
+            showOnlineState
+          />
+          <h2>{chatter.name}</h2>
+        </div>
+        <Link href={`${ROUTES.channel}/${chatter.id}`}>
+          <Icon name='gear' size={24} className='text-slate-700' />
+        </Link>
+      </Header>
 
       {chat && (
         <Chat initialChat={chat}>
