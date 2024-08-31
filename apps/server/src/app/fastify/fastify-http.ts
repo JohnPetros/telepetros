@@ -2,8 +2,7 @@ import type { FastifyReply, FastifyRequest } from 'fastify'
 
 import type { IHttp } from '@telepetros/core/interfaces'
 import type { ChatterDto } from '@telepetros/core/dtos'
-import { HTTP_STATUS_CODE } from '@/constants/http-status-code'
-import { MAX_IMAGE_FILE_SIZE } from '@telepetros/core/constants'
+import { HTTP_STATUS_CODE, MAX_IMAGE_FILE_SIZE } from '@telepetros/core/constants'
 import {
   ImageFileMaxSizeError,
   ImageFileInvalidFormatError,
@@ -24,12 +23,17 @@ export class FastifyHttp<Body = void, Params = void> implements IHttp<Body, Para
   }
 
   setCookie(key: string, value: string, duration: number): void {
-    throw Error('Method not implemented')
+    this.reply.setCookie(key, value, {
+      path: '/',
+      expires: new Date(Date.now() + duration),
+    })
   }
 
   getCookie(key: string): string | null {
-    throw new Error('Method not implemented.')
+    console.log(this.request.cookies)
+    return this.request.cookies[key] ?? null
   }
+
   hasCookie(key: string): boolean {
     throw new Error('Method not implemented.')
   }
@@ -65,14 +69,6 @@ export class FastifyHttp<Body = void, Params = void> implements IHttp<Body, Para
     return value ?? null
   }
 
-  get body(): Body {
-    return this.request.body as Body
-  }
-
-  get params(): Params {
-    return this.request.query as Params
-  }
-
   async getImageFile(): Promise<Buffer> {
     const file = await this.request.file({ limits: { fileSize: MAX_IMAGE_FILE_SIZE } })
 
@@ -88,5 +84,13 @@ export class FastifyHttp<Body = void, Params = void> implements IHttp<Body, Para
     }
 
     return file.toBuffer()
+  }
+
+  get body(): Body {
+    return this.request.body as Body
+  }
+
+  get params(): Params {
+    return this.request.params as Params
   }
 }

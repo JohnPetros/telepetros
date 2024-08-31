@@ -7,14 +7,14 @@ export function handleAxiosError<ResponseBody>(axiosError: unknown) {
     console.log('Axios Error: ')
     console.log(axiosError.response?.data)
     return new ApiResponse({
-      body: axiosError.message,
+      errorMessage: axiosError.message,
       statusCode: axiosError.response?.status,
     }) as ApiResponse<ResponseBody>
   }
 
   console.log(`Unknown Error: ${axiosError}`)
   return new ApiResponse({
-    body: 'Unknown error',
+    errorMessage: 'Unknown error',
     statusCode: 500,
   }) as ApiResponse<ResponseBody>
 }
