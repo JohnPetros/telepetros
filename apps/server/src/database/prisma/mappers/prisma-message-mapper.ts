@@ -7,7 +7,7 @@ export class PrismaMessageMapper {
       id: prismaMessage.id,
       value: prismaMessage.value,
       type: prismaMessage.type,
-      createdAt: prismaMessage.created_at,
+      sentAt: prismaMessage.sent_at,
       chatId: prismaMessage.chat_id,
       chatterId: prismaMessage.chatter_id,
       parentMessageId: prismaMessage.parent_message_id
@@ -20,7 +20,7 @@ export class PrismaMessageMapper {
     const dto = message.dto
     return {
       id: message.id,
-      created_at: message.createdAt,
+      sent_at: message.sentAt,
       value: dto.value,
       type: dto.type,
       chat_id: dto.chatId,

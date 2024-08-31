@@ -24,7 +24,7 @@ model Message {
   parent_message_id String?  @unique
   chat_id           String
   chatter_id        String
-  created_at        DateTime @default(now())
+  sent_at           DateTime @default(now())
 
   parent_message Message? @relation("parent_message", fields: [parent_message_id], references: [id])
   Message        Message? @relation("parent_message")

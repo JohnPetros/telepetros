@@ -8,9 +8,9 @@ type MessageProps = {
   type: MessageType
   value: string
   parentMessageId?: string
-  createdAt: Date
   chatId: string
   chatterId: string
+  sentAt: Date
 }
 
 export class Message extends Entity<MessageProps> {
@@ -24,7 +24,7 @@ export class Message extends Entity<MessageProps> {
       {
         type,
         value: dto.value,
-        createdAt: dto.createdAt ?? new Date(),
+        sentAt: dto.sentAt ?? new Date(),
         parentMessageId: dto.parentMessageId,
         chatId: dto.chatId,
         chatterId: dto.chatterId,
@@ -53,12 +53,12 @@ export class Message extends Entity<MessageProps> {
     return this.props.chatterId
   }
 
-  get createdAt() {
-    return this.props.createdAt
+  get sentAt() {
+    return this.props.sentAt
   }
 
   get time() {
-    return new Datetime().format(this.createdAt, 'hh:mm')
+    return new Datetime().format(this.sentAt, 'hh:mm')
   }
 
   get dto(): MessageDto {
@@ -68,7 +68,7 @@ export class Message extends Entity<MessageProps> {
       value: this.value,
       chatId: this.props.chatId,
       chatterId: this.props.chatterId,
-      createdAt: this.createdAt,
+      sentAt: this.sentAt,
       parentMessageId: this.props.parentMessageId,
     }
   }
