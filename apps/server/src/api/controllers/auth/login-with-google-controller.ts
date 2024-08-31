@@ -1,7 +1,7 @@
 import type { IController, IHttp } from '@telepetros/core/interfaces'
 import { LoginWithGoogleUseCase } from '@telepetros/core/use-cases'
 
-import { ENV } from '@/constants'
+import { COOKIES, ENV } from '@/constants'
 import { googleService } from '@/api/services'
 import { chattersRepository } from '@/database'
 

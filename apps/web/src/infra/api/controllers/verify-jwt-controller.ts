@@ -8,9 +8,7 @@ export const VerifyJwtController = (authService: IAuthService): IController => {
       if (!http.hasCookie(COOKIES.jwt.key)) {
         return http.redirect(`${ROUTES.login}?error=user-not-found`)
       }
-
       const response = await authService.verifyJwt()
-
       if (response.isFailure) {
         return http.redirect(ROUTES.login)
       }
