@@ -22,7 +22,7 @@ type ModalProps = {
   isLarge?: boolean
   isDefaultOpen?: boolean
   onClose?: VoidFunction
-  onConfirm: VoidFunction
+  onConfirm?: VoidFunction
 }
 
 const ModalComponent = (
