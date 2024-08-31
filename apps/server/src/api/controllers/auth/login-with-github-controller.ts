@@ -1,5 +1,6 @@
 import type { IController, IHttp } from '@telepetros/core/interfaces'
 import { LoginWithGithubUseCase } from '@telepetros/core/use-cases'
+import { HTTP_STATUS_CODE } from '@telepetros/core/constants'
 
 import { ENV } from '@/constants'
 import { githubService } from '@/api/services'
@@ -21,6 +22,6 @@ export class LoginWithGithubController implements IController<Body> {
 
     const jwt = await http.signJwt(chatterDto)
 
-    return http.send({ jwt })
+    return http.send({ jwt }, HTTP_STATUS_CODE.created)
   }
 }

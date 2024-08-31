@@ -8,7 +8,6 @@ export class VerifyJwtController implements IController {
 
   async handle(http: IHttp) {
     const chatterDto = await http.getChatter()
-    console.log('getCookie', http.getCookie('jwt'))
     const chatter = Chatter.create(chatterDto)
     const chatterExists = await chattersRepository.findById(chatter.id)
 
