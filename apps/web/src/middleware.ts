@@ -2,11 +2,13 @@ import type { NextRequest, MiddlewareConfig } from 'next/server'
 
 import { VerifyJwtController } from './infra/api/controllers'
 import { NextHttp } from './infra/api/next/next-http'
-import { produceAuthService } from './infra/api/factories/produce-auth-service'
+import { AuthService } from './infra/api/services/auth-service'
+import { HttpNextApiClient } from './infra/api/next'
 
 const Middleware = (request: NextRequest) => {
   const http = NextHttp({ request })
-  const authService = produceAuthService(http)
+  const nextApiClient = HttpNextApiClient(http)
+  const authService = AuthService(nextApiClient)
   const controller = VerifyJwtController(authService)
   const response = controller.handle(http)
 

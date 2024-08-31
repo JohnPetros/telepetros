@@ -90,6 +90,10 @@ export const NextHttp = <Body = void, Params = void>({
       throw new Error('Method not implemented')
     },
 
+    async getImageFile() {
+      throw new Error('Method not implemented')
+    },
+
     get body(): Body {
       const body = bodySchema?.parse(request.body)
       return body as Body
