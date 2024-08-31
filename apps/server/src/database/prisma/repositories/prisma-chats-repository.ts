@@ -57,15 +57,13 @@ export class PrismaChatsRepository implements IChatsRepository {
     secondChatterId: string,
   ): Promise<string | null> {
     const result = (await prisma.$queryRaw`
-    SELECT CC.chat_id FROM chatters C
-    JOIN chatter_chats CC ON CC.chatter_id = C.id
+    SELECT chat_id FROM chatter_chats CC
     WHERE 
-      (CC.chatter_id = ${firstChatterId} OR CC.chatter_id = ${secondChatterId}) AND
-      CC.chat_id NOT IN (SELECT chat_id FROM chatter_chats)
-    `) as Array<string>
+      (chatter_id = ${firstChatterId} OR chatter_id = ${secondChatterId}) AND
+      chat_id NOT IN (SELECT chat_id FROM channels)
+    `) as { chat_id: string }[]
 
-    console.log(result)
-    const chatId = result[0]
+    const chatId = result[0]?.chat_id
 
     if (!chatId) return null
 
