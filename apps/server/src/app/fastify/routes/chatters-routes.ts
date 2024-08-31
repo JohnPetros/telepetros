@@ -3,6 +3,7 @@ import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 
 import {
+  GetChatterChatController,
   JoinChatterChatController,
   ListChattersByChatterController,
   ListChattersByNameController,
@@ -10,14 +11,30 @@ import {
 import { ChatterSocket } from '@/realtime/sockets'
 import { FastifyHttp } from '../fastify-http'
 import { FastifyWs } from '../fastify-ws'
+import { GetChatterChatUseCase } from '@telepetros/core/use-cases'
 
 export const ChattersRoutes = async (app: FastifyInstance) => {
   const listChattersByChatterController = new ListChattersByChatterController()
   const listChattersByNameController = new ListChattersByNameController()
   const joinChatterChatController = new JoinChatterChatController()
+  const getChatterChatUseCase = new GetChatterChatController()
   const router = app.withTypeProvider<ZodTypeProvider>()
 
   router
+    .get(
+      '/:chatterId/chat',
+      {
+        schema: {
+          params: z.object({
+            chatterId: z.string().uuid(),
+          }),
+        },
+      },
+      async (request, response) => {
+        const http = new FastifyHttp<void, typeof request.params>(request, response)
+        return getChatterChatUseCase.handle(http)
+      },
+    )
     .get(
       '/chatter/:id',
       {

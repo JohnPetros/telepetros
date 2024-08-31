@@ -1,13 +1,10 @@
 import type { ChannelDto, ChatDto } from '#dtos'
 import type { ApiResponse } from '../../responses'
 
-type ChannelWithChatDto = {
-  channel: ChannelDto
-  chat: ChatDto
-}
-
 export interface IChannelsService {
-  fetchChannelChat(chatterId: string): Promise<ApiResponse<ChannelWithChatDto>>
+  fetchChannelChat(
+    chatterId: string,
+  ): Promise<ApiResponse<{ channel: ChannelDto; chat: ChatDto }>>
   fetchChannelsListByChatter(chatterId: string): Promise<ApiResponse<ChannelDto[]>>
   createChannel(
     name: string,

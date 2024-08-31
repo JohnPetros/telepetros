@@ -12,11 +12,11 @@ export class GetChannelChatController implements IController<void, Params> {
     const chatterDto = await http.getChatter()
     const useCase = new GetChannelChatUseCase(channelsRepository, chatsRepository)
 
-    const channelWithChat = await useCase.execute({
+    const chatterWithChat = await useCase.execute({
       channelId: http.params.channelId,
       chatterDto,
     })
 
-    return http.send(channelWithChat)
+    return http.send(chatterWithChat)
   }
 }

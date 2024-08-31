@@ -18,7 +18,7 @@ export const ChannelsRoutes = async (app: FastifyInstance) => {
 
   router
     .get(
-      '/:channelId',
+      '/:channelId/chat',
       {
         schema: {
           params: z.object({
@@ -32,16 +32,16 @@ export const ChannelsRoutes = async (app: FastifyInstance) => {
       },
     )
     .post(
-      '/join/:inviteCode',
+      '/join',
       {
         schema: {
-          params: z.object({
+          body: z.object({
             inviteCode: z.string(),
           }),
         },
       },
       async (request, response) => {
-        const http = new FastifyHttp<void, typeof request.params>(request, response)
+        const http = new FastifyHttp<typeof request.body>(request, response)
         return joinChannelController.handle(http)
       },
     )
