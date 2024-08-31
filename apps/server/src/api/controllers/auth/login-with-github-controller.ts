@@ -1,7 +1,7 @@
 import type { IController, IHttp } from '@telepetros/core/interfaces'
 import { LoginWithGithubUseCase } from '@telepetros/core/use-cases'
 
-import { COOKIES, ENV } from '@/constants'
+import { ENV } from '@/constants'
 import { githubService } from '@/api/services'
 import { chattersRepository } from '@/database'
 
