@@ -38,14 +38,16 @@ export function useBrowserWebsocket({
   )
 
   useEffect(() => {
-    const websocket = new WebSocket(url)
+    if (websocket) return
 
-    websocket.onopen = () => {
-      setWebsocket(websocket)
+    const ws = new WebSocket(url)
+
+    ws.onopen = () => {
+      setWebsocket(ws)
       setIsOpen(true)
     }
 
-    websocket.onerror = () => {
+    ws.onerror = () => {
       if (onError) onError()
     }
   }, [url, onError])

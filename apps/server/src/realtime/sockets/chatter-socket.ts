@@ -8,17 +8,19 @@ import {
 import { chattersRepository } from '@/database'
 
 export class ChatterSocket implements ISocket {
-  constructor(private readonly chatterId: string) {}
+  constructor(private chatterId: string | null) {}
 
   handle(ws: IWs): void {
-    ws.on(EVENTS.chatter.connect, async () => {
+    ws.on(EVENTS.chatter.connect, async (chatterId: string) => {
       const useCase = new ConnectChatterUseCase(chattersRepository)
-      await useCase.execute(this.chatterId)
+      await useCase.execute(chatterId)
 
-      ws.broadcast(EVENTS.chatter.connect, this.chatterId)
+      this.chatterId = chatterId
+      ws.broadcast(EVENTS.chatter.connect, chatterId)
     })
 
-    ws.close(async () => {
+    ws.onClose(async () => {
+      if (!this.chatterId) return
       const useCase = new DisconnectChatterUseCase(chattersRepository)
       await useCase.execute(this.chatterId)
 

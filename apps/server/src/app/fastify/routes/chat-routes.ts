@@ -1,10 +1,5 @@
 import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
-import { jwtDecode } from 'jwt-decode'
-import z from 'zod'
-
-import { UnauthorizedError } from '@telepetros/core/errors'
-import type { ChatterDto } from '@telepetros/core/dtos'
 
 import { ChatSocket } from '@/realtime/sockets'
 import { FastifyWs } from '../fastify-ws'
