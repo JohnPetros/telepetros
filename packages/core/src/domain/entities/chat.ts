@@ -38,6 +38,10 @@ export class Chat extends Entity<ChatProps> {
     this.props.messages.push(message)
   }
 
+  hasChatter(chatter: Chatter): boolean {
+    return this.props.chatters.some((currentChatter) => currentChatter.isEqualTo(chatter))
+  }
+
   getChatterByMessage(message: Message): Chatter | null {
     const chatter = this.props.chatters.find((chatter) => message.isFromChatter(chatter))
     return chatter ?? null
