@@ -4,7 +4,7 @@ import type { IApiClient, IChattersService } from '@telepetros/core/interfaces'
 export const ChattersService = (apiClient: IApiClient): IChattersService => {
   return {
     async fetchChatterChat(chatterId: string) {
-      return await apiClient.get<ChatDto>(`/chatters/${chatterId}/chat`)
+      return await apiClient.get<{ chatter: ChatterDto; chat: ChatDto }>(`/chatters/${chatterId}/chat`)
     },
 
     async fetchChattersListByChatter(chatterId: string) {

@@ -19,22 +19,32 @@ type ChannelChatPageProps = {
 
 export const ChannelChatPage = ({ initialData }: ChannelChatPageProps) => {
   const { channel, chat } = useChannelChatPage(initialData)
-  const { chatter } = useAuthContext()
 
-  if (!chatter || !channel) return null
+  if (!channel) return null
 
   return (
     <div className='flex flex-col h-screen'>
       <Header
-        resource={{ name: chatter.name, avatar: chatter.avatar }}
+        resource={{ name: channel.name, avatar: channel.avatar }}
         link={
-          <Link href={`${ROUTES.channel}/${chatter.id}`}>
+          <Link href={`${ROUTES.channel}/${channel.id}`}>
             <Icon name='gear' size={24} className='text-slate-700' />
           </Link>
         }
       />
 
-      {chat && <Chat initialChat={chat} />}
+      {chat && (
+        <Chat initialChat={chat}>
+          {(chat) => (
+            <div>
+              <h1 className='text-2xl text-slate-700 font-semibold'>Channel Chat</h1>
+              <p className='mt-1 text-md text-slate-400'>
+                {chat.chattersCount} members, {chat.onlineChattersCount} online
+              </p>
+            </div>
+          )}
+        </Chat>
+      )}
     </div>
   )
 }

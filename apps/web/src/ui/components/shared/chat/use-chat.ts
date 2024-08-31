@@ -8,7 +8,7 @@ import { useChattersConnectionContext } from '@/ui/contexts/chatters-connection-
 
 export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
   const [chat, setChat] = useState<Chat>(initialChat)
-  const { chatter } = useAuthContext()
+  const { authChatter } = useAuthContext()
   const { lastConnectedChatterId, lastDisconnectedChatterId } =
     useChattersConnectionContext()
 
@@ -29,19 +29,18 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
   })
 
   function handleSendMessage(messageValue: string) {
-    if (!chatter) return
+    if (!authChatter) return
 
     const message = Message.create({
       type: 'text',
       value: messageValue,
       chatId: chat.id,
-      chatterId: chatter.id,
+      chatterId: authChatter.id,
     })
     sendMessage(message)
   }
 
   useEffect(() => {
-    console.log({ lastConnectedChatterId })
     if (lastConnectedChatterId) {
       chat.onConnectChatter(lastConnectedChatterId)
       setChat(Chat.create(chat.dto))
@@ -49,7 +48,6 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
   }, [lastConnectedChatterId])
 
   useEffect(() => {
-    console.log({ lastDisconnectedChatterId })
     if (lastDisconnectedChatterId) {
       chat.onDisconnectChatter(lastDisconnectedChatterId)
       setChat(Chat.create(chat.dto))

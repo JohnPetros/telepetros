@@ -1,6 +1,6 @@
-import type { MessageType } from '@telepetros/core/types'
+import type { ReactNode } from 'react'
 
-import { Avatar } from '@nextui-org/react'
+import type { MessageType } from '@telepetros/core/types'
 
 type ChatMessageProps = {
   type: MessageType
@@ -11,6 +11,7 @@ type ChatMessageProps = {
     avatar?: string
   }
   isMe: boolean
+  avatar: ReactNode
 }
 
 export const ChatMessage = ({
@@ -18,6 +19,7 @@ export const ChatMessage = ({
   type,
   value,
   time,
+  avatar,
   isMe = false,
 }: ChatMessageProps) => {
   if (isMe)
@@ -28,21 +30,13 @@ export const ChatMessage = ({
           <p className='text-sm text-slate-800 font-medium'>{value}</p>
           <time className='block ml-auto text-slate-500 text-xs'>08:57</time>
         </div>
-        {chatter.avatar ? (
-          <Avatar src={chatter.avatar} size='lg' />
-        ) : (
-          <Avatar name={chatter.name} size='lg' />
-        )}
+        {avatar}
       </div>
     )
 
   return (
     <div className='flex items-end gap-3'>
-      {chatter.avatar ? (
-        <Avatar src={chatter.avatar} size='lg' />
-      ) : (
-        <Avatar name={chatter.name} size='lg' />
-      )}
+      {avatar}
       <div className='flex flex-col gap-2 min-w-80 max-w-96 p-3 bg-slate-300/45 rounded-xl rounded-es-none'>
         <strong className='text-blue-500 font-semibold text-md'>{chatter.name}</strong>
         <p className='text-sm text-slate-800 font-medium'>{value}</p>

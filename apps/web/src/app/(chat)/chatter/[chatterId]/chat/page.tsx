@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 
 import { ServerNextApiClient } from '@/infra/api/next'
 import { ChattersService } from '@/infra/api/services'
+import { ChatterChatPage } from '@/ui/components/pages/chatter-chat'
 
 type PageProps = {
   params: {
@@ -16,7 +17,9 @@ const Page = async ({ params }: PageProps) => {
 
   if (response.isFailure) return notFound()
 
-  return <h1>Chatter Chat Page</h1>
+  return (
+    <ChatterChatPage chatDto={response.body.chat} chatterDto={response.body.chatter} />
+  )
 }
 
 export default Page
