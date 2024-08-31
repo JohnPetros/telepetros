@@ -19,8 +19,7 @@ model Chat {
 
 model Message {
   id                String   @id @default(uuid())
-  type              String
-  value             String
+  text              String
   parent_message_id String?  @unique
   chat_id           String
   chatter_id        String
