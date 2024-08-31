@@ -60,7 +60,7 @@ const ModalComponent = (
         <ModalContent className='p-2'>
           <ModalHeader className='flex flex-col gap-1'>{title}</ModalHeader>
           <ModalBody>{children}</ModalBody>
-          <ModalFooter className='mt-3'>
+          <ModalFooter className='mt-1'>
             <Button color='primary' fullWidth onPress={handleConfirmButtonClick}>
               Confirm
             </Button>

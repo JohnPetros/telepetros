@@ -41,6 +41,7 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
   }
 
   useEffect(() => {
+    console.log({ lastConnectedChatterId })
     if (lastConnectedChatterId) {
       chat.onConnectChatter(lastConnectedChatterId)
       setChat(Chat.create(chat.dto))
@@ -48,6 +49,7 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
   }, [lastConnectedChatterId])
 
   useEffect(() => {
+    console.log({ lastDisconnectedChatterId })
     if (lastDisconnectedChatterId) {
       chat.onDisconnectChatter(lastDisconnectedChatterId)
       setChat(Chat.create(chat.dto))

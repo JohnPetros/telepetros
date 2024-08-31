@@ -1,9 +1,17 @@
-import type { ChannelDto, ChatDto } from '#dtos'
+import { Chatter } from '#domain/entities'
+import type { ChannelDto, ChatDto, ChatterDto } from '#dtos'
 import type { IUseCase } from '#interfaces/handlers'
 import type { IChannelsRepository, IChatsRepository } from '#interfaces/repositories'
-import { ChannelNotFoundError, ChatNoFoundError } from '../../errors'
+import {
+  ChannelNotFoundError,
+  ChannelNotPublicError,
+  ChatNoFoundError,
+} from '../../errors'
 
-type Request = string
+type Request = {
+  channelId: string
+  chatterDto: ChatterDto
+}
 
 type Response = {
   channel: ChannelDto
@@ -16,17 +24,27 @@ export class GetChannelChatUseCase implements IUseCase<Request, Response> {
     private readonly chatsRepository: IChatsRepository,
   ) {}
 
-  async execute(channelId: Request) {
+  async execute({ channelId, chatterDto }: Request) {
     const channel = await this.channelsRepository.findById(channelId)
 
     if (!channel) {
       throw new ChannelNotFoundError()
     }
 
+    if (!channel.isPublic) {
+      throw new ChannelNotPublicError()
+    }
+
     const chat = await this.chatsRepository.findById(channel.chatId)
 
     if (!chat) {
       throw new ChatNoFoundError()
+    }
+
+    const chatter = Chatter.create(chatterDto)
+
+    if (!chat.hasChatter(chatter)) {
+      throw new ChannelNotPublicError()
     }
 
     return {

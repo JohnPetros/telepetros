@@ -27,7 +27,7 @@ export const ChatInput = ({ onSend }: ChatInputProps) => {
       }
       endContent={
         <Button isIconOnly className='bg-slate-200'>
-          <Icon name='emote' size={28} className='text-slate-500' />
+          <Icon name='emoticon' size={28} className='text-slate-500' />
         </Button>
       }
       value={value}
