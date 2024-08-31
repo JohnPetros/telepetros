@@ -1,7 +1,6 @@
 import type { ChannelDto, ChatDto } from '@telepetros/core/dtos'
-import { useApi } from '@/infra/api'
 import { CACHE } from '@/ui/constants/cache'
-import { useCache, useNavigation } from '@/ui/hooks'
+import { useApi, useCache } from '@/ui/hooks'
 import { Channel, Chat } from '@telepetros/core/entities'
 
 type ChannelChatPageProps = {
