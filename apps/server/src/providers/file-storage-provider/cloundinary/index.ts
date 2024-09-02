@@ -17,12 +17,12 @@ export class CloudinaryFileStorageProvider implements IFileStorageProvider {
     this.uploader = Cloudinary.uploader
   }
 
-  async upload(fileBuffer: Buffer): Promise<string> {
+  async upload(folder: string, fileBuffer: Buffer): Promise<string> {
     const data = new Uint8Array(fileBuffer)
 
     return new Promise((resolve, reject) => {
       this.uploader
-        .upload_stream({ folder: 'avatars' }, (error, result) => {
+        .upload_stream({ folder }, (error, result) => {
           if (error) return reject(error)
           if (result) resolve(result.url)
         })

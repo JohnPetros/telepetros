@@ -20,6 +20,8 @@ export class LoginWithGithubController implements IController<Body> {
       githubClientSecret: ENV.githubClientSecret,
     })
 
+    console.log(chatterDto)
+
     const jwt = await http.signJwt(chatterDto)
 
     return http.send({ jwt }, HTTP_STATUS_CODE.created)

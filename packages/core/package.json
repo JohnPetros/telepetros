@@ -10,6 +10,7 @@
     "./types": "./src/types/index.ts",
     "./constants": "./src/constants/index.ts",
     "./responses": "./src/responses/index.ts",
+    "./structs": "./src/domain/structs/index.ts",
     "./use-cases": "./src/use-cases/index.ts",
     "./libs": "./src/libs/index.ts",
     "./errors": "./src/errors/index.ts"

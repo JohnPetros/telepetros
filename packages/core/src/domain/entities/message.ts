@@ -2,13 +2,14 @@ import type { MessageDto } from '../../dtos'
 import type { Chatter } from './chatter'
 import { Entity } from '../abstracts'
 import { Datetime } from '#libs'
+import { Attachment } from '../structs'
 
 type MessageProps = {
   text: string
   parentMessageId?: string
   chatId: string
   chatterId: string
-  attachment: string | null
+  attachment: Attachment | null
   sentAt: Date
 }
 
@@ -21,7 +22,9 @@ export class Message extends Entity<MessageProps> {
         parentMessageId: dto.parentMessageId,
         chatId: dto.chatId,
         chatterId: dto.chatterId,
-        attachment: dto.attachment ?? null,
+        attachment: dto.attachment
+          ? Attachment.create(dto.attachment.name, dto.attachment.value)
+          : null,
       },
       dto.id,
     )
@@ -31,23 +34,23 @@ export class Message extends Entity<MessageProps> {
     return this.props.chatterId === chatter.id
   }
 
-  get text() {
+  get text(): string {
     return this.props.text
   }
 
-  get chatterId() {
+  get chatterId(): string {
     return this.props.chatterId
   }
 
-  get attachment() {
-    return String(this.props.attachment)
+  get attachment(): Attachment | null {
+    return this.props.attachment
   }
 
-  get sentAt() {
+  get sentAt(): Date {
     return this.props.sentAt
   }
 
-  get time() {
+  get time(): string {
     return new Datetime().format(this.sentAt, 'hh:mm')
   }
 
@@ -58,8 +61,11 @@ export class Message extends Entity<MessageProps> {
       chatId: this.props.chatId,
       chatterId: this.props.chatterId,
       sentAt: this.sentAt,
-      attachment: this.attachment,
       parentMessageId: this.props.parentMessageId,
+      ...(this.attachment && {
+        name: this.attachment.name,
+        value: this.attachment.value,
+      }),
     }
   }
 }

@@ -1,8 +1,9 @@
-import { FileStorageProvider } from '@/providers/file-storage-provider'
 import type { IController, IHttp } from '@telepetros/core/interfaces'
 
+import { FileStorageProvider } from '@/providers/file-storage-provider'
+
 type Params = {
-  imageType: string
+  imageType: 'avatars' | 'emoticons'
 }
 
 export class UploadImageController implements IController<void, Params> {
@@ -11,7 +12,7 @@ export class UploadImageController implements IController<void, Params> {
 
     const fileStorageProvider = new FileStorageProvider()
 
-    const imageUrl = await fileStorageProvider.upload(imageFile)
+    const imageUrl = await fileStorageProvider.upload(http.params.imageType, imageFile)
 
     return http.send({ imageUrl })
   }

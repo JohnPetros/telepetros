@@ -71,7 +71,7 @@ export function useChatTabs(popoverRef: RefObject<PopoverRef>) {
     if (!authChatter || !channels) return
     popoverRef.current?.close()
 
-    const uploadResponse = await uploadService.saveImage('avatar', channelAvatarFile)
+    const uploadResponse = await uploadService.saveImage('avatars', channelAvatarFile)
 
     if (uploadResponse.isFailure) {
       toast.showError(uploadResponse.errorMessage)
