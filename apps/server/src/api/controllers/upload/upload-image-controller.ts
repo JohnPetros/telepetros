@@ -11,7 +11,7 @@ export class UploadImageController implements IController<void, Params> {
 
     const fileStorageProvider = new FileStorageProvider()
 
-    const imageUrl = await fileStorageProvider.upload(imageFile)
+    const imageUrl = await fileStorageProvider.upload('avatars', imageFile)
 
     return http.send({ imageUrl })
   }

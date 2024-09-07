@@ -1,3 +1,5 @@
+'use client'
+
 import { type RefObject, useEffect, useState } from 'react'
 
 import { Chat, Message } from '@telepetros/core/entities'
@@ -5,10 +7,14 @@ import { Chat, Message } from '@telepetros/core/entities'
 import { useAuthContext } from '@/ui/contexts/auth-context'
 import { useChatSocket } from '@/ui/realtime/sockets'
 import { useChattersConnectionContext } from '@/ui/contexts/chatters-connection-context/hooks'
+import { useApi, useToast } from '@/ui/hooks'
 
 export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
   const [chat, setChat] = useState<Chat>(initialChat)
+  const [isUploading, setIsUploading] = useState(false)
   const { authChatter } = useAuthContext()
+  const { uploadService } = useApi()
+  const { showError } = useToast()
   const { lastConnectedChatterId, lastDisconnectedChatterId } =
     useChattersConnectionContext()
 
@@ -28,8 +34,36 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
     onReceiveMessage: handleReceiveMessage,
   })
 
-  function handleSendMessage(messageText: string, attachment: File | null) {
+  async function sendMessageWithAttachment(attachment: File, messageText: string) {
+    setIsUploading(true)
+    const uploadResponse = await uploadService.saveFile('attachments', attachment)
+    setIsUploading(false)
+
+    if (uploadResponse.isFailure) {
+      showError(uploadResponse.errorMessage)
+      return
+    }
+
+    const message = Message.create({
+      text: messageText,
+      chatId: chat.id,
+      chatterId: authChatter.id,
+      attachment: {
+        name: attachment.name,
+        value: uploadResponse.body.fileUrl,
+      },
+    })
+    console.log(message)
+    sendMessage(message)
+  }
+
+  async function handleSendMessage(messageText: string, attachment: File | null) {
     if (!authChatter) return
+
+    if (attachment) {
+      sendMessageWithAttachment(attachment, messageText)
+      return
+    }
 
     const message = Message.create({
       text: messageText,
@@ -55,6 +89,7 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
 
   return {
     chat,
+    isUploading,
     handleSendMessage,
   }
 }

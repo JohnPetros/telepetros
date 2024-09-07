@@ -49,7 +49,6 @@ export const NextApiClient = (): IApiClient => {
     },
 
     async sendFile<ResponseBody>(url: string, body: FormData) {
-      console.log('opa')
       const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
         method: 'POST',
         body: body,
@@ -62,6 +61,23 @@ export const NextApiClient = (): IApiClient => {
 
       return new ApiResponse<ResponseBody>({
         body: data,
+        statusCode: response.status,
+      })
+    },
+
+    async loadFile(url: string, filename: string) {
+      const response = await fetch(url)
+      const data = await response.blob()
+      const file = new File([data], filename, { type: data.type })
+
+      console.log({ ok: response.ok })
+
+      if (!response.ok) {
+        return handleApiError(data, response.status)
+      }
+
+      return new ApiResponse({
+        body: file,
         statusCode: response.status,
       })
     },

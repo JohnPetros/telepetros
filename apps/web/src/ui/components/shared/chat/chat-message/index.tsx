@@ -1,13 +1,18 @@
 import type { ReactNode } from 'react'
 
+import type { Attachment } from '@telepetros/core/structs'
+
+import { useChatMessage } from './use-chat-message'
+
 type ChatMessageProps = {
-  text: string
-  time: string
   chatter: {
     name: string
     avatar?: string
   }
+  text: string
+  time: string
   isMe: boolean
+  attachment?: Attachment | null
   avatar: ReactNode
 }
 
@@ -16,8 +21,11 @@ export const ChatMessage = ({
   text,
   time,
   avatar,
+  attachment,
   isMe = false,
 }: ChatMessageProps) => {
+  useChatMessage(attachment ?? null)
+
   if (isMe)
     return (
       <div className='flex items-end justify-end gap-3'>

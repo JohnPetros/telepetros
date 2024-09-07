@@ -6,7 +6,7 @@ import { Icon } from '../../icon'
 import { useChatInput } from './use-chat-input'
 
 type ChatInputProps = {
-  onSend: (text: string, attachment: File | null) => void
+  onSend: (text: string, attachment: File | null) => Promise<void>
 }
 
 export const ChatInput = ({ onSend }: ChatInputProps) => {

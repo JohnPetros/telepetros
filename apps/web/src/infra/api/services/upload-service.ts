@@ -2,14 +2,15 @@ import type { IApiClient, IUploadService } from '@telepetros/core/interfaces'
 
 export const UploadService = (apiClient: IApiClient): IUploadService => {
   return {
-    async saveImage(imageType: 'avatar' | 'emote', imageFile: File) {
+    async saveFile(folder: 'avatars' | 'emoticons' | 'attachments', file: File) {
       const data = new FormData()
-      data.set('file', imageFile)
+      data.set('file', file)
 
-      return await apiClient.sendFile<{ imageUrl: string }>(
-        `/upload/image/${imageType}`,
-        data,
-      )
+      return await apiClient.sendFile<{ fileUrl: string }>(`/upload/${folder}`, data)
+    },
+
+    async fetchFile(url: string, filename: string) {
+      return await apiClient.loadFile(url, filename)
     },
   }
 }

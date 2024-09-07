@@ -2,21 +2,23 @@
 
 import { type ChangeEvent, useState, type KeyboardEvent } from 'react'
 
-export function useChatInput(onSend: (text: string, file: File | null) => void) {
+export function useChatInput(onSend: (text: string, file: File | null) => Promise<void>) {
   const [text, setText] = useState('')
   const [file, setFile] = useState<File | null>(null)
+  const [isUploading, setIsUploading] = useState(false)
 
   function handleChangeText(event: ChangeEvent<HTMLInputElement>) {
     setText(event.currentTarget.value)
   }
 
-  function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
+  async function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
     if (event.key.toLowerCase() !== 'enter') return
 
-    if (text) {
-      onSend(text, file)
+    if (file) {
+      await onSend(text, file)
       setText('')
       setFile(null)
+      setIsUploading(false)
       return
     }
   }
@@ -33,6 +35,7 @@ export function useChatInput(onSend: (text: string, file: File | null) => void) 
   return {
     text,
     file,
+    isUploading,
     handleChangeText,
     handleChangeFile,
     handleKeyDown,

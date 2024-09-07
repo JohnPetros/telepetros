@@ -1,16 +1,15 @@
 import { Chatter } from '#domain/entities'
-import type { ChannelDto, ChatDto, ChatterDto } from '#dtos'
+import type { ChatDto, ChatterDto } from '#dtos'
 import type { IUseCase } from '#interfaces/handlers'
-import type { IChattersRepository, IChatsRepository } from '#interfaces/repositories'
-import {
-  ChannelNotFoundError,
-  ChannelNotPublicError,
-  ChatNoFoundError,
-  ChatterNotFoundError,
-} from '../../errors'
+import type {
+  IChattersRepository,
+  IChatsRepository,
+  IChannelsRepository,
+} from '#interfaces/repositories'
+import { ChatNoFoundError, ChatterNotFoundError } from '../../errors'
 
 type Request = {
-  chatterId: string
+  channelId: string
   chatterDto: ChatterDto
 }
 
@@ -22,11 +21,14 @@ type Response = {
 export class GetChatterChatUseCase implements IUseCase<Request, Response> {
   constructor(
     private readonly chattersRepository: IChattersRepository,
+    private readonly channeslRepository: IChannelsRepository,
     private readonly chatsRepository: IChatsRepository,
   ) {}
 
-  async execute({ chatterId, chatterDto }: Request) {
-    const secondChatter = await this.chattersRepository.findById(chatterId)
+  async execute({ channelId, chatterDto }: Request) {
+    const secondChatter = await this.chattersRepository.findById(channelId)
+
+    console.log({ chatterId })
 
     if (!secondChatter) {
       throw new ChatterNotFoundError()

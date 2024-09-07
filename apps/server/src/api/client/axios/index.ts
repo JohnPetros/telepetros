@@ -29,6 +29,10 @@ export class AxiosApiClient implements IApiClient {
     }
   }
 
+  loadFile(url: string, filename: string): Promise<ApiResponse<File>> {
+    throw new Error('Method not implemented.')
+  }
+
   async get<ResponseBody>(url: string) {
     try {
       const response = await this.axios.get(url)

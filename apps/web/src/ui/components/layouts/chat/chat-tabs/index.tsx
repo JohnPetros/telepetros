@@ -73,7 +73,7 @@ export const ChatTabs = () => {
               <li key={channel.id} className='mt-3'>
                 <ChatCard.Container
                   as='link'
-                  href={`${ROUTES.chatter}/${channel.id}/chat`}
+                  href={`${ROUTES.channel}/${channel.id}/chat`}
                 >
                   <ChatCard.Info
                     name={channel.name}

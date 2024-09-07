@@ -27,7 +27,11 @@ export const ChannelChatPage = ({ initialData }: ChannelChatPageProps) => {
     <div className='flex flex-col h-screen'>
       <Header>
         <div className='flex items-center gap-3'>
-          <ChatAvatar avatar={channel.avatar} name={channel.name} />
+          <ChatAvatar
+            avatar={channel.avatar}
+            name={channel.name}
+            showOnlineState={false}
+          />
           <h2>{channel.name}</h2>
         </div>
         <Link href={`${ROUTES.channel}/${channel.id}`}>

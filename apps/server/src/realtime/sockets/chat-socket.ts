@@ -8,9 +8,9 @@ import { chatsRepository } from '@/database'
 export class ChatSocket implements ISocket {
   handle(ws: IWs): void {
     ws.on<MessageDto>(EVENTS.chat.sendMessage, async (payload) => {
-      // const useCase = new SendMessageUseCase(chatsRepository)
-      // const messageDto = await useCase.execute(payload)
-      ws.broadcast(EVENTS.chat.receiveMessage, payload)
+      const useCase = new SendMessageUseCase(chatsRepository)
+      const messageDto = await useCase.execute(payload)
+      ws.broadcast(EVENTS.chat.receiveMessage, messageDto)
     })
   }
 }

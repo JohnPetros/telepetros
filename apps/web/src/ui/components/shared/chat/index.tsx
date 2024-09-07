@@ -1,3 +1,5 @@
+'use client'
+
 import { type ReactNode, useRef } from 'react'
 
 import type { Chat as ChatEntity } from '@telepetros/core/entities'
@@ -7,6 +9,7 @@ import { ChatMessage } from './chat-message'
 import { ChatInput } from './chat-input'
 import { ChatAvatar } from '../chatter-avatar'
 import { useChat } from './use-chat'
+import { Datetime } from '@telepetros/core/libs'
 
 type ChatProps = {
   initialChat: ChatEntity
@@ -15,7 +18,7 @@ type ChatProps = {
 
 export const Chat = ({ initialChat, children: header }: ChatProps) => {
   const chatRef = useRef<HTMLDivElement>(null)
-  const { chat, handleSendMessage } = useChat(initialChat, chatRef)
+  const { chat, isUploading, handleSendMessage } = useChat(initialChat, chatRef)
   const { authChatter } = useAuthContext()
 
   if (authChatter && chat)
@@ -37,6 +40,7 @@ export const Chat = ({ initialChat, children: header }: ChatProps) => {
                   chatter={{ name: messageChatter.name, avatar: messageChatter.avatar }}
                   text={message.text}
                   isMe={message.isFromChatter(authChatter)}
+                  attachment={message.attachment}
                   avatar={
                     <ChatAvatar
                       name={messageChatter.name}
@@ -48,6 +52,24 @@ export const Chat = ({ initialChat, children: header }: ChatProps) => {
                 />
               )
           })}
+          {isUploading && (
+            <div className='animate-pulse'>
+              <ChatMessage
+                time={new Datetime().format(new Date(), 'DD/MM/YYYY HH:mm')}
+                chatter={{ name: authChatter.name, avatar: authChatter.avatar }}
+                text={'...Uploading'}
+                isMe={true}
+                avatar={
+                  <ChatAvatar
+                    name={authChatter.name}
+                    avatar={authChatter.avatar}
+                    isOnline={true}
+                    size='lg'
+                  />
+                }
+              />
+            </div>
+          )}
         </div>
         <div className='fixed bottom-4 left-80 right-12'>
           <ChatInput onSend={handleSendMessage} />

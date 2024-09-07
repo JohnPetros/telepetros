@@ -2,11 +2,8 @@ import type { FastifyReply, FastifyRequest } from 'fastify'
 
 import type { IHttp } from '@telepetros/core/interfaces'
 import type { ChatterDto } from '@telepetros/core/dtos'
-import { HTTP_STATUS_CODE, MAX_IMAGE_FILE_SIZE } from '@telepetros/core/constants'
-import {
-  ImageFileMaxSizeError,
-  ImageFileInvalidFormatError,
-} from '@telepetros/core/errors'
+import { HTTP_STATUS_CODE, MAX_FILE_SIZE } from '@telepetros/core/constants'
+import { FileMaxSizeError, ImageFileInvalidFormatError } from '@telepetros/core/errors'
 
 export class FastifyHttp<Body = void, Params = void> implements IHttp<Body, Params> {
   constructor(
@@ -69,10 +66,10 @@ export class FastifyHttp<Body = void, Params = void> implements IHttp<Body, Para
   }
 
   async getImageFile(): Promise<Buffer> {
-    const file = await this.request.file({ limits: { fileSize: MAX_IMAGE_FILE_SIZE } })
+    const file = await this.request.file({ limits: { fileSize: MAX_FILE_SIZE } })
 
     if (!file) {
-      throw new ImageFileMaxSizeError()
+      throw new FileMaxSizeError()
     }
 
     const imageMimeTypeRegex = /^(image)\/[a-zA-Z]+/
@@ -80,6 +77,16 @@ export class FastifyHttp<Body = void, Params = void> implements IHttp<Body, Para
 
     if (!isValidMimeType) {
       throw new ImageFileInvalidFormatError()
+    }
+
+    return file.toBuffer()
+  }
+
+  async getFile(): Promise<Buffer> {
+    const file = await this.request.file({ limits: { fileSize: MAX_FILE_SIZE } })
+
+    if (!file) {
+      throw new FileMaxSizeError()
     }
 
     return file.toBuffer()
