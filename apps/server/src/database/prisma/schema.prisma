@@ -17,6 +17,16 @@ model Chat {
   @@map("chats")
 }
 
+model MessageAttachment {
+  id         String @id @default(uuid())
+  name       String
+  message_id String
+
+  Message Message @relation(fields: [message_id], references: [id])
+
+  @@map("message_attachments")
+}
+
 model Message {
   id                String   @id @default(uuid())
   text              String
@@ -25,10 +35,11 @@ model Message {
   chatter_id        String
   sent_at           DateTime @default(now())
 
-  parent_message Message? @relation("parent_message", fields: [parent_message_id], references: [id])
-  Message        Message? @relation("parent_message")
-  chat           Chat     @relation(fields: [chat_id], references: [id])
-  chatter        Chatter  @relation(fields: [chatter_id], references: [id])
+  parent_message    Message?            @relation("parent_message", fields: [parent_message_id], references: [id])
+  Message           Message?            @relation("parent_message")
+  chat              Chat                @relation(fields: [chat_id], references: [id])
+  chatter           Chatter             @relation(fields: [chatter_id], references: [id])
+  MessageAttachment MessageAttachment[]
 
   @@map("messages")
 }
