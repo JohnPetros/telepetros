@@ -4,11 +4,17 @@ import type { Attachment } from '@telepetros/core/structs'
 
 import { useChatMessage } from './use-chat-message'
 
+import type { Attachment } from '@telepetros/core/structs'
+
+import { useChatMessage } from './use-chat-message'
+
 type ChatMessageProps = {
   chatter: {
     name: string
     avatar?: string
   }
+  text: string
+  time: string
   text: string
   time: string
   isMe: boolean
@@ -21,6 +27,7 @@ export const ChatMessage = ({
   text,
   time,
   avatar,
+  attachment,
   attachment,
   isMe = false,
 }: ChatMessageProps) => {

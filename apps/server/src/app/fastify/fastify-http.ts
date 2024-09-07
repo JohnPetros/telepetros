@@ -82,16 +82,6 @@ export class FastifyHttp<Body = void, Params = void> implements IHttp<Body, Para
     return file.toBuffer()
   }
 
-  async getFile(): Promise<Buffer> {
-    const file = await this.request.file({ limits: { fileSize: MAX_FILE_SIZE } })
-
-    if (!file) {
-      throw new FileMaxSizeError()
-    }
-
-    return file.toBuffer()
-  }
-
   get body(): Body {
     return this.request.body as Body
   }

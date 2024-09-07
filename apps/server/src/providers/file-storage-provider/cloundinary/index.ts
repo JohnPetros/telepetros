@@ -23,6 +23,7 @@ export class CloudinaryFileStorageProvider implements IFileStorageProvider {
     return new Promise((resolve, reject) => {
       this.uploader
         .upload_stream({ folder }, (error, result) => {
+        .upload_stream({ folder }, (error, result) => {
           if (error) return reject(error)
           if (result) resolve(result.url)
         })

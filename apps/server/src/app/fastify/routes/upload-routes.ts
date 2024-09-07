@@ -3,16 +3,10 @@ import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
 import { FastifyHttp } from '../fastify-http'
-import {
-  GetFileController,
-  UploadFileController,
-  UploadImageController,
-} from '@/api/controllers/upload'
+import { UploadImageController } from '@/api/controllers/upload'
 
 export const UploadRoutes = async (app: FastifyInstance) => {
   const uploadImageController = new UploadImageController()
-  const uploadFileController = new UploadFileController()
-  const getFileController = new GetFileController()
   const router = app.withTypeProvider<ZodTypeProvider>()
 
   router
