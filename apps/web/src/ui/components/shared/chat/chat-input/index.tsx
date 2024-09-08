@@ -4,12 +4,14 @@ import { Button, Input } from '@nextui-org/react'
 
 import { Icon } from '../../icon'
 import { useChatInput } from './use-chat-input'
+import { useRef } from 'react'
 
 type ChatInputProps = {
   onSend: (text: string, attachment: File | null) => Promise<void>
 }
 
 export const ChatInput = ({ onSend }: ChatInputProps) => {
+  const formRef = useRef<HTMLFormElement>(null)
   const {
     text,
     file,
@@ -17,7 +19,7 @@ export const ChatInput = ({ onSend }: ChatInputProps) => {
     handleChangeFile,
     handleKeyDown,
     handleRemoveButtonClick,
-  } = useChatInput(onSend)
+  } = useChatInput(formRef, onSend)
 
   return (
     <div>
@@ -47,17 +49,18 @@ export const ChatInput = ({ onSend }: ChatInputProps) => {
           mainWrapper: 'w-full shadow-lg rounded-lg ',
         }}
         startContent={
-          <label className='grid place-content-center bg-slate-200 rounded-lg p-2 cursor-pointer'>
-            <Icon name='clip' size={24} className='text-slate-500' />
-            <input
-              id='file'
-              type='file'
-              name='file'
-              accept='image/*'
-              onChange={handleChangeFile}
-              className='sr-only'
-            />
-          </label>
+          <form ref={formRef}>
+            <label className='grid place-content-center bg-slate-200 rounded-lg p-2 cursor-pointer'>
+              <Icon name='clip' size={24} className='text-slate-500' />
+              <input
+                id='file'
+                type='file'
+                name='file'
+                onChange={handleChangeFile}
+                className='sr-only'
+              />
+            </label>
+          </form>
         }
         endContent={
           <Button isIconOnly className='bg-slate-200'>

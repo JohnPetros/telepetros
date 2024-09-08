@@ -1,8 +1,9 @@
 'use client'
 
-import { useCallback, useState } from 'react'
+import { type RefObject, useCallback, useState } from 'react'
+import { useOnClickOutside } from 'usehooks-ts'
 
-export function usePopover() {
+export function usePopover(containerRef: RefObject<HTMLDivElement>) {
   const [isOpen, setIsOpen] = useState(false)
 
   const open = useCallback(() => {
@@ -17,6 +18,8 @@ export function usePopover() {
     if (isOpen) close()
     else open()
   }
+
+  useOnClickOutside(containerRef, close)
 
   return {
     isOpen,

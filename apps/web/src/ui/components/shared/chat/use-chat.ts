@@ -25,17 +25,27 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
     })
   }
 
-  function handleReceiveMessage(message: Message) {
-    chat.appendMessage(message)
-    setChat((chat) => {
+  function updateChat(chat: Chat) {
+    setChat(() => {
       return Chat.create(chat.dto)
     })
+  }
+
+  function handleReceivedMessage(message: Message) {
+    chat.appendMessage(message)
+    updateChat(chat)
     scrollToBottom()
   }
 
-  const { sendMessage } = useChatSocket({
+  function handleDeletedMessage(deletedMessageId: string) {
+    chat.deleteMessage(deletedMessageId)
+    updateChat(chat)
+  }
+
+  const { sendMessage, deleteMessage } = useChatSocket({
     chatId: chat.id,
-    onReceiveMessage: handleReceiveMessage,
+    onReceiveMessage: handleReceivedMessage,
+    onDeleteMessage: handleDeletedMessage,
   })
 
   async function sendMessageWithAttachment(attachment: File, messageText: string) {
@@ -54,8 +64,10 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
       chatId: chat.id,
       chatterId: authChatter.id,
       attachment: {
+        fileId: uploadResponse.body.fileId,
+        fileUrl: uploadResponse.body.fileUrl,
+        size: attachment.size,
         name: attachment.name,
-        value: uploadResponse.body.fileUrl,
       },
     })
     sendMessage(message)
@@ -77,6 +89,14 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
     sendMessage(message)
   }
 
+  function handleDeleteMessage(messageId: string) {
+    deleteMessage(messageId)
+  }
+
+  function handleEditMessage(messageId: string) {}
+  function handleReplyMessage(messageId: string) {}
+  function handleCopyMessage(messageId: string) {}
+
   useEffect(() => {
     if (lastConnectedChatterId) {
       chat.onConnectChatter(lastConnectedChatterId)
@@ -94,6 +114,10 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
   return {
     chat,
     isUploading,
+    handleEditMessage,
+    handleReplyMessage,
+    handleCopyMessage,
+    handleDeleteMessage,
     handleSendMessage,
   }
 }

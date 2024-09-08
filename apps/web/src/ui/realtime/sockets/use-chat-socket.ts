@@ -11,16 +11,23 @@ import { useWs } from '../ws'
 type ChatSocketProps = {
   chatId: string
   onReceiveMessage: (message: Message) => void
+  onDeleteMessage: (deletedMessageId: string) => void
 }
 
-export function useChatSocket({ chatId, onReceiveMessage }: ChatSocketProps) {
+export function useChatSocket({
+  chatId,
+  onReceiveMessage,
+  onDeleteMessage,
+}: ChatSocketProps) {
   const { sendResponse } = useWs({
     url: `${ENV.realTimeUrl}/chat/${chatId}`,
     onResponse(response) {
-      console.log('useChatSocket', response)
       switch (response.event) {
         case EVENTS.chat.receiveMessage:
           onReceiveMessage(Message.create(response.payload))
+          break
+        case EVENTS.chat.deleteMessage:
+          onDeleteMessage(response.payload)
           break
       }
     },
@@ -33,7 +40,15 @@ export function useChatSocket({ chatId, onReceiveMessage }: ChatSocketProps) {
     [sendResponse],
   )
 
+  const deleteMessage = useCallback(
+    (messageId: string) => {
+      sendResponse(EVENTS.chat.deleteMessage, messageId)
+    },
+    [sendResponse],
+  )
+
   return {
     sendMessage,
+    deleteMessage,
   }
 }

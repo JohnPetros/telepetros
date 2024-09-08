@@ -1,8 +1,11 @@
 'use client'
 
-import { type ChangeEvent, useState, type KeyboardEvent } from 'react'
+import { type ChangeEvent, useState, type KeyboardEvent, type RefObject } from 'react'
 
-export function useChatInput(onSend: (text: string, file: File | null) => Promise<void>) {
+export function useChatInput(
+  formRef: RefObject<HTMLFormElement>,
+  onSend: (text: string, file: File | null) => Promise<void>,
+) {
   const [text, setText] = useState('')
   const [file, setFile] = useState<File | null>(null)
   const [isUploading, setIsUploading] = useState(false)
@@ -19,6 +22,7 @@ export function useChatInput(onSend: (text: string, file: File | null) => Promis
       setText('')
       setFile(null)
       setIsUploading(false)
+      formRef.current?.reset()
       return
     }
   }
