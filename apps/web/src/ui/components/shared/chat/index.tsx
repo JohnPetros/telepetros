@@ -10,6 +10,7 @@ import { ChatInput } from './chat-input'
 import { ChatAvatar } from '../chatter-avatar'
 import { useChat } from './use-chat'
 import { Datetime } from '@telepetros/core/libs'
+import { ChatMessageMenu } from './chat-message-menu'
 
 type ChatProps = {
   initialChat: ChatEntity
@@ -18,7 +19,15 @@ type ChatProps = {
 
 export const Chat = ({ initialChat, children: header }: ChatProps) => {
   const chatRef = useRef<HTMLDivElement>(null)
-  const { chat, isUploading, handleSendMessage } = useChat(initialChat, chatRef)
+  const {
+    chat,
+    isUploading,
+    handleSendMessage,
+    handleEditMessage,
+    handleReplyMessage,
+    handleCopyMessage,
+    handleDeleteMessage,
+  } = useChat(initialChat, chatRef)
   const { authChatter } = useAuthContext()
 
   if (authChatter && chat)
@@ -41,6 +50,14 @@ export const Chat = ({ initialChat, children: header }: ChatProps) => {
                   text={message.text}
                   isMe={message.isFromChatter(authChatter)}
                   attachment={message.attachment}
+                  menu={
+                    <ChatMessageMenu
+                      onClickCopy={() => handleCopyMessage(message.id)}
+                      onClickEdit={() => handleEditMessage(message.id)}
+                      onClickReply={() => handleReplyMessage(message.id)}
+                      onClickDelete={() => handleDeleteMessage(message.id)}
+                    />
+                  }
                   avatar={
                     <ChatAvatar
                       name={messageChatter.name}
@@ -58,6 +75,7 @@ export const Chat = ({ initialChat, children: header }: ChatProps) => {
                 time={new Datetime().format(new Date(), 'DD/MM/YYYY HH:mm')}
                 chatter={{ name: authChatter.name, avatar: authChatter.avatar }}
                 text={'...Uploading'}
+                attachment={null}
                 isMe={true}
                 avatar={
                   <ChatAvatar
@@ -71,7 +89,7 @@ export const Chat = ({ initialChat, children: header }: ChatProps) => {
             </div>
           )}
         </div>
-        <div className='fixed bottom-4 left-80 right-12'>
+        <div className='fixed bottom-4 left-80 right-12 z-40'>
           <ChatInput onSend={handleSendMessage} />
         </div>
       </div>

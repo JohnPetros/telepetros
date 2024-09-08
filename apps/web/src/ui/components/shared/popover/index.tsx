@@ -1,6 +1,12 @@
 'use client'
 
-import { forwardRef, useImperativeHandle, type ForwardedRef, type ReactNode } from 'react'
+import {
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+  type ForwardedRef,
+  type ReactNode,
+} from 'react'
 import {
   Popover as PopoverContainer,
   PopoverTrigger,
@@ -19,7 +25,8 @@ const PopoverComponent = (
   { children, trigger }: PopoverComponentProps,
   ref: ForwardedRef<PopoverRef>,
 ) => {
-  const { isOpen, close, open, handleTriggerClick } = usePopover()
+  const containerRef = useRef<HTMLDivElement>(null)
+  const { isOpen, close, open, handleTriggerClick } = usePopover(containerRef)
 
   useImperativeHandle(
     ref,
@@ -33,7 +40,7 @@ const PopoverComponent = (
   )
 
   return (
-    <div className='flex flex-wrap gap-4'>
+    <div ref={containerRef} className='flex flex-wrap gap-4'>
       <PopoverContainer
         isOpen={isOpen}
         showArrow
@@ -42,7 +49,7 @@ const PopoverComponent = (
         backdrop='transparent'
       >
         <PopoverTrigger onClick={handleTriggerClick}>{trigger}</PopoverTrigger>
-        <PopoverContent className='w-[240px] z-10'>
+        <PopoverContent className='max-w-[240px] z-10'>
           <div className='px-1 py-2 w-full'>{children}</div>
         </PopoverContent>
       </PopoverContainer>
