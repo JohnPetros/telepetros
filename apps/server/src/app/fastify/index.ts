@@ -72,8 +72,10 @@ export class FastifyApp implements IServerApp {
 
   private setErrorHandler() {
     this.app.setErrorHandler((error, _, reply) => {
-      console.error(`Server error: ${error}`)
       if (error instanceof AppError) {
+        console.error('Error title:', error.title)
+        console.error('Error message:', error.message)
+
         const response = {
           title: error.title,
           message: error.message,
@@ -95,7 +97,11 @@ export class FastifyApp implements IServerApp {
 
         if (error instanceof ApiError)
           return reply.status(error.statusCode).send(response)
+
+        return
       }
+
+      console.error(error)
 
       if (error instanceof ZodError)
         return reply

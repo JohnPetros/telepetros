@@ -82,16 +82,19 @@ export class FastifyHttp<Body = void, Params = void> implements IHttp<Body, Para
     return file.toBuffer()
   }
 
-  async getFile(): Promise<Buffer> {
+  async getFile(): Promise<{ extension: string; buffer: Buffer }> {
     const file = await this.request.file({ limits: { fileSize: MAX_FILE_SIZE } })
 
     if (!file) {
       throw new FileMaxSizeError()
     }
 
-    const imageMimeTypeRegex = /^(image)\/[a-zA-Z]+/
+    const buffer = await file.toBuffer()
 
-    return file.toBuffer()
+    return {
+      buffer: buffer,
+      extension: String(file.filename.split('.').pop()),
+    }
   }
 
   get body(): Body {
