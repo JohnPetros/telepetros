@@ -19,7 +19,15 @@ export class PrismaChatsRepository implements IChatsRepository {
             chatter: true,
           },
         },
-        Message: true,
+      },
+    })
+
+    const prismaMessages = await prisma.message.findMany({
+      where: {
+        chat_id: chatId,
+      },
+      include: {
+        MessageAttachment: true,
       },
     })
 
@@ -40,10 +48,10 @@ export class PrismaChatsRepository implements IChatsRepository {
       )
     }
 
-    if (prismaChat?.Message) {
-      channelMessages = prismaChat?.Message.map((prismaChatter) =>
-        this.messageMapper.toDomain(prismaChatter),
-      )
+    if (prismaMessages) {
+      channelMessages = prismaMessages.map((prismaMessage) => {
+        return this.messageMapper.toDomain(prismaMessage)
+      })
     }
 
     chat.addChatters(chatters)
@@ -99,9 +107,26 @@ export class PrismaChatsRepository implements IChatsRepository {
   async addMessage(message: Message): Promise<Message> {
     const prismaMessage = this.messageMapper.toPrisma(message)
 
-    const addedMessage = await prisma.message.create({
-      data: prismaMessage,
-    })
+    const [addedMessage] = await prisma.$transaction([
+      prisma.message.create({
+        data: {
+          ...prismaMessage,
+          ...(message.attachment
+            ? {
+                MessageAttachment: {
+                  create: {
+                    name: message.attachment.name,
+                    value: message.attachment.value,
+                  },
+                },
+              }
+            : undefined),
+        },
+        include: {
+          MessageAttachment: true,
+        },
+      }),
+    ])
 
     return this.messageMapper.toDomain(addedMessage)
   }

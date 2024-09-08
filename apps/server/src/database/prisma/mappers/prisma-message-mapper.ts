@@ -1,8 +1,16 @@
-import type { Message as PrismaMessage } from '@prisma/client'
 import { Message } from '@telepetros/core/entities'
+
+import type { PrismaMessage } from '../types'
 
 export class PrismaMessageMapper {
   toDomain(prismaMessage: PrismaMessage): Message {
+    const attachment = prismaMessage.MessageAttachment
+      ? {
+          name: prismaMessage.MessageAttachment.name,
+          value: prismaMessage.MessageAttachment.value,
+        }
+      : null
+
     return Message.create({
       id: prismaMessage.id,
       text: prismaMessage.text,
@@ -12,10 +20,11 @@ export class PrismaMessageMapper {
       parentMessageId: prismaMessage.parent_message_id
         ? prismaMessage.parent_message_id
         : undefined,
+      attachment,
     })
   }
 
-  toPrisma(message: Message): PrismaMessage {
+  toPrisma(message: Message): Omit<PrismaMessage, 'MessageAttachment'> {
     const dto = message.dto
     return {
       id: message.id,

@@ -20,9 +20,10 @@ model Chat {
 model MessageAttachment {
   id         String @id @default(uuid())
   name       String
-  message_id String
+  value      String
+  message_id String @unique
 
-  Message Message @relation(fields: [message_id], references: [id])
+  Message Message @relation(fields: [message_id], references: [id], onDelete: Cascade)
 
   @@map("message_attachments")
 }
@@ -35,11 +36,11 @@ model Message {
   chatter_id        String
   sent_at           DateTime @default(now())
 
-  parent_message    Message?            @relation("parent_message", fields: [parent_message_id], references: [id])
-  Message           Message?            @relation("parent_message")
-  chat              Chat                @relation(fields: [chat_id], references: [id])
-  chatter           Chatter             @relation(fields: [chatter_id], references: [id])
-  MessageAttachment MessageAttachment[]
+  parent_message    Message?           @relation("parent_message", fields: [parent_message_id], references: [id], onDelete: Cascade)
+  Message           Message?           @relation("parent_message")
+  chat              Chat               @relation(fields: [chat_id], references: [id], onDelete: Cascade)
+  chatter           Chatter            @relation(fields: [chatter_id], references: [id], onDelete: Cascade)
+  MessageAttachment MessageAttachment?
 
   @@map("messages")
 }
@@ -64,8 +65,8 @@ model ChattersChats {
   chatter_id String
   chat_id    String
 
-  chatter Chatter @relation(fields: [chatter_id], references: [id])
-  chat    Chat    @relation(fields: [chat_id], references: [id])
+  chatter Chatter @relation(fields: [chatter_id], references: [id], onDelete: Cascade)
+  chat    Chat    @relation(fields: [chat_id], references: [id], onDelete: Cascade)
 
   @@map("chatter_chats")
 }
