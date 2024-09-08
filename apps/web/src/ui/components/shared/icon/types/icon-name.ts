@@ -9,3 +9,7 @@ export type IconName =
   | 'trash'
   | 'emoticon'
   | 'at'
+  | 'ellipsis'
+  | 'reply'
+  | 'edit'
+  | 'copy'
