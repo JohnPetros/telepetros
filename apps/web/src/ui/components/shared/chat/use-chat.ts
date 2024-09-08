@@ -18,15 +18,19 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
   const { lastConnectedChatterId, lastDisconnectedChatterId } =
     useChattersConnectionContext()
 
+  function scrollToBottom() {
+    chatRef.current?.scrollTo({
+      top: chatRef.current.scrollHeight - 200,
+      behavior: 'smooth',
+    })
+  }
+
   function handleReceiveMessage(message: Message) {
     chat.appendMessage(message)
     setChat((chat) => {
       return Chat.create(chat.dto)
     })
-    chatRef.current?.scrollTo({
-      top: chatRef.current.scrollHeight - 200,
-      behavior: 'smooth',
-    })
+    scrollToBottom()
   }
 
   const { sendMessage } = useChatSocket({
@@ -35,6 +39,7 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
   })
 
   async function sendMessageWithAttachment(attachment: File, messageText: string) {
+    scrollToBottom()
     setIsUploading(true)
     const uploadResponse = await uploadService.saveFile('attachments', attachment)
     setIsUploading(false)
@@ -53,7 +58,6 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
         value: uploadResponse.body.fileUrl,
       },
     })
-    console.log(message)
     sendMessage(message)
   }
 

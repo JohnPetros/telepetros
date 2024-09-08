@@ -50,9 +50,10 @@ export const ChatInput = ({ onSend }: ChatInputProps) => {
           <label className='grid place-content-center bg-slate-200 rounded-lg p-2 cursor-pointer'>
             <Icon name='clip' size={24} className='text-slate-500' />
             <input
+              id='file'
               type='file'
               name='file'
-              id='file'
+              accept='image/*'
               onChange={handleChangeFile}
               className='sr-only'
             />

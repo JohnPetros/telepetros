@@ -51,7 +51,6 @@ export class Message extends Entity<MessageProps> {
   }
 
   get time(): string {
-    return '19:19'
     return new Datetime().format(this.sentAt, 'DD/MM/YYYY HH:mm')
   }
 
@@ -63,10 +62,12 @@ export class Message extends Entity<MessageProps> {
       chatterId: this.props.chatterId,
       sentAt: this.sentAt,
       parentMessageId: this.props.parentMessageId,
-      ...(this.attachment && {
-        name: this.attachment.name,
-        value: this.attachment.value,
-      }),
+      attachment: this.attachment
+        ? {
+            name: this.attachment.name,
+            value: this.attachment.value,
+          }
+        : null,
     }
   }
 }

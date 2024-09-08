@@ -70,8 +70,6 @@ export const NextApiClient = (): IApiClient => {
       const data = await response.blob()
       const file = new File([data], filename, { type: data.type })
 
-      console.log({ ok: response.ok })
-
       if (!response.ok) {
         return handleApiError(data, response.status)
       }

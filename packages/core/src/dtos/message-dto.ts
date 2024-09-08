@@ -8,5 +8,5 @@ export type MessageDto = {
   attachment?: {
     name: string
     value: string
-  }
+  } | null
 }

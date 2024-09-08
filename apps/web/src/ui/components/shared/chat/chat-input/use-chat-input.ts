@@ -14,7 +14,7 @@ export function useChatInput(onSend: (text: string, file: File | null) => Promis
   async function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
     if (event.key.toLowerCase() !== 'enter') return
 
-    if (file) {
+    if (text || file) {
       await onSend(text, file)
       setText('')
       setFile(null)
