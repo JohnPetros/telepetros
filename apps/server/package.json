@@ -13,6 +13,7 @@
     "@fastify/multipart": "^8.3.0",
     "@fastify/websocket": "^10.0.1",
     "@prisma/client": "^5.18.0",
+    "@supabase/supabase-js": "^2.45.3",
     "@telepetros/core": "*",
     "@telepetros/validation": "*",
     "axios": "^1.7.4",
