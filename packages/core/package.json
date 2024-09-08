@@ -11,7 +11,6 @@
     "./types": "./src/types/index.ts",
     "./constants": "./src/constants/index.ts",
     "./responses": "./src/responses/index.ts",
-    "./structs": "./src/domain/structs/index.ts",
     "./use-cases": "./src/use-cases/index.ts",
     "./libs": "./src/libs/index.ts",
     "./errors": "./src/errors/index.ts"
@@ -22,8 +21,10 @@
     "#types": "./src/types/index.ts",
     "#constants": "./src/constants/index.ts",
     "#libs": "./src/libs/index.ts",
+    "#errors": "./src/errors/index.ts",
     "#interfaces/handlers": "./src/interfaces/handlers/index.ts",
     "#interfaces/repositories": "./src/interfaces/repositories/index.ts",
+    "#interfaces/providers": "./src/interfaces/providers/index.ts",
     "#interfaces/services": "./src/interfaces/services/index.ts"
   }
 }
