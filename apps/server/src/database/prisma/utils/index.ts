@@ -1,1 +1,1 @@
-export { PrismaError } from './handle-error'
+export { PrismaError } from './prisma-error'
