@@ -3,28 +3,14 @@ import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
 import { FastifyHttp } from '../fastify-http'
-import { UploadImageController } from '@/api/controllers/upload'
+import { UploadFileController, UploadImageController } from '@/api/controllers/upload'
 
 export const UploadRoutes = async (app: FastifyInstance) => {
   const uploadImageController = new UploadImageController()
+  const uploadFileController = new UploadFileController()
   const router = app.withTypeProvider<ZodTypeProvider>()
 
   router
-    .get(
-      '/:folder/:filename',
-      {
-        schema: {
-          params: z.object({
-            folder: z.enum(['avatars', 'attachments']),
-            filename: z.string(),
-          }),
-        },
-      },
-      async (request, response) => {
-        const http = new FastifyHttp<void, typeof request.params>(request, response)
-        return getFileController.handle(http)
-      },
-    )
     .post(
       '/image/:imageType',
       {
@@ -49,7 +35,7 @@ export const UploadRoutes = async (app: FastifyInstance) => {
         },
       },
       async (request, response) => {
-        const http = new FastifyHttp(request, response)
+        const http = new FastifyHttp<void, typeof request.params>(request, response)
         return uploadFileController.handle(http)
       },
     )
