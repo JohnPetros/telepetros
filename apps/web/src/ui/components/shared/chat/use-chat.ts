@@ -1,6 +1,7 @@
 'use client'
 
 import { type RefObject, useEffect, useState } from 'react'
+import { useCopyToClipboard } from 'usehooks-ts'
 
 import { Chat, Message } from '@telepetros/core/entities'
 
@@ -12,6 +13,7 @@ import { useApi, useToast } from '@/ui/hooks'
 export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
   const [chat, setChat] = useState<Chat>(initialChat)
   const [isUploading, setIsUploading] = useState(false)
+  const [_, copyMessageText] = useCopyToClipboard()
   const { authChatter } = useAuthContext()
   const { uploadService } = useApi()
   const { showError } = useToast()
@@ -94,8 +96,13 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
   }
 
   function handleEditMessage(messageId: string) {}
+
   function handleReplyMessage(messageId: string) {}
-  function handleCopyMessage(messageId: string) {}
+
+  async function handleCopyMessage(messageText: string) {
+    const isCopied = await copyMessageText(messageText)
+    if (!isCopied) showError('Erro ao tentar copiar mensagem')
+  }
 
   useEffect(() => {
     if (lastConnectedChatterId) {

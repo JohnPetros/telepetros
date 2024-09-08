@@ -52,10 +52,10 @@ export const Chat = ({ initialChat, children: header }: ChatProps) => {
                   attachment={message.attachment}
                   menu={
                     <ChatMessageMenu
-                      onClickCopy={() => handleCopyMessage(message.id)}
-                      onClickEdit={() => handleEditMessage(message.id)}
-                      onClickReply={() => handleReplyMessage(message.id)}
+                      onClickCopy={() => handleCopyMessage(message.text)}
                       onClickDelete={() => handleDeleteMessage(message.id)}
+                      onClickReply={() => handleReplyMessage(message.id)}
+                      onClickEdit={() => handleEditMessage(message.id)}
                     />
                   }
                   avatar={
