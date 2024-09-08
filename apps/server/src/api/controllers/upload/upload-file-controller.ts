@@ -1,4 +1,4 @@
-import { FileStorageProvider } from '@/providers/file-storage-provider'
+import { fileStorageProvider } from '@/providers/file-storage-provider'
 import type { IController, IHttp } from '@telepetros/core/interfaces'
 import type { UploadFolder } from '@telepetros/core/types'
 
@@ -9,10 +9,12 @@ export class UploadFileController implements IController<void, Params> {
   async handle(http: IHttp<void, Params>) {
     const file = await http.getFile()
 
-    const fileStorageProvider = new FileStorageProvider()
+    const { fileUrl, fileId } = await fileStorageProvider.upload(
+      http.params.folder,
+      file.buffer,
+      file.extension,
+    )
 
-    const fileUrl = await fileStorageProvider.upload(http.params.folder, file)
-
-    return http.send({ fileUrl })
+    return http.send({ fileUrl, fileId })
   }
 }

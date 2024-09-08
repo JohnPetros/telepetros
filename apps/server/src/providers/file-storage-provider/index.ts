@@ -1,1 +1,3 @@
-export { CloudinaryFileStorageProvider as FileStorageProvider } from './cloundinary'
+import { SupabaseFileStorageProvider } from './supabase'
+
+export const fileStorageProvider = new SupabaseFileStorageProvider()

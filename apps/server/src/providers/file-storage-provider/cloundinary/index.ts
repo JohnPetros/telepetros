@@ -18,16 +18,24 @@ export class CloudinaryFileStorageProvider implements IFileStorageProvider {
     this.uploader = Cloudinary.uploader
   }
 
-  async upload(folder: UploadFolder, fileBuffer: Buffer): Promise<string> {
-    const data = new Uint8Array(fileBuffer)
+  async upload(
+    folder: UploadFolder,
+    fileBuffer: Buffer,
+  ): Promise<{ fileUrl: string; fileId: string }> {
+    // const data = new Uint8Array(fileBuffer)
 
-    return new Promise((resolve, reject) => {
-      this.uploader
-        .upload_stream({ folder }, (error, result) => {
-          if (error) return reject(error)
-          if (result) resolve(result.url)
-        })
-        .end(data)
-    })
+    // return new Promise((resolve, reject) => {
+    //   this.uploader
+    //     .upload_stream({ folder }, (error, result) => {
+    //       if (error) return reject(error)
+    //       if (result) resolve(result.url)
+    //     })
+    //     .end(data)
+    // })
+    throw new Error()
+  }
+
+  remove(fileId: string): Promise<void> {
+    throw new Error('Method not implemented.')
   }
 }

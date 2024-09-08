@@ -9,6 +9,8 @@ export const serverEnvSchema = z.object({
   githubClientSecret: z.string(),
   jwtSecret: z.string(),
   webUrl: z.string(),
+  supabaseUrl: z.string(),
+  supabaseAnonKey: z.string(),
   cloudinaryApiKey: z.string(),
   cloudinaryApiSecret: z.string(),
   cloudinaryCloundName: z.string(),
