@@ -1,14 +1,36 @@
-export class Attachment {
-  private constructor(
-    readonly name: string,
-    readonly value: string,
-  ) {}
+type AttachmentProps = {
+  name: string
+  size: number
+  fileId: string
+  fileUrl: string
+}
 
-  static create(name: string, value: string): Attachment {
-    return new Attachment(name, value)
+export class Attachment {
+  readonly name: string
+  readonly size: number
+  readonly fileId: string
+  readonly fileUrl: string
+
+  private constructor(props: AttachmentProps) {
+    this.name = props.name
+    this.size = props.size
+    this.fileId = props.fileId
+    this.fileUrl = props.fileUrl
   }
 
-  get isImage() {
-    return this.value.slice(this.value.length - 3)
+  static create(props: AttachmentProps): Attachment {
+    return new Attachment(props)
+  }
+
+  get roundedSize() {
+    return Math.round(this.size / 1024)
+  }
+
+  get isImage(): boolean {
+    return ['jpg', 'jpeg', 'png', 'gif'].includes(this.fileExtension)
+  }
+
+  get fileExtension(): string {
+    return String(this.name.split('.').pop())
   }
 }

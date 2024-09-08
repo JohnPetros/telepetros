@@ -7,6 +7,8 @@ export type MessageDto = {
   parentMessageId?: string
   attachment?: {
     name: string
-    value: string
+    size: number
+    fileId: string
+    fileUrl: string
   } | null
 }

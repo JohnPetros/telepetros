@@ -26,16 +26,27 @@ export class Chat extends Entity<ChatProps> {
     })
   }
 
-  addChatters(chatters: Chatter[]) {
+  addChatters(chatters: Chatter[]): void {
     this.props.chatters = chatters
   }
 
-  addMessages(messages: Message[]) {
+  addMessages(messages: Message[]): void {
     this.props.messages = messages
   }
 
-  appendMessage(message: Message) {
+  appendMessage(message: Message): void {
     this.props.messages.push(message)
+  }
+
+  deleteMessage(messageId: string): void {
+    this.props.messages = this.props.messages.filter(
+      (message) => message.id !== messageId,
+    )
+  }
+
+  getMessageById(messageId: string): Message | null {
+    const message = this.props.messages.find((message) => message.id === messageId)
+    return message ?? null
   }
 
   hasChatter(chatter: Chatter): boolean {

@@ -23,7 +23,12 @@ export class Message extends Entity<MessageProps> {
         chatId: dto.chatId,
         chatterId: dto.chatterId,
         attachment: dto.attachment
-          ? Attachment.create(dto.attachment.name, dto.attachment.value)
+          ? Attachment.create({
+              name: dto.attachment.name,
+              size: dto.attachment.size,
+              fileId: dto.attachment.fileId,
+              fileUrl: dto.attachment.fileUrl,
+            })
           : null,
       },
       dto.id,
@@ -65,7 +70,9 @@ export class Message extends Entity<MessageProps> {
       attachment: this.attachment
         ? {
             name: this.attachment.name,
-            value: this.attachment.value,
+            size: this.attachment.size,
+            fileUrl: this.attachment.fileUrl,
+            fileId: this.attachment.fileId,
           }
         : null,
     }
