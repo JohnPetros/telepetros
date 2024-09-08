@@ -20,7 +20,9 @@ model Chat {
 model MessageAttachment {
   id         String @id @default(uuid())
   name       String
-  value      String
+  size       Int
+  file_url   String
+  file_id    String
   message_id String @unique
 
   Message Message @relation(fields: [message_id], references: [id], onDelete: Cascade)

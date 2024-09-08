@@ -6,8 +6,10 @@ export class PrismaMessageMapper {
   toDomain(prismaMessage: PrismaMessage): Message {
     const attachment = prismaMessage.MessageAttachment
       ? {
+          fileId: prismaMessage.MessageAttachment.file_id,
+          fileUrl: prismaMessage.MessageAttachment.file_url,
           name: prismaMessage.MessageAttachment.name,
-          value: prismaMessage.MessageAttachment.value,
+          size: prismaMessage.MessageAttachment.size,
         }
       : null
 
