@@ -24,6 +24,7 @@ export const Chat = ({ initialChat, children: header }: ChatProps) => {
     chat,
     messageToReply,
     isUploading,
+    isEditing,
     messageBeingEditedId,
     handleSendMessage,
     handleCancelEditing,
@@ -48,10 +49,14 @@ export const Chat = ({ initialChat, children: header }: ChatProps) => {
           {chat.messages.map((message) => {
             if (message.id === messageBeingEditedId) {
               return (
-                <ChatMessageBeingEdited
-                  onEdit={handleEditMessage}
-                  onCancel={handleCancelEditing}
-                />
+                <div className='flex items-end justify-end'>
+                  <ChatMessageBeingEdited
+                    currentText={message.text}
+                    isEditing={isEditing}
+                    onEdit={handleEditMessage}
+                    onCancel={handleCancelEditing}
+                  />
+                </div>
               )
             }
 

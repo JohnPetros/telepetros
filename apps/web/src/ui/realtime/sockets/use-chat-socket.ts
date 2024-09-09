@@ -12,7 +12,7 @@ type ChatSocketProps = {
   chatId: string
   onReceiveMessage: (message: Message) => void
   onDeleteMessage: (deletedMessageId: string) => void
-  onEditMessage: (editedMessageId: string) => void
+  onEditMessage: (messageId: string, newText: string) => void
 }
 
 export function useChatSocket({
@@ -29,7 +29,7 @@ export function useChatSocket({
           onReceiveMessage(Message.create(response.payload))
           break
         case EVENTS.chat.editMessage:
-          onEditMessage(response.payload)
+          onEditMessage(response.payload.messageId, response.payload.newText)
           break
         case EVENTS.chat.deleteMessage:
           onDeleteMessage(response.payload)
@@ -47,7 +47,7 @@ export function useChatSocket({
 
   const editMessage = useCallback(
     (messageId: string, newText: string) => {
-      sendResponse(EVENTS.chat.sendMessage, {
+      sendResponse(EVENTS.chat.editMessage, {
         messageId,
         newText,
       })

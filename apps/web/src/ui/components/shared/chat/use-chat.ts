@@ -13,6 +13,7 @@ import { useApi, useToast } from '@/ui/hooks'
 export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
   const [chat, setChat] = useState<Chat>(initialChat)
   const [isUploading, setIsUploading] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
   const [messageToReply, setMessageToReply] = useState<{
     id: string
     chatterName: string
@@ -44,9 +45,11 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
     scrollToBottom()
   }
 
-  function handleEditedMessage(deletedMessageId: string) {
-    chat.deleteMessage(deletedMessageId)
+  function handleEditedMessage(messageId: string, newText: string) {
+    chat.editMessage(messageId, newText)
     updateChat(chat)
+    setMessageBeingEditingId('')
+    setIsEditing(false)
   }
 
   function handleDeletedMessage(deletedMessageId: string) {
@@ -122,6 +125,7 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
   }
 
   function handleEditMessage(newText: string) {
+    setIsEditing(true)
     editMessage(messageBeingEditedId, newText)
   }
 
@@ -134,7 +138,7 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
   }
 
   function handleCancelEditing() {
-    setMessageToReply(null)
+    setMessageBeingEditingId('')
   }
 
   async function handleCopyMessage(messageText: string) {
@@ -159,6 +163,7 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
   return {
     chat,
     isUploading,
+    isEditing,
     messageToReply,
     messageBeingEditedId,
     handleEditMessageStart,

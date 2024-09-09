@@ -24,8 +24,8 @@ export class ChatSocket implements ISocket {
 
     ws.on(EVENTS.chat.editMessage, async (payload: EditMessagePayload) => {
       const useCase = new EditMessageUseCase(chatsRepository)
-      const editedMessageId = await useCase.execute(payload)
-      ws.broadcast(EVENTS.chat.editMessage, editedMessageId)
+      await useCase.execute(payload)
+      ws.broadcast(EVENTS.chat.editMessage, payload)
     })
 
     ws.on(EVENTS.chat.deleteMessage, async (payload: string) => {
