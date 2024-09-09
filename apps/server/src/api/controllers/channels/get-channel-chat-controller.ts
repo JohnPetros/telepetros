@@ -1,5 +1,5 @@
-import type { IController, IHttp } from '@telepetros/core/interfaces'
 import { GetChannelChatUseCase } from '@telepetros/core/use-cases'
+import type { IController, IHttp } from '@telepetros/core/interfaces'
 
 import { channelsRepository, chatsRepository } from '@/database'
 
@@ -9,14 +9,12 @@ type Params = {
 
 export class GetChannelChatController implements IController<void, Params> {
   async handle(http: IHttp<void, Params>) {
-    const chatterDto = await http.getChatter()
+    const chatter = await http.getChatter()
     const useCase = new GetChannelChatUseCase(channelsRepository, chatsRepository)
-
-    const chatterWithChat = await useCase.execute({
+    const channelWithChat = await useCase.execute({
       channelId: http.params.channelId,
-      chatterDto,
+      chatterDto: chatter,
     })
-
-    return http.send(chatterWithChat)
+    return http.send(channelWithChat)
   }
 }

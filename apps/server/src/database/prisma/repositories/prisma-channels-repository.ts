@@ -65,4 +65,15 @@ export class PrismaChannelsRepository implements IChannelsRepository {
 
     return this.mapper.toDomain(createdChannel)
   }
+
+  async updateVisibility(channelId: string, isChannelPublic: boolean): Promise<void> {
+    await prisma.channel.update({
+      where: {
+        id: channelId,
+      },
+      data: {
+        is_public: isChannelPublic,
+      },
+    })
+  }
 }

@@ -5,15 +5,21 @@ import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import {
   CreateChannelController,
   GetChannelChatController,
+  GetChannelController,
   JoinChannelController,
+  ToggleChannelVisibilityController,
 } from '@/api/controllers/channels'
 import { ListChatterChannelsController } from '@/api/controllers/channels'
 import { FastifyHttp } from '../fastify-http'
+
 export const ChannelsRoutes = async (app: FastifyInstance) => {
   const getChannelChatController = new GetChannelChatController()
   const createChannelController = new CreateChannelController()
+  const getChannelController = new GetChannelController()
   const listChatterChannelsController = new ListChatterChannelsController()
   const joinChannelController = new JoinChannelController()
+  const toggleChannelVisibilityController = new ToggleChannelVisibilityController()
+
   const router = app.withTypeProvider<ZodTypeProvider>()
 
   router
@@ -31,6 +37,20 @@ export const ChannelsRoutes = async (app: FastifyInstance) => {
         return getChannelChatController.handle(http)
       },
     )
+    .get(
+      '/:channelId',
+      {
+        schema: {
+          params: z.object({
+            channelId: z.string().uuid(),
+          }),
+        },
+      },
+      async (request, response) => {
+        const http = new FastifyHttp<void, typeof request.params>(request, response)
+        return getChannelController.handle(http)
+      },
+    )
     .post(
       '/join',
       {
@@ -43,6 +63,26 @@ export const ChannelsRoutes = async (app: FastifyInstance) => {
       async (request, response) => {
         const http = new FastifyHttp<typeof request.body>(request, response)
         return joinChannelController.handle(http)
+      },
+    )
+    .put(
+      '/:channelId/visibility',
+      {
+        schema: {
+          body: z.object({
+            isChannelPublic: z.boolean(),
+          }),
+          params: z.object({
+            channelId: z.string().uuid(),
+          }),
+        },
+      },
+      async (request, response) => {
+        const http = new FastifyHttp<typeof request.body, typeof request.params>(
+          request,
+          response,
+        )
+        return toggleChannelVisibilityController.handle(http)
       },
     )
     .get(
