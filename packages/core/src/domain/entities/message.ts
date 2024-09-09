@@ -1,8 +1,8 @@
 import type { MessageDto } from '../../dtos'
 import type { Chatter } from './chatter'
 import { Entity } from '../abstracts'
-import { Datetime } from '#libs'
 import { Attachment } from '../structs'
+import { Datetime } from '#libs'
 
 type MessageProps = {
   text: string
@@ -55,6 +55,10 @@ export class Message extends Entity<MessageProps> {
 
   get text(): string {
     return this.props.text
+  }
+
+  set text(newText: string) {
+    this.props.text = newText
   }
 
   get chatterId(): string {

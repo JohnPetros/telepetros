@@ -38,6 +38,13 @@ export class Chat extends Entity<ChatProps> {
     this.props.messages.push(message)
   }
 
+  editMessage(messageId: string, newText: string): void {
+    this.props.messages = this.props.messages.map((message) => {
+      if (message.id === messageId) message.text = newText
+      return message
+    })
+  }
+
   deleteMessage(messageId: string): void {
     this.props.messages = this.props.messages.filter(
       (message) => message.id !== messageId,
@@ -46,7 +53,6 @@ export class Chat extends Entity<ChatProps> {
 
   getMessageById(messageId: string): Message | null {
     const message = this.props.messages.find((message) => {
-      console.log('message id', message.id)
       return message.id === messageId
     })
     return message ?? null
