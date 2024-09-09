@@ -7,10 +7,10 @@ type Request = {
   newText: string
 }
 
-export class EditMessageUseCase implements IUseCase<Request, string> {
+export class EditMessageUseCase implements IUseCase<Request, void> {
   constructor(private readonly chatsRepository: IChatsRepository) {}
 
-  async execute({ messageId, newText }: Request): Promise<string> {
+  async execute({ messageId, newText }: Request): Promise<void> {
     const message = await this.chatsRepository.findMessageById(messageId)
 
     if (!message) {
@@ -18,7 +18,5 @@ export class EditMessageUseCase implements IUseCase<Request, string> {
     }
 
     await this.chatsRepository.updateMessageText(messageId, newText)
-
-    return newText
   }
 }
