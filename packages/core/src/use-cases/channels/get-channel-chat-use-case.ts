@@ -31,7 +31,9 @@ export class GetChannelChatUseCase implements IUseCase<Request, Response> {
       throw new ChannelNotFoundError()
     }
 
-    if (!channel.isPublic) {
+    const chatter = Chatter.create(chatterDto)
+
+    if (channel.ownerId !== chatter.id && !channel.isPublic) {
       throw new ChannelNotPublicError()
     }
 
@@ -40,8 +42,6 @@ export class GetChannelChatUseCase implements IUseCase<Request, Response> {
     if (!chat) {
       throw new ChatNoFoundError()
     }
-
-    const chatter = Chatter.create(chatterDto)
 
     if (!chat.hasChatter(chatter)) {
       throw new ChannelNotPublicError()
