@@ -12,6 +12,10 @@ export const ChannelsService = (apiClient: IApiClient): IChannelsService => {
       return await apiClient.get<ChannelWithChatDto>(`/channels/${chatterId}/chat`)
     },
 
+    async fetchChannel(chatterId) {
+      return await apiClient.get<ChannelDto>(`/channels/${chatterId}`)
+    },
+
     async fetchChannelsListByChatter(chatterId: string) {
       return await apiClient.get<ChannelDto[]>(`/channels/chatter/${chatterId}`)
     },
@@ -26,6 +30,10 @@ export const ChannelsService = (apiClient: IApiClient): IChannelsService => {
 
     async joinChannel(inviteCode: string) {
       return await apiClient.post<ChannelDto>('/channels/join/', { inviteCode })
+    },
+
+    async toggleChannelVisibility(channelId: string, isChannelPublic: boolean) {
+      return await apiClient.put(`/channels/${channelId}/visibility`, { isChannelPublic })
     },
   }
 }
