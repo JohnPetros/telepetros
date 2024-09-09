@@ -14,6 +14,7 @@ import {
   IconCornerDownLeft,
   IconCopy,
   IconDots,
+  IconX,
   IconEdit,
   IconAt,
 } from '@tabler/icons-react'
@@ -31,6 +32,7 @@ export const ICONS: Record<
   plus: IconPlus,
   gear: IconSettings,
   clip: IconPaperclip,
+  close: IconX,
   emoticon: IconMoodSmile,
   at: IconAt,
   copy: IconCopy,

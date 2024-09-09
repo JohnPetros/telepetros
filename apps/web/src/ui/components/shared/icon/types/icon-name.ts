@@ -6,6 +6,7 @@ export type IconName =
   | 'image'
   | 'gear'
   | 'clip'
+  | 'close'
   | 'trash'
   | 'emoticon'
   | 'at'

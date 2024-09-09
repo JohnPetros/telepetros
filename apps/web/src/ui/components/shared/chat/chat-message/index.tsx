@@ -2,15 +2,17 @@ import type { ReactNode } from 'react'
 
 import type { Attachment } from '@telepetros/core/structs'
 
-import { useChatMessage } from './use-chat-message'
 import { ChatMessageBody } from './chat-message-body'
-import { ChatMessageMenu } from '../chat-message-menu'
 
 type ChatMessageProps = {
   chatter: {
     name: string
     avatar?: string
   }
+  parentMessage?: {
+    chatterName: string
+    text: string
+  } | null
   text: string
   time: string
   isMe: boolean
@@ -23,6 +25,7 @@ export const ChatMessage = ({
   chatter,
   text,
   time,
+  parentMessage,
   avatar,
   attachment,
   menu,
@@ -33,6 +36,7 @@ export const ChatMessage = ({
       <div className='relative flex items-end justify-end gap-3'>
         <div className='peer'>
           <ChatMessageBody
+            parentMessage={parentMessage}
             chatterName={chatter.name}
             text={text}
             time={time}
