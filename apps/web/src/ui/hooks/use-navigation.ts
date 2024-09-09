@@ -1,7 +1,10 @@
-import { useRouter } from 'next/navigation'
+'use client'
+
+import { usePathname, useRouter } from 'next/navigation'
 
 export function useNavigation() {
   const router = useRouter()
+  const pathname = usePathname()
 
   function navigateTo(route: string) {
     router.push(route)
@@ -9,5 +12,6 @@ export function useNavigation() {
 
   return {
     navigateTo,
+    currentRoute: pathname,
   }
 }
