@@ -17,6 +17,7 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
     id: string
     chatterName: string
   } | null>(null)
+  const [messageBeingEditedId, setMessageBeingEditingId] = useState('')
   const [_, copyMessageText] = useCopyToClipboard()
   const { authChatter } = useAuthContext()
   const { uploadService } = useApi()
@@ -43,13 +44,19 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
     scrollToBottom()
   }
 
+  function handleEditedMessage(deletedMessageId: string) {
+    chat.deleteMessage(deletedMessageId)
+    updateChat(chat)
+  }
+
   function handleDeletedMessage(deletedMessageId: string) {
     chat.deleteMessage(deletedMessageId)
     updateChat(chat)
   }
 
-  const { sendMessage, deleteMessage } = useChatSocket({
+  const { sendMessage, deleteMessage, editMessage } = useChatSocket({
     chatId: chat.id,
+    onEditMessage: handleEditedMessage,
     onReceiveMessage: handleReceivedMessage,
     onDeleteMessage: handleDeletedMessage,
   })
@@ -110,13 +117,23 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
     deleteMessage(messageId)
   }
 
-  function handleEditMessage(messageId: string) {}
+  function handleEditMessageStart(messageId: string) {
+    setMessageBeingEditingId(messageId)
+  }
+
+  function handleEditMessage(newText: string) {
+    editMessage(messageBeingEditedId, newText)
+  }
 
   function handleReplyMessage(messageId: string, chatterName: string) {
     setMessageToReply({ id: messageId, chatterName })
   }
 
   function handleCancelReply() {
+    setMessageToReply(null)
+  }
+
+  function handleCancelEditing() {
     setMessageToReply(null)
   }
 
@@ -143,7 +160,10 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
     chat,
     isUploading,
     messageToReply,
+    messageBeingEditedId,
+    handleEditMessageStart,
     handleEditMessage,
+    handleCancelEditing,
     handleReplyMessage,
     handleCopyMessage,
     handleDeleteMessage,

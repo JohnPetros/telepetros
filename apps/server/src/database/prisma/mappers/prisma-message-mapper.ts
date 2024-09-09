@@ -19,9 +19,7 @@ export class PrismaMessageMapper {
       sentAt: prismaMessage.sent_at,
       chatId: prismaMessage.chat_id,
       chatterId: prismaMessage.chatter_id,
-      parentMessageId: prismaMessage.parent_message_id
-        ? prismaMessage.parent_message_id
-        : undefined,
+      parentMessageId: prismaMessage.parent_message_id,
       attachment,
     })
   }

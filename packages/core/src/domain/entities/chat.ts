@@ -45,7 +45,10 @@ export class Chat extends Entity<ChatProps> {
   }
 
   getMessageById(messageId: string): Message | null {
-    const message = this.props.messages.find((message) => message.id === messageId)
+    const message = this.props.messages.find((message) => {
+      console.log('message id', message.id)
+      return message.id === messageId
+    })
     return message ?? null
   }
 

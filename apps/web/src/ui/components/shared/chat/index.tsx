@@ -11,6 +11,7 @@ import { ChatAvatar } from '../chatter-avatar'
 import { useChat } from './use-chat'
 import { Datetime } from '@telepetros/core/libs'
 import { ChatMessageMenu } from './chat-message-menu'
+import { ChatMessageBeingEdited } from './chat-message-being-editing'
 
 type ChatProps = {
   initialChat: ChatEntity
@@ -23,9 +24,12 @@ export const Chat = ({ initialChat, children: header }: ChatProps) => {
     chat,
     messageToReply,
     isUploading,
+    messageBeingEditedId,
     handleSendMessage,
+    handleCancelEditing,
     handleReplyMessage,
     handleEditMessage,
+    handleEditMessageStart,
     handleCopyMessage,
     handleCancelReply,
     handleDeleteMessage,
@@ -42,6 +46,15 @@ export const Chat = ({ initialChat, children: header }: ChatProps) => {
 
         <div className='flex-1 space-y-3 mt-6 w-full pb-56'>
           {chat.messages.map((message) => {
+            if (message.id === messageBeingEditedId) {
+              return (
+                <ChatMessageBeingEdited
+                  onEdit={handleEditMessage}
+                  onCancel={handleCancelEditing}
+                />
+              )
+            }
+
             const messageChatter = chat.getChatterByMessage(message)
             const parentMessage = message.parentMessageId
               ? chat.getMessageById(message.parentMessageId)
@@ -75,7 +88,7 @@ export const Chat = ({ initialChat, children: header }: ChatProps) => {
                       onClickReply={() =>
                         handleReplyMessage(message.id, messageChatter.name)
                       }
-                      onClickEdit={() => handleEditMessage(message.id)}
+                      onClickEdit={() => handleEditMessageStart(message.id)}
                     />
                   }
                   avatar={

@@ -86,6 +86,7 @@ export const ChatInput = ({ messageToReply, onSend, onCancelReply }: ChatInputPr
             <Icon name='emoticon' size={28} className='text-slate-500' />
           </Button>
         }
+        autoFocus
         value={text}
         onChange={handleChangeText}
         onKeyDown={handleKeyDown}

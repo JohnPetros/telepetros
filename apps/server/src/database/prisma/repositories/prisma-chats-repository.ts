@@ -169,6 +169,21 @@ export class PrismaChatsRepository implements IChatsRepository {
     }
   }
 
+  async updateMessageText(messageId: string, newText: string): Promise<void> {
+    try {
+      await prisma.message.update({
+        where: {
+          id: messageId,
+        },
+        data: {
+          text: newText,
+        },
+      })
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+
   async removeMessage(messageId: string): Promise<void> {
     try {
       await prisma.message.delete({ where: { id: messageId } })
