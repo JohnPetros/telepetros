@@ -6,10 +6,11 @@ import { Attachment } from '../structs'
 
 type MessageProps = {
   text: string
-  parentMessageId?: string
+  parentMessageId: string | null
   chatId: string
   chatterId: string
   attachment: Attachment | null
+  replies: Message[]
   sentAt: Date
 }
 
@@ -22,6 +23,7 @@ export class Message extends Entity<MessageProps> {
         parentMessageId: dto.parentMessageId,
         chatId: dto.chatId,
         chatterId: dto.chatterId,
+        replies: [],
         attachment: dto.attachment
           ? Attachment.create({
               name: dto.attachment.name,
@@ -39,6 +41,18 @@ export class Message extends Entity<MessageProps> {
     return this.props.chatterId === chatter.id
   }
 
+  addReplies(replies: Message[]) {
+    this.props.replies = replies
+  }
+
+  get replies(): Message[] {
+    return this.props.replies
+  }
+
+  get hasReplies(): boolean {
+    return this.replies.length > 0
+  }
+
   get text(): string {
     return this.props.text
   }
@@ -49,6 +63,10 @@ export class Message extends Entity<MessageProps> {
 
   get attachment(): Attachment | null {
     return this.props.attachment
+  }
+
+  get parentMessageId(): string | null {
+    return this.props.parentMessageId
   }
 
   get sentAt(): Date {

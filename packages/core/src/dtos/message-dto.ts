@@ -4,7 +4,7 @@ export type MessageDto = {
   chatId: string
   chatterId: string
   sentAt?: Date
-  parentMessageId?: string
+  parentMessageId: string | null
   attachment?: {
     name: string
     size: number

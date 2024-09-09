@@ -95,7 +95,7 @@ export class Chat extends Entity<ChatProps> {
     }, 0)
   }
 
-  get messages() {
+  get messages(): Message[] {
     return this.props.messages
   }
 
