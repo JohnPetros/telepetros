@@ -1,6 +1,6 @@
 'use client'
 
-import { type ReactNode, useRef } from 'react'
+import { type ReactNode, useMemo, useRef } from 'react'
 
 import type { Chat as ChatEntity } from '@telepetros/core/entities'
 
@@ -21,16 +21,18 @@ export const Chat = ({ initialChat, children: header }: ChatProps) => {
   const chatRef = useRef<HTMLDivElement>(null)
   const {
     chat,
+    messageToReply,
     isUploading,
     handleSendMessage,
-    handleEditMessage,
     handleReplyMessage,
+    handleEditMessage,
     handleCopyMessage,
+    handleCancelReply,
     handleDeleteMessage,
   } = useChat(initialChat, chatRef)
   const { authChatter } = useAuthContext()
 
-  if (authChatter && chat)
+  if (authChatter)
     return (
       <div
         ref={chatRef}
@@ -41,6 +43,14 @@ export const Chat = ({ initialChat, children: header }: ChatProps) => {
         <div className='flex-1 space-y-3 mt-6 w-full pb-56'>
           {chat.messages.map((message) => {
             const messageChatter = chat.getChatterByMessage(message)
+            const parentMessage = message.parentMessageId
+              ? chat.getMessageById(message.parentMessageId)
+              : null
+
+            const parentMessageChatter = parentMessage
+              ? chat.getChatterByMessage(parentMessage)
+              : null
+
             if (messageChatter)
               return (
                 <ChatMessage
@@ -50,11 +60,21 @@ export const Chat = ({ initialChat, children: header }: ChatProps) => {
                   text={message.text}
                   isMe={message.isFromChatter(authChatter)}
                   attachment={message.attachment}
+                  parentMessage={
+                    parentMessageChatter && parentMessage
+                      ? {
+                          chatterName: parentMessageChatter.name,
+                          text: parentMessage.text,
+                        }
+                      : null
+                  }
                   menu={
                     <ChatMessageMenu
                       onClickCopy={() => handleCopyMessage(message.text)}
                       onClickDelete={() => handleDeleteMessage(message.id)}
-                      onClickReply={() => handleReplyMessage(message.id)}
+                      onClickReply={() =>
+                        handleReplyMessage(message.id, messageChatter.name)
+                      }
                       onClickEdit={() => handleEditMessage(message.id)}
                     />
                   }
@@ -90,7 +110,11 @@ export const Chat = ({ initialChat, children: header }: ChatProps) => {
           )}
         </div>
         <div className='fixed bottom-4 left-80 right-12 z-40'>
-          <ChatInput onSend={handleSendMessage} />
+          <ChatInput
+            messageToReply={messageToReply}
+            onSend={handleSendMessage}
+            onCancelReply={handleCancelReply}
+          />
         </div>
       </div>
     )

@@ -13,6 +13,10 @@ import { useApi, useToast } from '@/ui/hooks'
 export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
   const [chat, setChat] = useState<Chat>(initialChat)
   const [isUploading, setIsUploading] = useState(false)
+  const [messageToReply, setMessageToReply] = useState<{
+    id: string
+    chatterName: string
+  } | null>(null)
   const [_, copyMessageText] = useCopyToClipboard()
   const { authChatter } = useAuthContext()
   const { uploadService } = useApi()
@@ -50,7 +54,11 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
     onDeleteMessage: handleDeletedMessage,
   })
 
-  async function sendMessageWithAttachment(attachment: File, messageText: string) {
+  async function sendMessageWithAttachment(
+    attachment: File,
+    messageText: string,
+    parentMessageId: string | null = null,
+  ) {
     scrollToBottom()
     setIsUploading(true)
     const uploadResponse = await uploadService.saveFile('attachments', attachment)
@@ -71,15 +79,21 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
         size: attachment.size,
         name: attachment.name,
       },
+      parentMessageId,
     })
     sendMessage(message)
   }
 
   async function handleSendMessage(messageText: string, attachment: File | null) {
     if (!authChatter) return
+    setMessageToReply(null)
 
     if (attachment) {
-      sendMessageWithAttachment(attachment, messageText)
+      sendMessageWithAttachment(
+        attachment,
+        messageText,
+        messageToReply ? messageToReply.id : null,
+      )
       return
     }
 
@@ -87,6 +101,7 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
       text: messageText,
       chatId: chat.id,
       chatterId: authChatter.id,
+      parentMessageId: messageToReply ? messageToReply.id : null,
     })
     sendMessage(message)
   }
@@ -97,7 +112,13 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
 
   function handleEditMessage(messageId: string) {}
 
-  function handleReplyMessage(messageId: string) {}
+  function handleReplyMessage(messageId: string, chatterName: string) {
+    setMessageToReply({ id: messageId, chatterName })
+  }
+
+  function handleCancelReply() {
+    setMessageToReply(null)
+  }
 
   async function handleCopyMessage(messageText: string) {
     const isCopied = await copyMessageText(messageText)
@@ -121,10 +142,12 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
   return {
     chat,
     isUploading,
+    messageToReply,
     handleEditMessage,
     handleReplyMessage,
     handleCopyMessage,
     handleDeleteMessage,
+    handleCancelReply,
     handleSendMessage,
   }
 }

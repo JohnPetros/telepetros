@@ -1,11 +1,26 @@
 'use client'
 
-import { type ChangeEvent, useState, type KeyboardEvent, type RefObject } from 'react'
+import {
+  type ChangeEvent,
+  useState,
+  type KeyboardEvent,
+  type RefObject,
+  useEffect,
+} from 'react'
 
-export function useChatInput(
-  formRef: RefObject<HTMLFormElement>,
-  onSend: (text: string, file: File | null) => Promise<void>,
-) {
+type UseChatInputParams = {
+  formRef: RefObject<HTMLFormElement>
+  inputRef: RefObject<HTMLInputElement>
+  isReplying: boolean
+  onSend: (text: string, file: File | null) => Promise<void>
+}
+
+export function useChatInput({
+  formRef,
+  inputRef,
+  isReplying,
+  onSend,
+}: UseChatInputParams) {
   const [text, setText] = useState('')
   const [file, setFile] = useState<File | null>(null)
   const [isUploading, setIsUploading] = useState(false)
@@ -19,6 +34,7 @@ export function useChatInput(
 
     if (text || file) {
       await onSend(text, file)
+
       setText('')
       setFile(null)
       setIsUploading(false)
@@ -35,6 +51,10 @@ export function useChatInput(
   function handleRemoveButtonClick() {
     setFile(null)
   }
+
+  useEffect(() => {
+    if (isReplying) inputRef.current?.focus()
+  }, [isReplying, inputRef.current?.focus])
 
   return {
     text,
