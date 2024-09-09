@@ -1,17 +1,18 @@
 'use client'
 
-import { type RefObject, useEffect, useState } from 'react'
+import { type RefObject, useCallback, useEffect, useState } from 'react'
 import { useCopyToClipboard } from 'usehooks-ts'
 
 import { Chat, Message } from '@telepetros/core/entities'
+import type { ChatDto } from '@telepetros/core/dtos'
 
 import { useAuthContext } from '@/ui/contexts/auth-context'
 import { useChatSocket } from '@/ui/realtime/sockets'
 import { useChattersConnectionContext } from '@/ui/contexts/chatters-connection-context/hooks'
 import { useApi, useToast } from '@/ui/hooks'
 
-export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
-  const [chat, setChat] = useState<Chat>(initialChat)
+export function useChat(chatDto: ChatDto, chatRef: RefObject<HTMLDivElement>) {
+  const [chat, setChat] = useState<Chat>(Chat.create(chatDto))
   const [isUploading, setIsUploading] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const [messageToReply, setMessageToReply] = useState<{
@@ -26,12 +27,15 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
   const { lastConnectedChatterId, lastDisconnectedChatterId } =
     useChattersConnectionContext()
 
-  function scrollToBottom() {
-    chatRef.current?.scrollTo({
-      top: chatRef.current.scrollHeight - 200,
-      behavior: 'smooth',
-    })
-  }
+  const scrollToBottom = useCallback(
+    (hasAnimation = true) => {
+      chatRef.current?.scrollTo({
+        top: chatRef.current.scrollHeight - 200,
+        behavior: hasAnimation ? 'smooth' : 'instant',
+      })
+    },
+    [chatRef.current],
+  )
 
   function updateChat(chat: Chat) {
     setChat(() => {
@@ -159,6 +163,10 @@ export function useChat(initialChat: Chat, chatRef: RefObject<HTMLDivElement>) {
       setChat(Chat.create(chat.dto))
     }
   }, [lastDisconnectedChatterId])
+
+  useEffect(() => {
+    scrollToBottom(false)
+  }, [scrollToBottom])
 
   return {
     chat,

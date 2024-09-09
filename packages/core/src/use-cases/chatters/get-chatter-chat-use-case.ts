@@ -21,14 +21,11 @@ type Response = {
 export class GetChatterChatUseCase implements IUseCase<Request, Response> {
   constructor(
     private readonly chattersRepository: IChattersRepository,
-    private readonly channeslRepository: IChannelsRepository,
     private readonly chatsRepository: IChatsRepository,
   ) {}
 
   async execute({ channelId, chatterDto }: Request) {
     const secondChatter = await this.chattersRepository.findById(channelId)
-
-    console.log({ chatterId })
 
     if (!secondChatter) {
       throw new ChatterNotFoundError()
