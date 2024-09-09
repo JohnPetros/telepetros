@@ -1,8 +1,9 @@
 'use client'
 
-import { type ReactNode, useMemo, useRef } from 'react'
+import { type ReactNode, useRef } from 'react'
 
 import type { Chat as ChatEntity } from '@telepetros/core/entities'
+import type { ChatDto } from '@telepetros/core/dtos'
 
 import { useAuthContext } from '@/ui/contexts/auth-context'
 import { ChatMessage } from './chat-message'
@@ -14,11 +15,11 @@ import { ChatMessageMenu } from './chat-message-menu'
 import { ChatMessageBeingEdited } from './chat-message-being-editing'
 
 type ChatProps = {
-  initialChat: ChatEntity
+  chatDto: ChatDto
   children: (chat: ChatEntity) => ReactNode
 }
 
-export const Chat = ({ initialChat, children: header }: ChatProps) => {
+export const Chat = ({ chatDto, children: header }: ChatProps) => {
   const chatRef = useRef<HTMLDivElement>(null)
   const {
     chat,
@@ -34,7 +35,7 @@ export const Chat = ({ initialChat, children: header }: ChatProps) => {
     handleCopyMessage,
     handleCancelReply,
     handleDeleteMessage,
-  } = useChat(initialChat, chatRef)
+  } = useChat(chatDto, chatRef)
   const { authChatter } = useAuthContext()
 
   if (authChatter)
