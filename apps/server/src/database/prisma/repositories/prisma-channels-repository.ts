@@ -66,6 +66,17 @@ export class PrismaChannelsRepository implements IChannelsRepository {
     return this.mapper.toDomain(createdChannel)
   }
 
+  async updateOwner(channelId: string, newOwnerId: string): Promise<void> {
+    await prisma.channel.update({
+      where: {
+        id: channelId,
+      },
+      data: {
+        owner_id: newOwnerId,
+      },
+    })
+  }
+
   async updateVisibility(channelId: string, isChannelPublic: boolean): Promise<void> {
     await prisma.channel.update({
       where: {
@@ -75,5 +86,9 @@ export class PrismaChannelsRepository implements IChannelsRepository {
         is_public: isChannelPublic,
       },
     })
+  }
+
+  async remove(channelId: string): Promise<void> {
+    await prisma.channel.delete({ where: { id: channelId } })
   }
 }
