@@ -7,10 +7,13 @@ import {
   GetChannelChatController,
   GetChannelController,
   JoinChannelController,
+  LeaveChannelController,
+  ListChannelMembersController,
   ToggleChannelVisibilityController,
 } from '@/api/controllers/channels'
 import { ListChatterChannelsController } from '@/api/controllers/channels'
 import { FastifyHttp } from '../fastify-http'
+import { idSchema } from '@telepetros/validation/schemas'
 
 export const ChannelsRoutes = async (app: FastifyInstance) => {
   const getChannelChatController = new GetChannelChatController()
@@ -19,6 +22,8 @@ export const ChannelsRoutes = async (app: FastifyInstance) => {
   const listChatterChannelsController = new ListChatterChannelsController()
   const joinChannelController = new JoinChannelController()
   const toggleChannelVisibilityController = new ToggleChannelVisibilityController()
+  const listChannelMembersController = new ListChannelMembersController()
+  const leaveChannelController = new LeaveChannelController()
 
   const router = app.withTypeProvider<ZodTypeProvider>()
 
@@ -28,7 +33,7 @@ export const ChannelsRoutes = async (app: FastifyInstance) => {
       {
         schema: {
           params: z.object({
-            channelId: z.string().uuid(),
+            channelId: idSchema,
           }),
         },
       },
@@ -42,7 +47,21 @@ export const ChannelsRoutes = async (app: FastifyInstance) => {
       {
         schema: {
           params: z.object({
-            channelId: z.string().uuid(),
+            channelId: idSchema,
+          }),
+        },
+      },
+      async (request, response) => {
+        const http = new FastifyHttp<void, typeof request.params>(request, response)
+        return listChannelMembersController.handle(http)
+      },
+    )
+    .get(
+      '/:channelId/members',
+      {
+        schema: {
+          params: z.object({
+            channelId: idSchema,
           }),
         },
       },
@@ -73,7 +92,7 @@ export const ChannelsRoutes = async (app: FastifyInstance) => {
             isChannelPublic: z.boolean(),
           }),
           params: z.object({
-            channelId: z.string().uuid(),
+            channelId: idSchema,
           }),
         },
       },
@@ -90,7 +109,7 @@ export const ChannelsRoutes = async (app: FastifyInstance) => {
       {
         schema: {
           params: z.object({
-            chatterId: z.string().uuid(),
+            chatterId: idSchema,
           }),
         },
       },
@@ -104,7 +123,7 @@ export const ChannelsRoutes = async (app: FastifyInstance) => {
       {
         schema: {
           body: z.object({
-            ownerId: z.string().uuid(),
+            ownerId: idSchema,
             name: z.string(),
             avatar: z.string(),
           }),
@@ -113,6 +132,21 @@ export const ChannelsRoutes = async (app: FastifyInstance) => {
       async (request, response) => {
         const http = new FastifyHttp<typeof request.body>(request, response)
         return createChannelController.handle(http)
+      },
+    )
+    .delete(
+      '/:channelId/:chatterId',
+      {
+        schema: {
+          params: z.object({
+            channelId: idSchema,
+            chatterId: idSchema,
+          }),
+        },
+      },
+      async (request, response) => {
+        const http = new FastifyHttp<void, typeof request.params>(request, response)
+        return leaveChannelController.handle(http)
       },
     )
 }
