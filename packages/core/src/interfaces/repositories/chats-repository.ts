@@ -16,4 +16,5 @@ export interface IChatsRepository {
     chatId: string,
   ): Promise<void>
   removeMessage(messageId: string): Promise<void>
+  removeChatterChat(chatterId: string, chatId: string): Promise<void>
 }

@@ -191,4 +191,12 @@ export class PrismaChatsRepository implements IChatsRepository {
       throw new PrismaError(error)
     }
   }
+
+  async removeChatterChat(chatterId: string, chatId: string): Promise<void> {
+    try {
+      await prisma.message.delete({ where: { id: chatId, chatter_id: chatterId } })
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
 }
