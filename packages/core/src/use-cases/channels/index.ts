@@ -5,3 +5,4 @@ export { ToggleChannelVisibilityUseCase } from './toggle-channel-visibility-use-
 export { GetChannelUseCase } from './get-channel-use-case'
 export { ListChannelMembersUseCase } from './list-channel-members-use-case'
 export { LeaveChannelUseCase } from './leave-channel-use-case'
+export { DeleteChannelUseCase } from './delete-channel-use-case'
