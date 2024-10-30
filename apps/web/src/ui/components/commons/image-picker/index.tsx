@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { type ReactNode, useRef } from 'react'
 import { Image } from '@nextui-org/react'
 import { Cropper, type ReactCropperElement } from 'react-cropper'
 import 'cropperjs/dist/cropper.css'
@@ -9,10 +9,12 @@ import type { ModalRef } from '../modal/types'
 import { useImagePicker } from './use-image-picker'
 
 type ImagePickerProps = {
+  id: string
+  children: (image: string) => ReactNode
   onPick: (file: File) => void
 }
 
-export const ImagePicker = ({ onPick }: ImagePickerProps) => {
+export const ImagePicker = ({ id, children, onPick }: ImagePickerProps) => {
   const modalRef = useRef<ModalRef>(null)
   const cropperRef = useRef<ReactCropperElement>(null)
   const { image, previewImage, handleInputFileChange, handleCropImage } = useImagePicker(
@@ -33,19 +35,16 @@ export const ImagePicker = ({ onPick }: ImagePickerProps) => {
         />
       </Modal>
 
-      <label
-        htmlFor='avatar'
-        className='grid place-content-center mx-auto size-48 mt-3 bg-slate-100 rounded-full cursor-pointer'
-      >
+      <label htmlFor={id}>
         {image ? (
           <Image src={image} alt='cropped image' radius='full' width={192} height={192} />
         ) : (
           <Icon name='image' size={48} className='text-slate-500' />
         )}
         <input
-          id='avatar'
+          id={id}
           type='file'
-          name='avatar'
+          name='file-input'
           accept='image/*'
           onChange={handleInputFileChange}
           className='sr-only'

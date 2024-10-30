@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { ChatTabs } from './chat-tabs'
-import { CardLink } from '../../shared/card-link'
+import { CardLink } from '../../commons/card-link'
 import { ROUTES } from '@/ui/constants'
 import { Chatter } from './chatter'
 

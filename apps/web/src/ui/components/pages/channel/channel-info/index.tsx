@@ -3,8 +3,8 @@
 import { Avatar } from '@nextui-org/avatar'
 
 import type { ChannelDto } from '@telepetros/core/dtos'
-import { useChannelInfo } from './use-channel-page'
-import { Button } from '@nextui-org/react'
+import { useChannelInfo } from './use-channel-info'
+import { ChannelInfoForm } from './channel-info-form'
 
 type ChannelInfoProps = {
   channelDto: ChannelDto
@@ -42,7 +42,12 @@ export const ChannelInfo = ({ channelDto }: ChannelInfoProps) => {
             <small className='block mt-1 text-base text-slate-500'>Channel</small>
           </div>
         </div>
-        <Button className='text-slate-800 bg-slate-200 font-semibold'>Edit info</Button>
+        <ChannelInfoForm
+          name={channel.name}
+          inviteCode={channel.inviteCode}
+          avatar={channel.avatar}
+          banner={channel.banner}
+        />
       </div>
     </div>
   )

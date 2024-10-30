@@ -3,15 +3,15 @@
 import { useRef } from 'react'
 import { Tabs, Tab, Button } from '@nextui-org/react'
 
-import type { PopoverRef } from '@/ui/components/shared/popover/types'
-import { CardLink } from '@/ui/components/shared/card-link'
-import { Icon } from '@/ui/components/shared/icon'
-import { Popover } from '@/ui/components/shared/popover'
+import type { PopoverRef } from '@/ui/components/commons/popover/types'
+import { CardLink } from '@/ui/components/commons/card-link'
+import { Icon } from '@/ui/components/commons/icon'
+import { Popover } from '@/ui/components/commons/popover'
 import { CreateChannelModal } from './create-channel-modal'
 import { useChatTabs } from './use-chat-tabs'
 import { JoinChannelModal } from './join-channel-modal'
 import { FindChatterModal } from './find-chatter-modal'
-import { ChatCard } from '@/ui/components/shared/chat-card'
+import { ChatCard } from '@/ui/components/commons/chat-card'
 import { ROUTES } from '@/ui/constants'
 
 export const ChatTabs = () => {

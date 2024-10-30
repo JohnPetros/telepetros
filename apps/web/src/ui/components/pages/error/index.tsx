@@ -1,10 +1,10 @@
-import { Modal } from '../../shared/modal'
+import { Modal } from '../../commons/modal'
 
 type ErrorPageProps = {
   errorMessage: string
 }
 
-export const ErrorPage = ({errorMessage}: ErrorPageProps) => {
+export const ErrorPage = ({ errorMessage }: ErrorPageProps) => {
   return (
     <main>
       <h1>{errorMessage}</h1>

@@ -3,7 +3,7 @@ import { type RefObject, useState } from 'react'
 import { CACHE } from '@/ui/constants/cache'
 import { useApi, useCache, useToast } from '@/ui/hooks'
 import { Chatter } from '@telepetros/core/entities'
-import type { ModalRef } from '@/ui/components/shared/modal/types'
+import type { ModalRef } from '@/ui/components/commons/modal/types'
 
 export function useFindChatterModal(
   onFind: (chatterName: string) => Promise<void>,

@@ -4,7 +4,7 @@ import { type RefObject, useState } from 'react'
 
 import type { ChannelDto, ChatterDto } from '@telepetros/core/dtos'
 
-import type { PopoverRef } from '@/ui/components/shared/popover/types'
+import type { PopoverRef } from '@/ui/components/commons/popover/types'
 import { CACHE } from '@/ui/constants/cache'
 import { useAuthContext } from '@/ui/contexts/auth-context'
 import { useCache, useToast, useNavigation, useApi } from '@/ui/hooks'

@@ -1,9 +1,11 @@
 import type { ReactNode } from 'react'
 
-import { Modal } from '@/ui/components/shared/modal'
-import { Input } from '@/ui/components/shared/input'
 import { useCreateChannelModal } from './use-create-channel-modal'
-import { ImagePicker } from '@/ui/components/shared/image-picker'
+import { Modal } from '@/ui/components/commons/modal'
+import { Input } from '@/ui/components/commons/input'
+import { ImagePicker } from '@/ui/components/commons/image-picker'
+import { Icon } from '@/ui/components/commons/icon'
+import { Image } from '@nextui-org/react'
 
 type CreateChannelModalProps = {
   children: ReactNode
@@ -17,7 +19,23 @@ export const CreateChannelModal = ({ children, onCreate }: CreateChannelModalPro
   return (
     <Modal title='Create Channel' onConfirm={handleModalConfirm} trigger={children}>
       <p className='text-slate-700'>Give your channel a beautiful name and icon.</p>
-      <ImagePicker onPick={handlePickImage} />
+      <ImagePicker id='avatar' onPick={handlePickImage}>
+        {(avatar) => (
+          <div className='grid place-content-center mx-auto size-48 mt-3 bg-slate-100 rounded-full cursor-pointer'>
+            {avatar ? (
+              <Image
+                src={avatar}
+                alt='cropped image'
+                radius='full'
+                width={192}
+                height={192}
+              />
+            ) : (
+              <Icon name='image' size={48} className='text-slate-500' />
+            )}
+          </div>
+        )}
+      </ImagePicker>
       <Input
         type='text'
         variant='flat'

@@ -1,8 +1,8 @@
 import { Button } from '@nextui-org/button'
 import { Link, Card, CardBody, CardHeader } from '@nextui-org/react'
 
-import { Icon } from '../../shared/icon'
-import { Logo } from '../../shared/logo'
+import { Icon } from '../../commons/icon'
+import { Logo } from '../../commons/logo'
 import { ENV } from '@/ui/constants'
 
 export const LoginPage = () => {

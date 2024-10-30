@@ -6,10 +6,10 @@ import type { ChatDto } from '@telepetros/core/dtos'
 
 import { ROUTES } from '@/ui/constants'
 import { useAuthContext } from '@/ui/contexts/auth-context'
-import { Chat } from '../../shared/chat'
-import { Header } from '../../shared/header'
-import { ChatAvatar } from '../../shared/chatter-avatar'
-import { Icon } from '../../shared/icon'
+import { Chat } from '../../commons/chat'
+import { Header } from '../../commons/header'
+import { ChatAvatar } from '../../commons/chatter-avatar'
+import { Icon } from '../../commons/icon'
 
 type ChannelChatPageProps = {
   channelId: string

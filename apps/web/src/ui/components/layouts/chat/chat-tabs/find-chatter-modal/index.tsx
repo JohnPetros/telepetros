@@ -1,9 +1,9 @@
 import { useRef, type ReactNode } from 'react'
 import { Autocomplete, AutocompleteItem } from '@nextui-org/react'
 
-import { Modal } from '@/ui/components/shared/modal'
-import { ChatCard } from '@/ui/components/shared/chat-card'
-import type { ModalRef } from '@/ui/components/shared/modal/types'
+import { Modal } from '@/ui/components/commons/modal'
+import { ChatCard } from '@/ui/components/commons/chat-card'
+import type { ModalRef } from '@/ui/components/commons/modal/types'
 import { useFindChatterModal } from './use-find-chatters-modal'
 
 type CreateChannelModalProps = {

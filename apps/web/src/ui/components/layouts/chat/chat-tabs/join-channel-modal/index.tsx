@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react'
 
-import { Modal } from '@/ui/components/shared/modal'
-import { Input } from '@/ui/components/shared/input'
+import { Modal } from '@/ui/components/commons/modal'
+import { Input } from '@/ui/components/commons/input'
 import { useJoinChannelModal } from './use-join-channel-modal'
-import { Icon } from '@/ui/components/shared/icon'
+import { Icon } from '@/ui/components/commons/icon'
 
 type CreateChannelModalProps = {
   children: ReactNode

@@ -2,8 +2,8 @@
 
 import { Button, Input, Switch } from '@nextui-org/react'
 
+import { Icon } from '@/ui/components/commons/icon'
 import { useChannelVisibility } from './use-channel-visibility'
-import { Icon } from '@/ui/components/shared/icon'
 
 type ChannelVisibilityProps = {
   defaultVisibility: boolean

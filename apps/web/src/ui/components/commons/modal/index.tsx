@@ -21,12 +21,21 @@ type ModalProps = {
   trigger?: ReactNode
   isLarge?: boolean
   isDefaultOpen?: boolean
+  buttonTitle?: string
   onClose?: VoidFunction
   onConfirm?: VoidFunction
 }
 
 const ModalComponent = (
-  { title, children, trigger, isLarge, isDefaultOpen = false, onConfirm }: ModalProps,
+  {
+    title,
+    children,
+    trigger,
+    isLarge,
+    isDefaultOpen = false,
+    buttonTitle = 'Confirm',
+    onConfirm,
+  }: ModalProps,
   ref: ForwardedRef<ModalRef>,
 ) => {
   const { isOpen, onOpenChange, onOpen, onClose } = useDisclosure()
@@ -62,7 +71,7 @@ const ModalComponent = (
           <ModalBody>{children}</ModalBody>
           <ModalFooter className='mt-1'>
             <Button color='primary' fullWidth onPress={handleConfirmButtonClick}>
-              Confirm
+              {buttonTitle}
             </Button>
           </ModalFooter>
         </ModalContent>

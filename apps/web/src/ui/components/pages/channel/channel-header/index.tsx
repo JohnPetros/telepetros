@@ -4,9 +4,9 @@ import Link from 'next/link'
 
 import { useAuthContext } from '@/ui/contexts/auth-context'
 import { ROUTES } from '@/ui/constants'
-import { Header } from '@/ui/components/shared/header'
-import { ChatAvatar } from '@/ui/components/shared/chatter-avatar'
-import { Icon } from '@/ui/components/shared/icon'
+import { Header } from '@/ui/components/commons/header'
+import { ChatAvatar } from '@/ui/components/commons/chatter-avatar'
+import { Icon } from '@/ui/components/commons/icon'
 
 type ChannelHeaderProps = {
   channelId: string

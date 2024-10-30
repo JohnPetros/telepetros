@@ -1,6 +1,6 @@
 'use client'
 
-import { Icon } from '@/ui/components/shared/icon'
+import { Icon } from '@/ui/components/commons/icon'
 import { useAuthContext } from '@/ui/contexts/auth-context'
 import { Avatar, Link } from '@nextui-org/react'
 

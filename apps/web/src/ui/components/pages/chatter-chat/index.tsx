@@ -4,11 +4,11 @@ import type { ChatDto, ChatterDto } from '@telepetros/core/dtos'
 
 import { Link } from '@nextui-org/react'
 import { ROUTES } from '@/ui/constants'
-import { Icon } from '../../shared/icon'
-import { Chat } from '../../shared/chat'
-import { Header } from '../../shared/header'
+import { Icon } from '../../commons/icon'
+import { Chat } from '../../commons/chat'
+import { Header } from '../../commons/header'
 import { useChatterChatPage } from './use-chatter-chat'
-import { ChatAvatar } from '../../shared/chatter-avatar'
+import { ChatAvatar } from '../../commons/chatter-avatar'
 
 type ChannelChatPageProps = {
   chatDto: ChatDto
@@ -37,15 +37,15 @@ export const ChatterChatPage = ({ chatDto, chatterDto }: ChannelChatPageProps) =
         </Link>
       </Header>
 
-      {chat && (
-        <Chat initialChat={chat}>
+      {/* {chat && (
+        <Chat chatDto={chat}>
           {() => (
             <div>
               <h1 className='text-2xl text-slate-700 font-semibold'>Chat</h1>
             </div>
           )}
         </Chat>
-      )}
+      )} */}
     </div>
   )
 }
