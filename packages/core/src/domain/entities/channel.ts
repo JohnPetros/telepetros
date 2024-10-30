@@ -6,6 +6,7 @@ type ChannelProps = {
   inviteCode: string
   ownerId: string
   isPublic: boolean
+  banner?: string
   avatar?: string
   chatId: string
 }
@@ -19,6 +20,7 @@ export class Channel extends Entity<ChannelProps> {
         isPublic: dto.isPublic ?? true,
         ownerId: dto.ownerId,
         avatar: dto.avatar,
+        banner: dto.banner,
         chatId: dto.chatId,
       },
       dto.id,
@@ -35,6 +37,10 @@ export class Channel extends Entity<ChannelProps> {
 
   get avatar() {
     return String(this.props.avatar)
+  }
+
+  get banner() {
+    return String(this.props.banner)
   }
 
   get isPublic() {
