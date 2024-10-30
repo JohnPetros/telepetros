@@ -26,6 +26,14 @@ export class Chat extends Entity<ChatProps> {
     })
   }
 
+  getNextChatter(chatterId: string) {
+    for (let index = 0; index < this.props.chatters.length; index++) {
+      if (this.props.chatters[index]?.id === chatterId) {
+        return this.props.chatters[index + 1]
+      }
+    }
+  }
+
   addChatters(chatters: Chatter[]): void {
     this.props.chatters = chatters
   }
