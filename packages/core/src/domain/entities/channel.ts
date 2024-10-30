@@ -1,5 +1,6 @@
 import type { ChannelDto } from '#dtos'
 import { Entity } from '../abstracts'
+import type { Chatter } from './chatter'
 
 type ChannelProps = {
   name: string
@@ -25,6 +26,10 @@ export class Channel extends Entity<ChannelProps> {
       },
       dto.id,
     )
+  }
+
+  isOwner(chatter: Chatter) {
+    return this.ownerId === chatter.id
   }
 
   get name() {
