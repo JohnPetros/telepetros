@@ -6,3 +6,4 @@ export { ListChatterChannelsController } from './list-chatter-channels-controlle
 export { ToggleChannelVisibilityController } from './toggle-channel-visibility-controller'
 export { ListChannelMembersController } from './list-channel-members-controller'
 export { LeaveChannelController } from './leave-channel-controller'
+export { UpdateChannelController } from './update-channel-controller'
