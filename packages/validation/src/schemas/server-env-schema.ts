@@ -1,17 +1,19 @@
 import { z } from 'zod'
+import { stringSchema } from './string-schema'
+import { urlSchema } from './url-schema'
 
 export const serverEnvSchema = z.object({
   port: z.coerce.number().default(3210),
   mode: z.enum(['dev', 'prod']).default('dev'),
-  googleClientId: z.string(),
-  googleClientSecret: z.string(),
-  githubClientId: z.string(),
-  githubClientSecret: z.string(),
-  jwtSecret: z.string(),
-  webUrl: z.string(),
-  supabaseUrl: z.string(),
-  supabaseAnonKey: z.string(),
-  cloudinaryApiKey: z.string(),
-  cloudinaryApiSecret: z.string(),
-  cloudinaryCloundName: z.string(),
+  googleClientId: stringSchema,
+  googleClientSecret: stringSchema,
+  githubClientId: stringSchema,
+  githubClientSecret: stringSchema,
+  jwtSecret: stringSchema,
+  webUrl: stringSchema,
+  supabaseUrl: urlSchema,
+  supabaseAnonKey: stringSchema,
+  cloudinaryApiKey: stringSchema,
+  cloudinaryApiSecret: stringSchema,
+  cloudinaryCloundName: stringSchema,
 })

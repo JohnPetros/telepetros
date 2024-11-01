@@ -1,9 +1,11 @@
 import { z } from 'zod'
+import { stringSchema } from './string-schema'
+import { urlSchema } from './url-schema'
 
 export const webEnvSchema = z.object({
-  githubClientId: z.string(),
-  googleClientId: z.string(),
-  apiUrl: z.string(),
-  appUrl: z.string(),
-  realTimeUrl: z.string(),
+  githubClientId: stringSchema,
+  googleClientId: stringSchema,
+  apiUrl: urlSchema,
+  appUrl: urlSchema,
+  realTimeUrl: urlSchema,
 })
