@@ -55,6 +55,10 @@ export class FastifyHttp<Body = void, Params = void> implements IHttp<Body, Para
     }
   }
 
+  async destroyJwt(): Promise<void> {
+    this.reply.clearCookie('access_token')
+  }
+
   async getChatter(): Promise<ChatterDto> {
     await this.verifyJwt()
     return this.request.user as ChatterDto
