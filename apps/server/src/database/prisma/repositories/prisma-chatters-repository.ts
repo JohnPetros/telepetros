@@ -79,4 +79,8 @@ export class PrismaChattersRepository implements IChattersRepository {
       data: prismaChatter,
     })
   }
+
+  async remove(chatterId: string): Promise<void> {
+    await prisma.chatter.delete({ where: { id: chatterId } })
+  }
 }

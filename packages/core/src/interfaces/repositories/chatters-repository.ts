@@ -7,4 +7,5 @@ export interface IChattersRepository {
   updateChatter(chatter: Chatter): Promise<void>
   findManyByChatterId(chatterId: string): Promise<Chatter[]>
   add(chatter: Chatter): Promise<Chatter>
+  remove(chatterId: string): Promise<void>
 }
