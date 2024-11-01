@@ -1,4 +1,4 @@
-import type { ChannelDto } from '#dtos'
+import type { ChannelDto, ChatterDto } from '#dtos'
 import { Entity } from '../abstracts'
 import type { Chatter } from './chatter'
 
@@ -30,6 +30,10 @@ export class Channel extends Entity<ChannelProps> {
 
   isOwner(chatter: Chatter) {
     return this.ownerId === chatter.id
+  }
+
+  update(chatterDto: Partial<ChatterDto>): Channel {
+    return Channel.create({ ...this.dto, ...chatterDto })
   }
 
   get name() {
