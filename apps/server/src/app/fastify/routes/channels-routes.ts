@@ -10,10 +10,16 @@ import {
   LeaveChannelController,
   ListChannelMembersController,
   ToggleChannelVisibilityController,
+  UpdateChannelController,
 } from '@/api/controllers/channels'
 import { ListChatterChannelsController } from '@/api/controllers/channels'
 import { FastifyHttp } from '../fastify-http'
-import { idSchema } from '@telepetros/validation/schemas'
+import {
+  booleanSchema,
+  idSchema,
+  stringSchema,
+  urlSchema,
+} from '@telepetros/validation/schemas'
 
 export const ChannelsRoutes = async (app: FastifyInstance) => {
   const getChannelChatController = new GetChannelChatController()
@@ -24,6 +30,7 @@ export const ChannelsRoutes = async (app: FastifyInstance) => {
   const toggleChannelVisibilityController = new ToggleChannelVisibilityController()
   const listChannelMembersController = new ListChannelMembersController()
   const leaveChannelController = new LeaveChannelController()
+  const updateChannelController = new UpdateChannelController()
 
   const router = app.withTypeProvider<ZodTypeProvider>()
 
@@ -85,11 +92,34 @@ export const ChannelsRoutes = async (app: FastifyInstance) => {
       },
     )
     .put(
+      '/:channelId',
+      {
+        schema: {
+          body: z.object({
+            name: stringSchema.optional(),
+            avatar: urlSchema.optional(),
+            banner: urlSchema.optional(),
+            isChannelPublic: booleanSchema.optional(),
+          }),
+          params: z.object({
+            channelId: idSchema,
+          }),
+        },
+      },
+      async (request, response) => {
+        const http = new FastifyHttp<typeof request.body, typeof request.params>(
+          request,
+          response,
+        )
+        return updateChannelController.handle(http)
+      },
+    )
+    .put(
       '/:channelId/visibility',
       {
         schema: {
           body: z.object({
-            isChannelPublic: z.boolean(),
+            isChannelPublic: booleanSchema,
           }),
           params: z.object({
             channelId: idSchema,

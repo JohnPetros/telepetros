@@ -11,7 +11,7 @@ import {
 import { ChatterSocket } from '@/realtime/sockets'
 import { FastifyHttp } from '../fastify-http'
 import { FastifyWs } from '../fastify-ws'
-import { GetChatterChatUseCase } from '@telepetros/core/use-cases'
+import { idSchema } from '@telepetros/validation/schemas'
 
 export const ChattersRoutes = async (app: FastifyInstance) => {
   const listChattersByChatterController = new ListChattersByChatterController()
@@ -26,7 +26,7 @@ export const ChattersRoutes = async (app: FastifyInstance) => {
       {
         schema: {
           params: z.object({
-            chatterId: z.string().uuid(),
+            chatterId: idSchema,
           }),
         },
       },
@@ -40,7 +40,7 @@ export const ChattersRoutes = async (app: FastifyInstance) => {
       {
         schema: {
           params: z.object({
-            id: z.string().uuid(),
+            id: idSchema,
           }),
         },
       },
@@ -54,7 +54,7 @@ export const ChattersRoutes = async (app: FastifyInstance) => {
       {
         schema: {
           params: z.object({
-            name: z.string(),
+            name: idSchema,
           }),
         },
       },
@@ -73,7 +73,7 @@ export const ChattersRoutes = async (app: FastifyInstance) => {
       {
         schema: {
           body: z.object({
-            chatterId: z.string(),
+            chatterId: idSchema,
           }),
         },
       },

@@ -3,16 +3,21 @@ import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 
 import {
+  DeleteAccountController,
   LoginWithGithubController,
   LoginWithGoogleController,
+  LogoutController,
   VerifyJwtController,
 } from '@/api/controllers/auth'
 import { FastifyHttp } from '../fastify-http'
+import { stringSchema } from '@telepetros/validation/schemas'
 
 export const AuthRoutes = async (app: FastifyInstance) => {
   const verifyJwtController = new VerifyJwtController()
   const loginWithGithubController = new LoginWithGithubController()
   const loginWithGoogleController = new LoginWithGoogleController()
+  const logoutController = new LogoutController()
+  const deleteAccountController = new DeleteAccountController()
   const router = app.withTypeProvider<ZodTypeProvider>()
 
   router
@@ -24,7 +29,7 @@ export const AuthRoutes = async (app: FastifyInstance) => {
       '/github',
       {
         schema: {
-          body: z.object({ githubClientCode: z.string() }),
+          body: z.object({ githubClientCode: stringSchema }),
         },
       },
       async (request, response) => {
@@ -36,7 +41,7 @@ export const AuthRoutes = async (app: FastifyInstance) => {
       '/google',
       {
         schema: {
-          body: z.object({ googleClientCode: z.string() }),
+          body: z.object({ googleClientCode: stringSchema }),
         },
       },
       async (request, response) => {
@@ -44,4 +49,12 @@ export const AuthRoutes = async (app: FastifyInstance) => {
         return loginWithGoogleController.handle(http)
       },
     )
+    .delete('/logout', async (request, response) => {
+      const http = new FastifyHttp(request, response)
+      return logoutController.handle(http)
+    })
+    .delete('/account', async (request, response) => {
+      const http = new FastifyHttp(request, response)
+      return deleteAccountController.handle(http)
+    })
 }
