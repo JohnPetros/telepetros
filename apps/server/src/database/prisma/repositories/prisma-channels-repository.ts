@@ -88,6 +88,24 @@ export class PrismaChannelsRepository implements IChannelsRepository {
     })
   }
 
+  async update(channelId: string, channel: Channel): Promise<void> {
+    const prismaChannel = this.mapper.toPrisma(channel)
+
+    await prisma.channel.update({
+      where: {
+        id: channelId,
+      },
+      data: {
+        name: prismaChannel.name,
+        invite_code: prismaChannel.invite_code,
+        avatar: prismaChannel.avatar,
+        chat_id: prismaChannel.chat_id,
+        owner_id: prismaChannel.owner_id,
+        is_public: prismaChannel.is_public,
+      },
+    })
+  }
+
   async remove(channelId: string): Promise<void> {
     await prisma.channel.delete({ where: { id: channelId } })
   }

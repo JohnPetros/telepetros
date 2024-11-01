@@ -6,6 +6,7 @@ export interface IChannelsRepository {
   findManyByChatterId(chatterId: string): Promise<Channel[]>
   updateVisibility(channelId: string, isChannelPublic: boolean): Promise<void>
   updateOwner(channelId: string, newOwnerId: string): Promise<void>
+  update(channelId: string, channel: Channel): Promise<void>
   remove(channelId: string): Promise<void>
   add(channel: Channel): Promise<Channel>
 }
