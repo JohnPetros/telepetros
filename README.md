@@ -1,4 +1,4 @@
-# Turborepo starter
+# Telepetros 💬
 
 This is an official starter Turborepo.
 
